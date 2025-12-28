@@ -35,21 +35,33 @@ vgcore.*
 *.tmp
 *.temp
 .cache/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.idea
 
 # Node / pnpm
 node_modules/
 .pnpm-store/
+logs
+*.log
+npm-debug.log*
 .pnpm-debug.log
 pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
 
 # TypeScript
 *.tsbuildinfo
 
 # Vite
 dist/
+dist-ssr/
 .vite/
 *.local
 
 # storybook
 storybook-static/
-
