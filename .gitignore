@@ -1,0 +1,55 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+core
+core.*
+vgcore.*
+
+# Misc
+*.swp
+*.swo
+*~
+\#*\#
+.#*
+*.bak
+*.bk
+*.tmp
+*.temp
+.cache/
+
+# Node / pnpm
+node_modules/
+.pnpm-store/
+.pnpm-debug.log
+pnpm-debug.log*
+
+# TypeScript
+*.tsbuildinfo
+
+# Vite
+dist/
+.vite/
+*.local
+
+# storybook
+storybook-static/
+
