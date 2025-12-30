@@ -1,0 +1,141 @@
+{/* Modal.mdx */}
+import { Meta, Primary, Controls, Stories, Title, Markdown } from "@storybook/addon-docs/blocks";
+import * as ModalStories from "./Modal.stories";
+
+<Meta of={ModalStories} />
+<Title />
+
+Modal provides a semantic dialog overlay with backdrop and proper accessibility.
+
+## Features
+
+- **Semantic HTML** - Uses `role="dialog"` and `aria-modal="true"`
+- **Backdrop click** - Closes on backdrop click (configurable)
+- **Escape key** - Closes on Escape press (configurable)
+- **Body scroll lock** - Prevents background scrolling when open
+- **Compound component** - Header, Body, Footer sub-components
+- **Size variants** - sm, md, lg, xl, 2xl, full
+- **Portal rendering** - Renders to document.body
+
+## Example
+
+<Primary />
+<Controls />
+
+## Usage
+
+```tsx
+import { Modal } from "emul8";
+import { useState } from "react";
+
+function MyComponent() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <button onClick={() => setOpen(true)}>Open Modal</button>
+
+      <Modal open={open} onClose={() => setOpen(false)}>
+        <Modal.Content>
+          <Modal.Header>
+            <Modal.Title>Confirm Action</Modal.Title>
+            <Modal.Description>Are you sure you want to proceed?</Modal.Description>
+          </Modal.Header>
+          <Modal.Body>
+            <p>This action cannot be undone.</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <button onClick={() => setOpen(false)}>Cancel</button>
+            <button onClick={() => setOpen(false)}>Confirm</button>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
+    </>
+  );
+}
+```
+
+## Components
+
+### Modal
+
+The root component that handles open state, backdrop, and event listeners.
+
+<Markdown>
+{`
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| \`open\` | \`boolean\` | \`false\` | Whether the modal is visible |
+| \`onClose\` | \`() => void\` | - | Callback when close is requested |
+| \`closeOnBackdropClick\` | \`boolean\` | \`true\` | Close when backdrop is clicked |
+| \`closeOnEscape\` | \`boolean\` | \`true\` | Close when Escape is pressed |
+`}
+</Markdown>
+
+### Modal.Content
+
+<Markdown>
+{`
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| \`size\` | \`"sm" \\| "md" \\| "lg" \\| "xl" \\| "2xl" \\| "full"\` | \`"md"\` | Modal width |
+| \`animation\` | \`"none" \\| "scale"\` | \`"scale"\` | Entry animation |
+`}
+</Markdown>
+
+### Modal.Header
+
+<Markdown>
+{`
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| \`padding\` | \`"sm" \\| "md" \\| "lg"\` | \`"md"\` | Header padding |
+`}
+</Markdown>
+
+### Modal.Body
+
+<Markdown>
+{`
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| \`padding\` | \`"none" \\| "sm" \\| "md" \\| "lg"\` | \`"md"\` | Body padding |
+`}
+</Markdown>
+
+### Modal.Footer
+
+<Markdown>
+{`
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| \`padding\` | \`"sm" \\| "md" \\| "lg"\` | \`"md"\` | Footer padding |
+`}
+</Markdown>
+
+### Modal.Title
+
+Renders an `<h2>` element for the modal title.
+
+### Modal.Description
+
+Renders a `<p>` element for the modal description.
+
+## When to Use
+
+- Confirmation dialogs
+- Form dialogs
+- Alert messages
+- Content that requires user attention
+- Workflows that need focus
+
+## Accessibility
+
+- Uses `role="dialog"` and `aria-modal="true"`
+- Escape key closes the modal (configurable)
+- Body scroll is locked when open
+- Focus should be managed by the consuming application
+
+## All Stories
+
+<Stories />
