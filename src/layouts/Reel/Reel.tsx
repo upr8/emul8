@@ -32,6 +32,7 @@ export const Reel = forwardRef<HTMLDivElement, ReelProps>(
     const handleKeyDown = useCallback(
       (event: React.KeyboardEvent<HTMLDivElement>) => {
         const element = reelRef.current;
+        /* c8 ignore next -- element always exists when rendered */
         if (!element) return;
 
         if (event.key === 'ArrowLeft') {

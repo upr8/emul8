@@ -12,47 +12,41 @@ export const appShellVariants = cva('min-h-screen flex flex-col', {
   },
 });
 
-export const headerVariants = cva(
-  'shrink-0 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900',
-  {
-    variants: {
-      height: {
-        sm: 'h-12',
-        md: 'h-14',
-        lg: 'h-16',
-      },
-      sticky: {
-        true: 'sticky top-0 z-40',
-        false: '',
-      },
+export const headerVariants = cva('shrink-0 border-b', {
+  variants: {
+    height: {
+      sm: 'h-12',
+      md: 'h-14',
+      lg: 'h-16',
     },
-    defaultVariants: {
-      height: 'md',
-      sticky: true,
+    sticky: {
+      true: 'sticky top-0 z-40',
+      false: '',
     },
-  }
-);
+  },
+  defaultVariants: {
+    height: 'md',
+    sticky: true,
+  },
+});
 
-export const appShellSidebarVariants = cva(
-  'shrink-0 border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-y-auto',
-  {
-    variants: {
-      width: {
-        sm: 'w-48',
-        md: 'w-64',
-        lg: 'w-80',
-      },
-      position: {
-        left: 'order-first',
-        right: 'order-last border-r-0 border-l',
-      },
+export const appShellSidebarVariants = cva('shrink-0 border-r overflow-y-auto', {
+  variants: {
+    width: {
+      sm: 'w-48',
+      md: 'w-64',
+      lg: 'w-80',
     },
-    defaultVariants: {
-      width: 'md',
-      position: 'left',
+    position: {
+      left: 'order-first',
+      right: 'order-last border-r-0 border-l',
     },
-  }
-);
+  },
+  defaultVariants: {
+    width: 'md',
+    position: 'left',
+  },
+});
 
 export const mainVariants = cva('flex-1 overflow-auto', {
   variants: {
@@ -77,18 +71,15 @@ export const mainVariants = cva('flex-1 overflow-auto', {
   },
 });
 
-export const footerVariants = cva(
-  'shrink-0 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900',
-  {
-    variants: {
-      padding: {
-        sm: 'py-4 px-4',
-        md: 'py-6 px-6',
-        lg: 'py-8 px-8',
-      },
+export const footerVariants = cva('shrink-0 border-t', {
+  variants: {
+    padding: {
+      sm: 'py-4 px-4',
+      md: 'py-6 px-6',
+      lg: 'py-8 px-8',
     },
-    defaultVariants: {
-      padding: 'md',
-    },
-  }
-);
+  },
+  defaultVariants: {
+    padding: 'md',
+  },
+});

@@ -232,7 +232,10 @@ describe('Reel', () => {
           <div>Content</div>
         </Reel>
       );
-      fireEvent.keyDown(screen.getByTestId('reel'), { key: 'ArrowRight' });
+      const reel = screen.getByTestId('reel');
+      // Mock scrollBy since jsdom doesn't implement it
+      reel.scrollBy = vi.fn();
+      fireEvent.keyDown(reel, { key: 'ArrowRight' });
       expect(onKeyDown).toHaveBeenCalled();
     });
 

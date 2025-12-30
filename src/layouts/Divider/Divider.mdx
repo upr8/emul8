@@ -12,7 +12,7 @@ Divider creates a visual separator between content.
 - **Horizontal & vertical** - Both orientations supported
 - **Size variants** - Thin, medium, and thick options
 - **Accessible** - Uses `role="separator"` with proper ARIA attributes
-- **Themeable** - Uses `currentColor` for easy color customization
+- **Pure structural** - No default colors, style via className
 
 ## Example
 
@@ -38,8 +38,11 @@ import { Divider } from "emul8";
   <span>Right</span>
 </div>
 
+// With color (required - no default color)
+<Divider className="bg-gray-200 dark:bg-gray-700" />
+
 // Custom color
-<Divider className="bg-blue-500 opacity-100" />
+<Divider className="bg-blue-500" />
 ```
 
 ## Props
@@ -53,6 +56,18 @@ import { Divider } from "emul8";
 | \`label\` | \`string\` | - | Accessible label |
 `}
 </Markdown>
+
+## Styling
+
+Divider is a **pure structural component** - it provides only the sizing and orientation without any default color. You must add a background color via `className`:
+
+```tsx
+// Basic usage with color
+<Divider className="bg-gray-200 dark:bg-gray-700" />
+
+// Vertical with color
+<Divider orientation="vertical" className="h-4 bg-gray-300" />
+```
 
 ## When to Use
 

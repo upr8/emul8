@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { createRef } from 'react';
+import { createRef, useState } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { Modal } from './Modal';
 
@@ -352,5 +352,164 @@ describe('Modal composition', () => {
     expect(screen.getByText('Body content here')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Confirm' })).toBeInTheDocument();
+  });
+});
+
+describe('Modal accessibility', () => {
+  it('supports aria-labelledby', () => {
+    render(
+      <Modal open aria-labelledby="modal-title">
+        <Modal.Content>
+          <Modal.Title id="modal-title">Test Title</Modal.Title>
+        </Modal.Content>
+      </Modal>
+    );
+    expect(screen.getByRole('dialog')).toHaveAttribute('aria-labelledby', 'modal-title');
+  });
+
+  it('supports aria-describedby', () => {
+    render(
+      <Modal open aria-describedby="modal-desc">
+        <Modal.Content>
+          <Modal.Description id="modal-desc">Test description</Modal.Description>
+        </Modal.Content>
+      </Modal>
+    );
+    expect(screen.getByRole('dialog')).toHaveAttribute('aria-describedby', 'modal-desc');
+  });
+
+  it('traps focus within modal by default', () => {
+    render(
+      <Modal open>
+        <Modal.Content>
+          <Modal.Body>
+            <button type="button">First</button>
+            <button type="button">Last</button>
+          </Modal.Body>
+        </Modal.Content>
+      </Modal>
+    );
+
+    const firstButton = screen.getByRole('button', { name: 'First' });
+    const lastButton = screen.getByRole('button', { name: 'Last' });
+
+    // Focus first button and shift+tab should wrap to last
+    firstButton.focus();
+    fireEvent.keyDown(document, { key: 'Tab', shiftKey: true });
+    expect(document.activeElement).toBe(lastButton);
+
+    // Focus last button and tab should wrap to first
+    lastButton.focus();
+    fireEvent.keyDown(document, { key: 'Tab', shiftKey: false });
+    expect(document.activeElement).toBe(firstButton);
+  });
+
+  it('does not trap focus when trapFocus is false', () => {
+    render(
+      <Modal open trapFocus={false}>
+        <Modal.Content>
+          <Modal.Body>
+            <button type="button">First</button>
+            <button type="button">Last</button>
+          </Modal.Body>
+        </Modal.Content>
+      </Modal>
+    );
+
+    const lastButton = screen.getByRole('button', { name: 'Last' });
+
+    // With trapFocus=false, tab should not wrap
+    lastButton.focus();
+    fireEvent.keyDown(document, { key: 'Tab', shiftKey: false });
+    // Should not have wrapped to first button
+    expect(document.activeElement).toBe(lastButton);
+  });
+
+  it('auto-focuses first focusable element when opened', async () => {
+    vi.useFakeTimers();
+    render(
+      <Modal open>
+        <Modal.Content>
+          <Modal.Body>
+            <button type="button">Focus me</button>
+          </Modal.Body>
+        </Modal.Content>
+      </Modal>
+    );
+
+    vi.runAllTimers();
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Focus me' }));
+    vi.useRealTimers();
+  });
+
+  it('does not auto-focus when autoFocus is false', async () => {
+    vi.useFakeTimers();
+    render(
+      <Modal open autoFocus={false}>
+        <Modal.Content>
+          <Modal.Body>
+            <button type="button">Do not focus</button>
+          </Modal.Body>
+        </Modal.Content>
+      </Modal>
+    );
+
+    vi.runAllTimers();
+    // Should not have focused the button
+    expect(document.activeElement).not.toBe(screen.getByRole('button', { name: 'Do not focus' }));
+    vi.useRealTimers();
+  });
+
+  it('returns focus to trigger element when closed', () => {
+    vi.useFakeTimers();
+    const TestComponent = () => {
+      const [open, setOpen] = useState(false);
+      return (
+        <>
+          <button type="button" onClick={() => setOpen(true)}>
+            Open Modal
+          </button>
+          <Modal open={open} onClose={() => setOpen(false)} returnFocus>
+            <Modal.Content>
+              <Modal.Body>
+                <button type="button" onClick={() => setOpen(false)}>
+                  Close
+                </button>
+              </Modal.Body>
+            </Modal.Content>
+          </Modal>
+        </>
+      );
+    };
+
+    render(<TestComponent />);
+
+    const openButton = screen.getByRole('button', { name: 'Open Modal' });
+    openButton.focus();
+    fireEvent.click(openButton);
+    vi.runAllTimers();
+
+    // Modal should be open and focus moved
+    const closeButton = screen.getByRole('button', { name: 'Close' });
+    expect(closeButton).toBeInTheDocument();
+
+    // Close modal
+    fireEvent.click(closeButton);
+
+    // Focus should return to the open button
+    expect(document.activeElement).toBe(openButton);
+    vi.useRealTimers();
+  });
+
+  it('Modal.Description has text-sm class for styling', () => {
+    render(
+      <Modal open>
+        <Modal.Content>
+          <Modal.Description>Description text</Modal.Description>
+        </Modal.Content>
+      </Modal>
+    );
+    const description = screen.getByText('Description text');
+    expect(description).toHaveClass('text-sm');
   });
 });

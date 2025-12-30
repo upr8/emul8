@@ -1,6 +1,6 @@
 import { cva } from 'class-variance-authority';
 
-export const dividerVariants = cva('shrink-0 bg-current opacity-20', {
+export const dividerVariants = cva('shrink-0', {
   variants: {
     orientation: {
       horizontal: 'w-full h-px',

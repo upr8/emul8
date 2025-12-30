@@ -5,8 +5,6 @@ describe('dividerVariants', () => {
   it('includes base classes', () => {
     const classes = dividerVariants();
     expect(classes).toContain('shrink-0');
-    expect(classes).toContain('bg-current');
-    expect(classes).toContain('opacity-20');
   });
 
   describe('orientation variants', () => {

@@ -121,6 +121,28 @@ Renders an `<h2>` element for the modal title.
 
 Renders a `<p>` element for the modal description.
 
+## Styling
+
+Modal is a **pure structural component** - it handles only layout concerns (positioning, sizing, overflow) without any color or theme dependencies. Apply colors via `className`:
+
+```tsx
+// Add backdrop and content colors
+<Modal open={open} onClose={onClose} className="bg-black/50">
+  <Modal.Content className="bg-white dark:bg-gray-900">
+    <Modal.Header className="border-gray-200 dark:border-gray-700">
+      <Modal.Title>Title</Modal.Title>
+      <Modal.Description className="text-gray-600 dark:text-gray-400">
+        Description
+      </Modal.Description>
+    </Modal.Header>
+    <Modal.Body>Content</Modal.Body>
+    <Modal.Footer className="border-gray-200 dark:border-gray-700">
+      <button>Action</button>
+    </Modal.Footer>
+  </Modal.Content>
+</Modal>
+```
+
 ## When to Use
 
 - Confirmation dialogs

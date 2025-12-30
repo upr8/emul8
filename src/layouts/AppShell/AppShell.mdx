@@ -119,6 +119,21 @@ Wrapper for sidebar + main content. Uses `flex flex-1 overflow-hidden`.
 `}
 </Markdown>
 
+## Styling
+
+AppShell is a **pure structural component** - it handles only layout concerns (positioning, sizing, spacing) without any color or theme dependencies. Apply colors via `className`:
+
+```tsx
+// Add background and border colors
+<AppShell.Header className="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-800">
+  <Logo />
+</AppShell.Header>
+
+<AppShell.Sidebar className="bg-gray-50 border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+  <Navigation />
+</AppShell.Sidebar>
+```
+
 ## When to Use
 
 - Dashboard applications with side navigation
