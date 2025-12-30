@@ -1,0 +1,90 @@
+{/* Container.mdx */}
+import { Meta, Primary, Controls, Stories, Title, Markdown } from "@storybook/addon-docs/blocks";
+import * as ContainerStories from "./Container.stories";
+
+<Meta of={ContainerStories} />
+<Title />
+
+Container centers and constrains content width.
+
+## Features
+
+- **Max-width constraint** - Multiple size presets
+- **Horizontal padding** - Built-in responsive padding
+- **Content centering** - Center children within container
+- **Intrinsic sizing** - Content-based width centering
+- **Text centering** - Optional text alignment
+
+## Example
+
+<Primary />
+<Controls />
+
+## Usage
+
+```tsx
+import { Container, Center } from "emul8";
+
+// Basic container with max-width
+<Container size="md" padding="lg">
+  <h1>Page Title</h1>
+  <p>Content constrained to medium width...</p>
+</Container>
+
+// Center with intrinsic sizing (content determines width)
+<Center intrinsic andText>
+  <Logo />
+  <h1>Welcome</h1>
+</Center>
+
+// Container with centered children
+<Container size="lg" center>
+  <Card />
+</Container>
+```
+
+## Size Presets
+
+<Markdown>
+{`
+| Size | Max Width | Use Case |
+| ---- | --------- | -------- |
+| \`sm\` | 640px | Narrow content, forms |
+| \`md\` | 768px | Articles, readable text |
+| \`lg\` | 1024px | General content (default) |
+| \`xl\` | 1280px | Wide layouts |
+| \`2xl\` | 1536px | Extra wide layouts |
+| \`full\` | 100% | No constraint |
+`}
+</Markdown>
+
+## Props
+
+<Markdown>
+{`
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| \`size\` | \`"sm" \\| "md" \\| "lg" \\| "xl" \\| "2xl" \\| "full"\` | \`"lg"\` | Max-width preset |
+| \`padding\` | \`"none" \\| "sm" \\| "md" \\| "lg"\` | \`"md"\` | Horizontal padding |
+| \`center\` | \`boolean\` | \`false\` | Center children horizontally |
+| \`intrinsic\` | \`boolean\` | \`false\` | Content-based width centering |
+| \`andText\` | \`boolean\` | \`false\` | Also center text content |
+`}
+</Markdown>
+
+## Center Alias
+
+`Center` is an alias for `Container`, emphasizing its centering capabilities:
+
+```tsx
+import { Center } from "emul8";
+
+<Center size="md" intrinsic andText>
+  <h1>Centered Heading</h1>
+  <p>Centered paragraph text</p>
+</Center>
+```
+
+## All Stories
+
+<Stories />

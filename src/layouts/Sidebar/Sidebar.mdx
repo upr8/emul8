@@ -1,0 +1,70 @@
+{/* Sidebar.mdx */}
+import { Meta, Primary, Controls, Stories, Title, Markdown } from "@storybook/addon-docs/blocks";
+import * as SidebarStories from "./Sidebar.stories";
+
+<Meta of={SidebarStories} />
+<Title />
+
+Sidebar creates a two-column layout with a sidebar and main content.
+
+## Features
+
+- **Fixed sidebar width** - Sidebar maintains its width
+- **Flexible content** - Main content fills remaining space
+- **Responsive wrapping** - Stacks when content would be too narrow
+- **Side control** - Sidebar on left or right
+- **Stretch control** - Items can stretch to fill height
+
+## Example
+
+<Primary />
+<Controls />
+
+## Usage
+
+```tsx
+import { Sidebar } from "emul8";
+
+// Basic sidebar on left
+<Sidebar sidebar={<Nav />} sideWidth="250px">
+  <main>Main content</main>
+</Sidebar>
+
+// Sidebar on right with custom content minimum
+<Sidebar sidebar={<Aside />} side="right" contentMin="60%">
+  <article>Article content</article>
+</Sidebar>
+
+// Non-stretching sidebar items
+<Sidebar sidebar={<Menu />} noStretch>
+  <Content />
+</Sidebar>
+```
+
+## Props
+
+<Markdown>
+{`
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| \`sidebar\` | \`ReactNode\` | required | Content for the sidebar |
+| \`side\` | \`"left" \\| "right"\` | \`"left"\` | Which side for the sidebar |
+| \`sideWidth\` | \`string\` | \`"20rem"\` | Width of sidebar |
+| \`contentMin\` | \`string\` | \`"50%"\` | Minimum width before wrapping |
+| \`gap\` | \`"none" \\| "xs" \\| "sm" \\| "md" \\| "lg" \\| "xl"\` | \`"md"\` | Space between sidebar and content |
+| \`noStretch\` | \`boolean\` | \`false\` | Prevent items from stretching |
+`}
+</Markdown>
+
+## How It Works
+
+The Sidebar uses flexbox with clever flex-basis calculations:
+
+- Sidebar: `flex-basis: sideWidth; flex-grow: 1`
+- Content: `flex-basis: 0; flex-grow: 999; min-inline-size: contentMin`
+
+When the content can't maintain its minimum width, flex-wrap causes the layout to stack.
+
+## All Stories
+
+<Stories />

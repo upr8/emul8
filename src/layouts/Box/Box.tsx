@@ -6,7 +6,6 @@ import { boxVariants } from './Box.variants';
 
 /**
  * Box is a simple container with padding and optional border.
- * Based on Every Layout's Box primitive.
  */
 export const Box = forwardRef<HTMLDivElement, BoxProps>(
   ({ className, padding, borderWidth, asChild = false, ...props }, ref) => {

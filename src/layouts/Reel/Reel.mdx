@@ -1,0 +1,73 @@
+{/* Reel.mdx */}
+import { Meta, Primary, Controls, Stories, Title, Markdown } from "@storybook/addon-docs/blocks";
+import * as ReelStories from "./Reel.stories";
+
+<Meta of={ReelStories} />
+<Title />
+
+Reel creates a horizontally scrolling strip of items.
+
+## Features
+
+- **Horizontal scrolling** - Native overflow scrolling
+- **Fixed item width** - Optional fixed width for items
+- **Custom height** - Control reel height
+- **Scrollbar control** - Option to hide scrollbar
+- **Gap control** - Consistent spacing between items
+
+## Example
+
+<Primary />
+<Controls />
+
+## Usage
+
+```tsx
+import { Reel } from "emul8";
+
+// Basic reel
+<Reel gap="md">
+  <Card />
+  <Card />
+  <Card />
+</Reel>
+
+// Fixed width items with no scrollbar
+<Reel itemWidth="280px" noBar>
+  <ProductCard />
+  <ProductCard />
+  <ProductCard />
+</Reel>
+
+// Image gallery with fixed height
+<Reel height="200px" gap="sm">
+  <img src="1.jpg" alt="..." />
+  <img src="2.jpg" alt="..." />
+  <img src="3.jpg" alt="..." />
+</Reel>
+```
+
+## Props
+
+<Markdown>
+{`
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| \`gap\` | \`"none" \\| "xs" \\| "sm" \\| "md" \\| "lg" \\| "xl"\` | \`"md"\` | Space between items |
+| \`itemWidth\` | \`string\` | \`"auto"\` | Fixed width for each item |
+| \`height\` | \`string\` | \`"auto"\` | Height of the reel |
+| \`noBar\` | \`boolean\` | \`false\` | Hide scrollbar |
+`}
+</Markdown>
+
+## When to Use
+
+- Image galleries
+- Card carousels
+- Horizontal product lists
+- Thumbnail strips
+- Tab-like navigation
+
+## All Stories
+
+<Stories />

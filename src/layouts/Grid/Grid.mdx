@@ -1,0 +1,76 @@
+{/* Grid.mdx */}
+import { Meta, Primary, Controls, Stories, Title, Markdown } from "@storybook/addon-docs/blocks";
+import * as GridStories from "./Grid.stories";
+
+<Meta of={GridStories} />
+<Title />
+
+Grid creates an auto-filling responsive grid.
+
+## Features
+
+- **Auto-fill** - Items automatically fill available space
+- **Responsive** - Wraps when items can't maintain minimum width
+- **Flexible minimum** - Control minimum item width
+- **Gap control** - Consistent spacing between items
+
+## Example
+
+<Primary />
+<Controls />
+
+## Usage
+
+```tsx
+import { Grid } from "emul8";
+
+// Basic grid with default 250px minimum
+<Grid gap="lg">
+  <Card />
+  <Card />
+  <Card />
+  <Card />
+</Grid>
+
+// Grid with larger minimum item width
+<Grid min="300px" gap="md">
+  <ProductCard />
+  <ProductCard />
+  <ProductCard />
+</Grid>
+
+// Narrow grid for sidebar content
+<Grid min="150px" gap="sm">
+  <Thumbnail />
+  <Thumbnail />
+  <Thumbnail />
+</Grid>
+```
+
+## How It Works
+
+The Grid uses CSS Grid's `auto-fill` with `minmax()`:
+
+```css
+grid-template-columns: repeat(auto-fill, minmax(min(250px, 100%), 1fr))
+```
+
+- Items expand to fill available space equally
+- When items would be narrower than `min`, they wrap to next row
+- The `min(min, 100%)` ensures items never overflow on narrow screens
+
+## Props
+
+<Markdown>
+{`
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| \`gap\` | \`"none" \\| "xs" \\| "sm" \\| "md" \\| "lg" \\| "xl"\` | \`"md"\` | Space between items |
+| \`min\` | \`string\` | \`"250px"\` | Minimum item width before wrapping |
+| \`asChild\` | \`boolean\` | \`false\` | Render as child element |
+`}
+</Markdown>
+
+## All Stories
+
+<Stories />

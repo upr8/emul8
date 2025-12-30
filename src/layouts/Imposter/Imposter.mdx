@@ -1,0 +1,90 @@
+{/* Imposter.mdx */}
+import { Meta, Primary, Controls, Stories, Title, Markdown } from "@storybook/addon-docs/blocks";
+import * as ImposterStories from "./Imposter.stories";
+
+<Meta of={ImposterStories} />
+<Title />
+
+Imposter positions content as an overlay.
+
+## Features
+
+- **Overlay positioning** - Centered absolutely or fixed
+- **Margin control** - Edge spacing for content
+- **Breakout mode** - Fill container completely
+- **Fixed or absolute** - Viewport or parent relative
+
+## Example
+
+<Primary />
+<Controls />
+
+## Usage
+
+```tsx
+import { Imposter } from "emul8";
+
+// Fixed modal overlay
+<Imposter fixed>
+  <Modal>Content</Modal>
+</Imposter>
+
+// Absolute positioned with margin
+<div className="relative">
+  <Imposter margin="1rem">
+    <Tooltip>Tooltip content</Tooltip>
+  </Imposter>
+</div>
+
+// Breakout overlay (fills container)
+<Imposter fixed breakout>
+  <FullScreenOverlay />
+</Imposter>
+```
+
+## Props
+
+<Markdown>
+{`
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| \`fixed\` | \`boolean\` | \`false\` | Use fixed positioning (viewport) |
+| \`breakout\` | \`boolean\` | \`false\` | Fill container completely |
+| \`margin\` | \`string\` | \`"0px"\` | Edge margin for content |
+`}
+</Markdown>
+
+## Positioning Modes
+
+<Markdown>
+{`
+| Mode | fixed | breakout | Behavior |
+| ---- | ----- | -------- | -------- |
+| Absolute centered | \`false\` | \`false\` | Centers in nearest positioned parent |
+| Fixed centered | \`true\` | \`false\` | Centers in viewport |
+| Absolute breakout | \`false\` | \`true\` | Fills positioned parent |
+| Fixed breakout | \`true\` | \`true\` | Fills viewport |
+`}
+</Markdown>
+
+## When to Use
+
+- Modal dialogs
+- Tooltips and popovers
+- Loading overlays
+- Image lightboxes
+- Notification popups
+
+## Note on z-index
+
+Imposter doesn't set z-index. Add it via className if needed:
+
+```tsx
+<Imposter fixed className="z-50">
+  <Modal />
+</Imposter>
+```
+
+## All Stories
+
+<Stories />

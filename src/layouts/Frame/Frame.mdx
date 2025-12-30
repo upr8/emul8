@@ -1,0 +1,92 @@
+{/* Frame.mdx */}
+import { Meta, Primary, Controls, Stories, Title, Markdown } from "@storybook/addon-docs/blocks";
+import * as FrameStories from "./Frame.stories";
+
+<Meta of={FrameStories} />
+<Title />
+
+Frame constrains media to a specific aspect ratio.
+
+## Features
+
+- **Aspect ratio control** - Maintain consistent proportions
+- **Media fitting** - Content fills frame with object-cover
+- **Flexible ratios** - Any width:height ratio
+- **Slot support** - Render as child element with `asChild`
+
+## Example
+
+<Primary />
+<Controls />
+
+## Usage
+
+```tsx
+import { Frame } from "emul8";
+
+// 16:9 video frame
+<Frame ratio="16:9">
+  <video src="video.mp4" />
+</Frame>
+
+// Square image
+<Frame ratio="1:1">
+  <img src="avatar.jpg" alt="User avatar" />
+</Frame>
+
+// 4:3 photo
+<Frame ratio="4:3">
+  <img src="photo.jpg" alt="Photo" />
+</Frame>
+
+// Widescreen banner
+<Frame ratio="21:9">
+  <img src="banner.jpg" alt="Banner" />
+</Frame>
+```
+
+## Common Ratios
+
+<Markdown>
+{`
+| Ratio | Aspect | Use Case |
+| ----- | ------ | -------- |
+| \`1:1\` | Square | Avatars, thumbnails |
+| \`4:3\` | Standard | Photos, traditional video |
+| \`16:9\` | Widescreen | Video, modern displays |
+| \`21:9\` | Ultrawide | Banners, cinematic |
+| \`3:2\` | Photo | DSLR photos |
+| \`9:16\` | Portrait | Mobile video, stories |
+`}
+</Markdown>
+
+## Props
+
+<Markdown>
+{`
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| \`ratio\` | \`string\` | \`"16:9"\` | Aspect ratio as "width:height" |
+| \`asChild\` | \`boolean\` | \`false\` | Render as child element |
+`}
+</Markdown>
+
+## How It Works
+
+Frame uses CSS `aspect-ratio` and positions content absolutely to fill the frame:
+
+```css
+aspect-ratio: 16 / 9;
+overflow: hidden;
+
+/* Child fills frame */
+[child] {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+```
+
+## All Stories
+
+<Stories />

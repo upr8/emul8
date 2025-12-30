@@ -1,0 +1,68 @@
+{/* Cover.mdx */}
+import { Meta, Primary, Controls, Stories, Title, Markdown } from "@storybook/addon-docs/blocks";
+import * as CoverStories from "./Cover.stories";
+
+<Meta of={CoverStories} />
+<Title />
+
+Cover vertically centers content with optional header and footer.
+
+## Features
+
+- **Vertical centering** - Main content centered in available space
+- **Header/Footer slots** - Optional top and bottom content
+- **Minimum height** - Default full viewport, customizable
+- **Gap control** - Spacing between sections
+
+## Example
+
+<Primary />
+<Controls />
+
+## Usage
+
+```tsx
+import { Cover } from "emul8";
+
+// Full viewport hero
+<Cover>
+  <h1>Welcome</h1>
+  <p>Main content centered vertically</p>
+</Cover>
+
+// With header and footer
+<Cover top={<Header />} bottom={<Footer />}>
+  <HeroContent />
+</Cover>
+
+// Custom height
+<Cover minHeight="80vh" gap="lg">
+  <LoginForm />
+</Cover>
+```
+
+## Props
+
+<Markdown>
+{`
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| \`minHeight\` | \`string\` | \`"100vh"\` | Minimum height of cover |
+| \`gap\` | \`"none" \\| "xs" \\| "sm" \\| "md" \\| "lg" \\| "xl"\` | \`"md"\` | Space between sections |
+| \`noPad\` | \`boolean\` | \`false\` | Remove internal padding |
+| \`top\` | \`ReactNode\` | - | Content at top |
+| \`bottom\` | \`ReactNode\` | - | Content at bottom |
+`}
+</Markdown>
+
+## When to Use
+
+- Hero sections
+- Login/signup pages
+- Splash screens
+- Full-height layouts with centered content
+- Landing page sections
+
+## All Stories
+
+<Stories />

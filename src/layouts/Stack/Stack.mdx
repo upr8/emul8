@@ -1,0 +1,70 @@
+{/* Stack.mdx */}
+import { Meta, Primary, Controls, Stories, Title, Markdown } from "@storybook/addon-docs/blocks";
+import * as StackStories from "./Stack.stories";
+
+<Meta of={StackStories} />
+<Title />
+
+Stack arranges items vertically or horizontally with consistent spacing.
+
+## Features
+
+- **Flexible direction** - Vertical or horizontal stacking
+- **Split layout** - Push content to opposite ends with `splitAfter`
+- **Gap control** - Consistent spacing between items
+- **Alignment** - Control cross-axis and main-axis alignment
+
+## Example
+
+<Primary />
+<Controls />
+
+## Usage
+
+```tsx
+import { Stack } from "emul8";
+
+// Vertical stack (default)
+<Stack gap="lg">
+  <div>Item 1</div>
+  <div>Item 2</div>
+</Stack>
+
+// Horizontal stack with alignment
+<Stack direction="horizontal" gap="md" align="center">
+  <Icon />
+  <span>Label</span>
+</Stack>
+```
+
+## Split Layout
+
+The `splitAfter` prop pushes content after a specific index to the opposite end:
+
+```tsx
+// Header at top, footer at bottom
+<Stack splitAfter={0} className="h-full">
+  <header>Title</header>
+  <main>Content pushed down</main>
+  <footer>Footer at bottom</footer>
+</Stack>
+```
+
+## Props
+
+<Markdown>
+{`
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| \`direction\` | \`"vertical" \\| "horizontal"\` | \`"vertical"\` | Stack direction |
+| \`gap\` | \`"none" \\| "xs" \\| "sm" \\| "md" \\| "lg" \\| "xl" \\| "2xl"\` | \`"md"\` | Space between items |
+| \`align\` | \`"start" \\| "center" \\| "end" \\| "stretch" \\| "baseline"\` | - | Cross-axis alignment |
+| \`justify\` | \`"start" \\| "center" \\| "end" \\| "between" \\| "around" \\| "evenly"\` | - | Main-axis alignment |
+| \`wrap\` | \`boolean\` | \`false\` | Allow items to wrap |
+| \`splitAfter\` | \`number\` | - | Push items after this index to opposite end |
+`}
+</Markdown>
+
+## All Stories
+
+<Stories />
