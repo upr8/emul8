@@ -1,0 +1,66 @@
+{/* Box.mdx */}
+import { Meta, Primary, Controls, Stories, Title, Markdown } from "@storybook/addon-docs/blocks";
+import * as BoxStories from "./Box.stories";
+
+<Meta of={BoxStories} />
+<Title />
+
+Box is a simple container with padding and optional border. Based on Every Layout's Box primitive.
+
+## Features
+
+- **Consistent padding** - Standardized spacing options
+- **Optional border** - Add visual boundaries
+- **Slot support** - Render as child element with `asChild`
+- **Pure layout** - No semantic styling, just structure
+
+## Example
+
+<Primary />
+<Controls />
+
+## Usage
+
+```tsx
+import { Box } from "emul8";
+
+// Basic box with padding
+<Box padding="lg">
+  <p>Content with padding</p>
+</Box>
+
+// Box with border
+<Box padding="md" borderWidth="thin">
+  <p>Bordered content</p>
+</Box>
+
+// Render as different element
+<Box padding="md" asChild>
+  <section>
+    <h2>Section Title</h2>
+    <p>Section content</p>
+  </section>
+</Box>
+```
+
+## Props
+
+<Markdown>
+{`
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| \`padding\` | \`"none" \\| "xs" \\| "sm" \\| "md" \\| "lg" \\| "xl"\` | \`"md"\` | Internal padding |
+| \`borderWidth\` | \`"none" \\| "thin" \\| "medium" \\| "thick"\` | \`"none"\` | Border thickness |
+| \`asChild\` | \`boolean\` | \`false\` | Render as child element |
+`}
+</Markdown>
+
+## When to Use
+
+- Add consistent padding around content
+- Create visually distinct regions
+- Wrap content that needs spacing from edges
+
+## All Stories
+
+<Stories />

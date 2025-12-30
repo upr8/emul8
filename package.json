@@ -13,26 +13,43 @@
   "license": "MIT",
   "author": "upr8",
   "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./styles": "./dist/styles/globals.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "scripts": {
-    "dev:vite": "vite",
-    "build:vite": "tsc -b && vite build",
-    "preview": "vite preview",
-    "dev:storybook": "storybook dev -p 6006",
+    "dev": "storybook dev -p 6006",
+    "build": "tsc --noEmit && vite build",
     "build:storybook": "storybook build",
     "pre-commit": "pnpm format:check && pnpm format:check",
     "fix": "pnpm format:fix && pnpm format:fix",
     "lint:check": "oxlint src",
     "lint:fix": "oxlint src --fix",
-    "format:check": "biome format",
-    "format:fix": "biome format --write",
+    "format:check": "biome check",
+    "format:fix": "biome check --write",
     "prepare": "husky"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
     "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
@@ -55,10 +72,14 @@
     "husky": "^9.1.7",
     "oxlint": "^1.36.0",
     "playwright": "^1.57.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "storybook": "^10.1.10",
     "tailwindcss": "^4.1.18",
     "typescript": "~5.9.3",
     "vite": "^7.2.4",
+    "vite-plugin-dts": "^4.5.4",
+    "vite-plugin-static-copy": "^3.1.4",
     "vitest": "^4.0.16"
   }
 }

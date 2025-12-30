@@ -1,0 +1,82 @@
+{/* Button.mdx */}
+import { Meta, Primary, Controls, Stories, Title, Markdown } from "@storybook/addon-docs/blocks";
+import * as ButtonStories from "./Button.stories";
+
+<Meta of={ButtonStories} />
+<Title />
+
+Button component with multiple variants and sizes.
+
+## Features
+
+- **Multiple variants** - Primary, secondary, danger, success, ghost, and outline styles
+- **Size options** - Small, medium, large, and icon sizes
+- **Loading state** - Built-in spinner during async operations
+- **Full width** - Optional full-width layout
+- **Slot support** - Render as link or custom element with `asChild`
+
+## Example
+
+<Primary />
+<Controls />
+
+## Usage
+
+```tsx
+import { Button } from "emul8";
+
+// Primary button
+<Button variant="primary">Click me</Button>
+
+// Danger button with full width
+<Button variant="danger" fullWidth>Delete</Button>
+
+// Loading state
+<Button loading>Saving...</Button>
+
+// As a link
+<Button asChild>
+  <a href="/path">Go to page</a>
+</Button>
+```
+
+## Variants
+
+<Markdown>
+{`
+| Variant | Use Case |
+| ------- | -------- |
+| \`primary\` | Primary actions, CTAs |
+| \`secondary\` | Secondary actions |
+| \`danger\` | Destructive actions |
+| \`success\` | Positive/confirmation actions |
+| \`ghost\` | Tertiary actions, subtle |
+| \`outline\` | Bordered, transparent background |
+`}
+</Markdown>
+
+## Props
+
+<Markdown>
+{`
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| \`variant\` | \`"primary" \\| "secondary" \\| "danger" \\| "success" \\| "ghost" \\| "outline"\` | \`"primary"\` | Visual style |
+| \`size\` | \`"sm" \\| "md" \\| "lg" \\| "icon"\` | \`"md"\` | Button size |
+| \`fullWidth\` | \`boolean\` | \`false\` | Full-width layout |
+| \`loading\` | \`boolean\` | \`false\` | Show loading spinner |
+| \`disabled\` | \`boolean\` | \`false\` | Disable button |
+| \`asChild\` | \`boolean\` | \`false\` | Render as child element |
+`}
+</Markdown>
+
+## Accessibility
+
+- Uses native `<button>` element
+- Disabled when `loading` or `disabled`
+- Focus ring visible on keyboard navigation
+- Can be rendered as `<a>` with `asChild` for navigation
+
+## All Stories
+
+<Stories />
