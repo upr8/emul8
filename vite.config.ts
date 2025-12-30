@@ -46,7 +46,36 @@ export default defineConfig({
     minify: false,
   },
   test: {
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      include: ['src/**/*.{ts,tsx}'],
+      exclude: [
+        'src/**/*.stories.{ts,tsx}',
+        'src/**/*.test.{ts,tsx}',
+        'src/**/index.ts',
+        'src/**/*.types.ts',
+        'src/**/*.mdx',
+        'src/test/**',
+      ],
+      thresholds: {
+        statements: 100,
+        branches: 100,
+        functions: 100,
+        lines: 100,
+      },
+    },
     projects: [
+      {
+        extends: true,
+        test: {
+          name: 'unit',
+          environment: 'jsdom',
+          include: ['src/**/*.test.{ts,tsx}'],
+          exclude: ['src/**/*.stories.test.{ts,tsx}'],
+          setupFiles: ['src/test/setup.ts'],
+        },
+      },
       {
         extends: true,
         plugins: [

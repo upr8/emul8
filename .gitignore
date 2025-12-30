@@ -62,6 +62,7 @@ dist/
 dist-ssr/
 .vite/
 *.local
+coverage/
 
 # storybook
 storybook-static/
