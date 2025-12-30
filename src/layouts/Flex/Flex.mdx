@@ -1,0 +1,74 @@
+{/* Flex.mdx */}
+import { Meta, Primary, Controls, Stories, Title, Markdown } from "@storybook/addon-docs/blocks";
+import * as FlexStories from "./Flex.stories";
+
+<Meta of={FlexStories} />
+<Title />
+
+Flex is an explicit flexbox container with comprehensive flex props.
+
+## Features
+
+- **Full flexbox API** - Direction, align, justify, wrap, and gap
+- **Inline support** - Use `inline` prop for inline-flex
+- **Reverse directions** - `rowReverse` and `columnReverse`
+- **Slot support** - Render as child element with `asChild`
+
+## Example
+
+<Primary />
+<Controls />
+
+## Usage
+
+```tsx
+import { Flex } from "emul8";
+
+// Basic horizontal flex
+<Flex gap="md">
+  <Item />
+  <Item />
+</Flex>
+
+// Centered content
+<Flex align="center" justify="center" className="h-48">
+  <Content />
+</Flex>
+
+// Space between with wrapping
+<Flex justify="between" wrap="wrap" gap="sm">
+  <Tag>One</Tag>
+  <Tag>Two</Tag>
+  <Tag>Three</Tag>
+</Flex>
+
+// Inline flex within text
+<p>
+  Click the <Flex inline align="center" gap="xs"><Icon /> button</Flex> to continue.
+</p>
+```
+
+## Props
+
+<Markdown>
+{`
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| \`direction\` | \`"row" \\| "column" \\| "rowReverse" \\| "columnReverse"\` | \`"row"\` | Flex direction |
+| \`align\` | \`"start" \\| "center" \\| "end" \\| "stretch" \\| "baseline"\` | \`"stretch"\` | Align items |
+| \`justify\` | \`"start" \\| "center" \\| "end" \\| "between" \\| "around" \\| "evenly"\` | \`"start"\` | Justify content |
+| \`wrap\` | \`"nowrap" \\| "wrap" \\| "wrapReverse"\` | \`"nowrap"\` | Flex wrap behavior |
+| \`gap\` | \`"none" \\| "xs" \\| "sm" \\| "md" \\| "lg" \\| "xl" \\| "2xl"\` | \`"none"\` | Gap between items |
+| \`inline\` | \`boolean\` | \`false\` | Use inline-flex |
+| \`asChild\` | \`boolean\` | \`false\` | Render as child element |
+`}
+</Markdown>
+
+## Flex vs Stack
+
+Use **Stack** for simple vertical/horizontal stacking with the `splitAfter` feature.
+Use **Flex** when you need full control over justify, wrap modes, or inline-flex.
+
+## All Stories
+
+<Stories />

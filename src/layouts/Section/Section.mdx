@@ -1,0 +1,78 @@
+{/* Section.mdx */}
+import { Meta, Primary, Controls, Stories, Title, Markdown } from "@storybook/addon-docs/blocks";
+import * as SectionStories from "./Section.stories";
+
+<Meta of={SectionStories} />
+<Title />
+
+Section creates a semantic content section with consistent spacing.
+
+## Features
+
+- **Semantic HTML** - Renders as `<section>` element
+- **Vertical rhythm** - Consistent vertical padding options
+- **Horizontal padding** - Optional side padding
+- **Slot support** - Render as child element with `asChild`
+
+## Example
+
+<Primary />
+<Controls />
+
+## Usage
+
+```tsx
+import { Section, Container } from "emul8";
+
+// Basic section
+<Section>
+  <Container>
+    <h2>Section Title</h2>
+    <p>Section content...</p>
+  </Container>
+</Section>
+
+// Landing page sections
+<Section size="xl" className="bg-blue-600 text-white">
+  <Container>
+    <h1>Hero Title</h1>
+  </Container>
+</Section>
+
+<Section size="lg">
+  <Container>
+    <h2>Features</h2>
+  </Container>
+</Section>
+
+// Alternating backgrounds
+<Section className="bg-gray-100">
+  <Content />
+</Section>
+<Section className="bg-white">
+  <Content />
+</Section>
+```
+
+## Props
+
+<Markdown>
+{`
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| \`size\` | \`"sm" \\| "md" \\| "lg" \\| "xl"\` | \`"md"\` | Vertical padding size |
+| \`padding\` | \`"none" \\| "sm" \\| "md" \\| "lg"\` | \`"md"\` | Horizontal padding |
+| \`asChild\` | \`boolean\` | \`false\` | Render as child element |
+`}
+</Markdown>
+
+## When to Use
+
+- Create distinct content areas on a page
+- Build landing pages with alternating sections
+- Separate thematic content blocks
+- Pair with Container for centered, constrained content
+
+## All Stories
+
+<Stories />

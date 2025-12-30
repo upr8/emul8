@@ -1,0 +1,70 @@
+{/* Wrap.mdx */}
+import { Meta, Primary, Controls, Stories, Title, Markdown } from "@storybook/addon-docs/blocks";
+import * as WrapStories from "./Wrap.stories";
+
+<Meta of={WrapStories} />
+<Title />
+
+Wrap creates a flex container that wraps its children naturally.
+
+## Features
+
+- **Natural wrapping** - Items wrap to next line when space runs out
+- **Gap control** - Consistent spacing between wrapped items
+- **Alignment options** - Control cross-axis and main-axis alignment
+- **Slot support** - Render as child element with `asChild`
+
+## Example
+
+<Primary />
+<Controls />
+
+## Usage
+
+```tsx
+import { Wrap } from "emul8";
+
+// Tag cloud
+<Wrap gap="sm">
+  <Tag>JavaScript</Tag>
+  <Tag>TypeScript</Tag>
+  <Tag>React</Tag>
+  <Tag>Vue</Tag>
+</Wrap>
+
+// Centered wrapping
+<Wrap gap="md" justify="center">
+  <Chip>One</Chip>
+  <Chip>Two</Chip>
+  <Chip>Three</Chip>
+</Wrap>
+
+// Button group
+<Wrap gap="sm">
+  <Button>Edit</Button>
+  <Button>Delete</Button>
+  <Button>Share</Button>
+</Wrap>
+```
+
+## Props
+
+<Markdown>
+{`
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| \`gap\` | \`"none" \\| "xs" \\| "sm" \\| "md" \\| "lg" \\| "xl"\` | \`"sm"\` | Gap between items |
+| \`align\` | \`"start" \\| "center" \\| "end" \\| "stretch" \\| "baseline"\` | \`"center"\` | Cross-axis alignment |
+| \`justify\` | \`"start" \\| "center" \\| "end"\` | \`"start"\` | Main-axis alignment |
+| \`asChild\` | \`boolean\` | \`false\` | Render as child element |
+`}
+</Markdown>
+
+## Wrap vs Cluster
+
+Both create wrapping flex layouts. Use **Wrap** for general-purpose wrapping with simpler defaults.
+Use **Cluster** when you need `between`, `around`, or `evenly` justify options.
+
+## All Stories
+
+<Stories />

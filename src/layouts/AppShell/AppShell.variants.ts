@@ -1,0 +1,94 @@
+import { cva } from 'class-variance-authority';
+
+export const appShellVariants = cva('min-h-screen flex flex-col', {
+  variants: {
+    layout: {
+      default: '',
+      centered: '[&>main]:mx-auto [&>main]:w-full',
+    },
+  },
+  defaultVariants: {
+    layout: 'default',
+  },
+});
+
+export const headerVariants = cva(
+  'shrink-0 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900',
+  {
+    variants: {
+      height: {
+        sm: 'h-12',
+        md: 'h-14',
+        lg: 'h-16',
+      },
+      sticky: {
+        true: 'sticky top-0 z-40',
+        false: '',
+      },
+    },
+    defaultVariants: {
+      height: 'md',
+      sticky: true,
+    },
+  }
+);
+
+export const appShellSidebarVariants = cva(
+  'shrink-0 border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-y-auto',
+  {
+    variants: {
+      width: {
+        sm: 'w-48',
+        md: 'w-64',
+        lg: 'w-80',
+      },
+      position: {
+        left: 'order-first',
+        right: 'order-last border-r-0 border-l',
+      },
+    },
+    defaultVariants: {
+      width: 'md',
+      position: 'left',
+    },
+  }
+);
+
+export const mainVariants = cva('flex-1 overflow-auto', {
+  variants: {
+    padding: {
+      none: 'p-0',
+      sm: 'p-4',
+      md: 'p-6',
+      lg: 'p-8',
+    },
+    maxWidth: {
+      none: '',
+      sm: 'max-w-screen-sm',
+      md: 'max-w-screen-md',
+      lg: 'max-w-screen-lg',
+      xl: 'max-w-screen-xl',
+      '2xl': 'max-w-screen-2xl',
+    },
+  },
+  defaultVariants: {
+    padding: 'md',
+    maxWidth: 'none',
+  },
+});
+
+export const footerVariants = cva(
+  'shrink-0 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900',
+  {
+    variants: {
+      padding: {
+        sm: 'py-4 px-4',
+        md: 'py-6 px-6',
+        lg: 'py-8 px-8',
+      },
+    },
+    defaultVariants: {
+      padding: 'md',
+    },
+  }
+);

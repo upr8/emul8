@@ -1,0 +1,65 @@
+{/* Divider.mdx */}
+import { Meta, Primary, Controls, Stories, Title, Markdown } from "@storybook/addon-docs/blocks";
+import * as DividerStories from "./Divider.stories";
+
+<Meta of={DividerStories} />
+<Title />
+
+Divider creates a visual separator between content.
+
+## Features
+
+- **Horizontal & vertical** - Both orientations supported
+- **Size variants** - Thin, medium, and thick options
+- **Accessible** - Uses `role="separator"` with proper ARIA attributes
+- **Themeable** - Uses `currentColor` for easy color customization
+
+## Example
+
+<Primary />
+<Controls />
+
+## Usage
+
+```tsx
+import { Divider } from "emul8";
+
+// Horizontal divider (default)
+<div>
+  <p>Content above</p>
+  <Divider />
+  <p>Content below</p>
+</div>
+
+// Vertical divider in flex container
+<div className="flex items-center gap-4">
+  <span>Left</span>
+  <Divider orientation="vertical" className="h-4" />
+  <span>Right</span>
+</div>
+
+// Custom color
+<Divider className="bg-blue-500 opacity-100" />
+```
+
+## Props
+
+<Markdown>
+{`
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| \`orientation\` | \`"horizontal" \\| "vertical"\` | \`"horizontal"\` | Divider direction |
+| \`size\` | \`"sm" \\| "md" \\| "lg"\` | \`"sm"\` | Thickness of the divider |
+| \`label\` | \`string\` | - | Accessible label |
+`}
+</Markdown>
+
+## When to Use
+
+- Separate content sections visually
+- Create visual breaks in lists
+- Divide navigation items
+
+## All Stories
+
+<Stories />

@@ -1,0 +1,76 @@
+{/* Group.mdx */}
+import { Meta, Primary, Controls, Stories, Title, Markdown } from "@storybook/addon-docs/blocks";
+import * as GroupStories from "./Group.stories";
+
+<Meta of={GroupStories} />
+<Title />
+
+Group creates a semantic inline grouping of elements.
+
+## Features
+
+- **Semantic grouping** - Uses `role="group"` for accessibility
+- **Inline layout** - Perfect for button groups, icon+text pairs
+- **Grow control** - Make children share space equally
+- **Slot support** - Render as child element with `asChild`
+
+## Example
+
+<Primary />
+<Controls />
+
+## Usage
+
+```tsx
+import { Group } from "emul8";
+
+// Button group
+<Group gap="sm">
+  <Button>Cancel</Button>
+  <Button>Save</Button>
+</Group>
+
+// Icon with text
+<Group gap="xs">
+  <Icon />
+  <span>Label</span>
+</Group>
+
+// Equal-width buttons
+<Group gap="sm" grow className="w-full">
+  <Button>Option A</Button>
+  <Button>Option B</Button>
+  <Button>Option C</Button>
+</Group>
+
+// Badge with text
+<Group gap="xs">
+  <span>Messages</span>
+  <Badge>5</Badge>
+</Group>
+```
+
+## Props
+
+<Markdown>
+{`
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| \`gap\` | \`"none" \\| "xs" \\| "sm" \\| "md" \\| "lg" \\| "xl"\` | \`"sm"\` | Gap between items |
+| \`align\` | \`"start" \\| "center" \\| "end" \\| "baseline"\` | \`"center"\` | Cross-axis alignment |
+| \`grow\` | \`boolean\` | \`false\` | Make children flex-grow equally |
+| \`preventGrow\` | \`boolean\` | \`false\` | Prevent children from growing |
+| \`asChild\` | \`boolean\` | \`false\` | Render as child element |
+`}
+</Markdown>
+
+## When to Use
+
+- Group related buttons or controls
+- Pair icons with text labels
+- Create inline badge or tag displays
+- Any inline grouping of related elements
+
+## All Stories
+
+<Stories />

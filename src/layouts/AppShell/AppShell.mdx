@@ -1,0 +1,131 @@
+{/* AppShell.mdx */}
+import { Meta, Primary, Controls, Stories, Title, Markdown } from "@storybook/addon-docs/blocks";
+import * as AppShellStories from "./AppShell.stories";
+
+<Meta of={AppShellStories} />
+<Title />
+
+AppShell provides the main application layout structure with header, sidebar, main content, and footer areas.
+
+## Features
+
+- **Complete app structure** - Header, Sidebar, Main, Footer components
+- **Flexible composition** - Use only the parts you need
+- **Responsive ready** - Sidebar widths and sticky header options
+- **Left or right sidebar** - Position sidebar on either side
+- **Multiple sidebars** - Support for double-sidebar layouts
+
+## Example
+
+<Primary />
+<Controls />
+
+## Usage
+
+```tsx
+import { AppShell } from "emul8";
+
+// Basic app layout
+<AppShell className="h-screen">
+  <AppShell.Header>
+    <Logo />
+  </AppShell.Header>
+  <AppShell.Body>
+    <AppShell.Sidebar>
+      <Navigation />
+    </AppShell.Sidebar>
+    <AppShell.Main>
+      <Content />
+    </AppShell.Main>
+  </AppShell.Body>
+  <AppShell.Footer>
+    <Copyright />
+  </AppShell.Footer>
+</AppShell>
+
+// Without sidebar
+<AppShell>
+  <AppShell.Header>
+    <TopNav />
+  </AppShell.Header>
+  <AppShell.Main maxWidth="lg" className="mx-auto">
+    <Content />
+  </AppShell.Main>
+</AppShell>
+
+// Right sidebar
+<AppShell>
+  <AppShell.Body>
+    <AppShell.Main>
+      <Content />
+    </AppShell.Main>
+    <AppShell.Sidebar position="right">
+      <DetailsPanel />
+    </AppShell.Sidebar>
+  </AppShell.Body>
+</AppShell>
+```
+
+## Components
+
+### AppShell
+
+The root container. Uses `min-h-screen` and `flex flex-col` by default.
+
+### AppShell.Header
+
+<Markdown>
+{`
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| \`height\` | \`"sm" \\| "md" \\| "lg"\` | \`"md"\` | Header height |
+| \`sticky\` | \`boolean\` | \`true\` | Sticky positioning |
+`}
+</Markdown>
+
+### AppShell.Body
+
+Wrapper for sidebar + main content. Uses `flex flex-1 overflow-hidden`.
+
+### AppShell.Sidebar
+
+<Markdown>
+{`
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| \`width\` | \`"sm" \\| "md" \\| "lg"\` | \`"md"\` | Sidebar width |
+| \`position\` | \`"left" \\| "right"\` | \`"left"\` | Sidebar position |
+`}
+</Markdown>
+
+### AppShell.Main
+
+<Markdown>
+{`
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| \`padding\` | \`"none" \\| "sm" \\| "md" \\| "lg"\` | \`"md"\` | Content padding |
+| \`maxWidth\` | \`"none" \\| "sm" \\| "md" \\| "lg" \\| "xl" \\| "2xl"\` | \`"none"\` | Max content width |
+`}
+</Markdown>
+
+### AppShell.Footer
+
+<Markdown>
+{`
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| \`padding\` | \`"sm" \\| "md" \\| "lg"\` | \`"md"\` | Footer padding |
+`}
+</Markdown>
+
+## When to Use
+
+- Dashboard applications with side navigation
+- Admin panels with header and sidebar
+- Documentation sites with table of contents
+- Any application needing consistent page structure
+
+## All Stories
+
+<Stories />

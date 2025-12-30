@@ -1,0 +1,66 @@
+{/* Spacer.mdx */}
+import { Meta, Primary, Controls, Stories, Title, Markdown } from "@storybook/addon-docs/blocks";
+import * as SpacerStories from "./Spacer.stories";
+
+<Meta of={SpacerStories} />
+<Title />
+
+Spacer creates flexible whitespace in flex containers.
+
+## Features
+
+- **Flexible growth** - Fills available space by default
+- **Fixed sizes** - Optional fixed-size spacing
+- **Accessibility** - Hidden from screen readers with `aria-hidden`
+
+## Example
+
+<Primary />
+<Controls />
+
+## Usage
+
+```tsx
+import { Spacer } from "emul8";
+
+// Push items to opposite ends
+<div className="flex">
+  <Logo />
+  <Spacer />
+  <Nav />
+</div>
+
+// Fixed-size spacer
+<div className="flex">
+  <Item />
+  <Spacer size="md" />
+  <Item />
+</div>
+
+// In vertical layout
+<div className="flex flex-col h-screen">
+  <Header />
+  <Spacer />
+  <Footer />
+</div>
+```
+
+## Props
+
+<Markdown>
+{`
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| \`size\` | \`"xs" \\| "sm" \\| "md" \\| "lg" \\| "xl" \\| "auto"\` | \`"auto"\` | Size of the spacer |
+`}
+</Markdown>
+
+## When to Use
+
+- Push items to opposite ends of a flex container
+- Create consistent gaps between flex items
+- Fill remaining space in a layout
+
+## All Stories
+
+<Stories />
