@@ -15,6 +15,8 @@ export const clusterVariants = cva('flex flex-wrap', {
       center: 'justify-center',
       end: 'justify-end',
       between: 'justify-between',
+      around: 'justify-around',
+      evenly: 'justify-evenly',
     },
     align: {
       start: 'items-start',

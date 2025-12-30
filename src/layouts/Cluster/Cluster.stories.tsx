@@ -14,7 +14,7 @@ const meta = {
     },
     justify: {
       control: 'select',
-      options: ['start', 'center', 'end', 'between'],
+      options: ['start', 'center', 'end', 'between', 'around', 'evenly'],
     },
     align: {
       control: 'select',
@@ -67,6 +67,36 @@ export const SpaceBetween: Story = {
       <>
         <Tag>Left</Tag>
         <Tag>Right</Tag>
+      </>
+    ),
+  },
+};
+
+export const SpaceAround: Story = {
+  args: {
+    gap: 'md',
+    justify: 'around',
+    className: 'w-full',
+    children: (
+      <>
+        <Tag>One</Tag>
+        <Tag>Two</Tag>
+        <Tag>Three</Tag>
+      </>
+    ),
+  },
+};
+
+export const SpaceEvenly: Story = {
+  args: {
+    gap: 'md',
+    justify: 'evenly',
+    className: 'w-full',
+    children: (
+      <>
+        <Tag>One</Tag>
+        <Tag>Two</Tag>
+        <Tag>Three</Tag>
       </>
     ),
   },

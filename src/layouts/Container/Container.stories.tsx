@@ -19,9 +19,6 @@ const meta = {
     center: {
       control: 'boolean',
     },
-    intrinsic: {
-      control: 'boolean',
-    },
     andText: {
       control: 'boolean',
     },
@@ -73,13 +70,13 @@ export const CenterAlias: Story = {
   ),
 };
 
-export const Intrinsic: Story = {
-  name: 'Intrinsic Centering',
+export const Centered: Story = {
+  name: 'Center Children',
   args: {
-    intrinsic: true,
+    center: true,
     children: (
       <div className="bg-blue-100 dark:bg-blue-900 p-4 rounded inline-block">
-        <p>Intrinsic centering - width based on content</p>
+        <p>Children are centered within the container</p>
       </div>
     ),
   },
@@ -101,13 +98,13 @@ export const WithTextCentering: Story = {
   },
 };
 
-export const IntrinsicWithText: Story = {
-  name: 'Intrinsic + Text Centering',
+export const CenteredWithText: Story = {
+  name: 'Center + Text Centering',
   render: () => (
-    <Center intrinsic andText>
+    <Center center andText>
       <div className="bg-blue-100 dark:bg-blue-900 p-8 rounded">
         <h1 className="text-2xl font-bold mb-2">Welcome</h1>
-        <p className="text-gray-600 dark:text-gray-400">Both container and text are centered</p>
+        <p className="text-gray-600 dark:text-gray-400">Both children and text are centered</p>
       </div>
     </Center>
   ),

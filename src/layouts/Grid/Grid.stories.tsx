@@ -12,6 +12,9 @@ const meta = {
       control: 'select',
       options: ['none', 'xs', 'sm', 'md', 'lg', 'xl'],
     },
+    columns: {
+      control: 'number',
+    },
     min: {
       control: 'text',
     },
@@ -73,6 +76,40 @@ export const LargeMinWidth: Story = {
         <Card>Card 1</Card>
         <Card>Card 2</Card>
         <Card>Card 3</Card>
+      </>
+    ),
+  },
+};
+
+export const FixedColumns: Story = {
+  name: 'Fixed 3 Columns',
+  args: {
+    gap: 'md',
+    columns: 3,
+    children: (
+      <>
+        <Card>1</Card>
+        <Card>2</Card>
+        <Card>3</Card>
+        <Card>4</Card>
+        <Card>5</Card>
+        <Card>6</Card>
+      </>
+    ),
+  },
+};
+
+export const TwoColumns: Story = {
+  name: 'Fixed 2 Columns',
+  args: {
+    gap: 'lg',
+    columns: 2,
+    children: (
+      <>
+        <Card>Left</Card>
+        <Card>Right</Card>
+        <Card>Left</Card>
+        <Card>Right</Card>
       </>
     ),
   },

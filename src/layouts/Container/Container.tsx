@@ -7,11 +7,11 @@ import { containerVariants } from './Container.variants';
  * Container component for centering and constraining content width.
  */
 export const Container = forwardRef<HTMLDivElement, ContainerProps>(
-  ({ className, size, padding, center, intrinsic, andText, ...props }, ref) => {
+  ({ className, size, padding, center, andText, ...props }, ref) => {
     return (
       <div
         ref={ref}
-        className={cn(containerVariants({ size, padding, center, intrinsic, andText }), className)}
+        className={cn(containerVariants({ size, padding, center, andText }), className)}
         {...props}
       />
     );

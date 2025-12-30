@@ -89,6 +89,30 @@ describe('Grid', () => {
     });
   });
 
+  describe('columns prop', () => {
+    it('applies fixed column count', () => {
+      render(
+        <Grid columns={3} data-testid="grid">
+          <div>Content</div>
+        </Grid>
+      );
+      expect(screen.getByTestId('grid')).toHaveStyle({
+        gridTemplateColumns: 'repeat(3, 1fr)',
+      });
+    });
+
+    it('overrides min when columns is set', () => {
+      render(
+        <Grid columns={4} min="200px" data-testid="grid">
+          <div>Content</div>
+        </Grid>
+      );
+      expect(screen.getByTestId('grid')).toHaveStyle({
+        gridTemplateColumns: 'repeat(4, 1fr)',
+      });
+    });
+  });
+
   describe('asChild', () => {
     it('renders as div by default', () => {
       render(

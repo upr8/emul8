@@ -37,13 +37,6 @@ describe('Container', () => {
     expect(element).toHaveClass('items-center');
   });
 
-  it('applies intrinsic variant', () => {
-    render(<Container intrinsic>Content</Container>);
-    const element = screen.getByText('Content');
-    expect(element).toHaveClass('flex');
-    expect(element).toHaveClass('items-center');
-  });
-
   it('applies andText variant', () => {
     render(<Container andText>Content</Container>);
     expect(screen.getByText('Content')).toHaveClass('text-center');

@@ -23,12 +23,6 @@ export const containerVariants = cva('mx-auto w-full', {
       true: 'flex flex-col items-center',
     },
     /**
-     * Intrinsic centering: center based on content width rather than container width.
-     */
-    intrinsic: {
-      true: 'flex flex-col items-center',
-    },
-    /**
      * Also center text content within the container.
      */
     andText: {

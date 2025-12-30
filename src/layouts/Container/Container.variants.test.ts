@@ -61,15 +61,6 @@ describe('containerVariants', () => {
     });
   });
 
-  describe('intrinsic variant', () => {
-    it('applies intrinsic classes when true', () => {
-      const result = containerVariants({ intrinsic: true });
-      expect(result).toContain('flex');
-      expect(result).toContain('flex-col');
-      expect(result).toContain('items-center');
-    });
-  });
-
   describe('andText variant', () => {
     it('applies text-center when true', () => {
       expect(containerVariants({ andText: true })).toContain('text-center');

@@ -5,18 +5,20 @@ import type { GridProps } from './Grid.types';
 import { gridVariants } from './Grid.variants';
 
 /**
- * Grid creates an auto-filling responsive grid.
+ * Grid creates a responsive grid layout.
  *
- * Items automatically fill available space and wrap when they
- * can't maintain their minimum width.
+ * By default, items automatically fill available space and wrap when they
+ * can't maintain their minimum width. Use `columns` for fixed column count.
  */
 export const Grid = forwardRef<HTMLDivElement, GridProps>(
-  ({ className, gap, min = '250px', asChild = false, style, ...props }, ref) => {
+  ({ className, gap, columns, min = '250px', asChild = false, style, ...props }, ref) => {
     const Comp = asChild ? Slot : 'div';
 
     const gridStyle: CSSProperties = {
       ...style,
-      gridTemplateColumns: `repeat(auto-fill, minmax(min(${min}, 100%), 1fr))`,
+      gridTemplateColumns: columns
+        ? `repeat(${columns}, 1fr)`
+        : `repeat(auto-fill, minmax(min(${min}, 100%), 1fr))`,
     };
 
     return (

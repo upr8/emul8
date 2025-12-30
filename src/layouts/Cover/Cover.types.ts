@@ -7,7 +7,9 @@ export interface CoverProps
     VariantProps<typeof coverVariants> {
   /**
    * Minimum height of the cover.
+   * Accepts any valid CSS length value.
    * @default "100vh"
+   * @example "100vh", "500px", "80svh"
    */
   minHeight?: string;
   /**
