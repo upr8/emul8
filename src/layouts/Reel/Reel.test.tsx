@@ -1,6 +1,6 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { createRef } from 'react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { Reel } from './Reel';
 
 describe('Reel', () => {
@@ -165,5 +165,88 @@ describe('Reel', () => {
 
   it('has correct displayName', () => {
     expect(Reel.displayName).toBe('Reel');
+  });
+
+  describe('accessibility', () => {
+    it('has role="region"', () => {
+      render(
+        <Reel data-testid="reel">
+          <div>Content</div>
+        </Reel>
+      );
+      expect(screen.getByTestId('reel')).toHaveAttribute('role', 'region');
+    });
+
+    it('has tabIndex={0} for keyboard focus', () => {
+      render(
+        <Reel data-testid="reel">
+          <div>Content</div>
+        </Reel>
+      );
+      expect(screen.getByTestId('reel')).toHaveAttribute('tabindex', '0');
+    });
+
+    it('scrolls left on ArrowLeft key', () => {
+      const scrollBySpy = vi.fn();
+      render(
+        <Reel data-testid="reel">
+          <div>Content</div>
+        </Reel>
+      );
+      const reel = screen.getByTestId('reel');
+      reel.scrollBy = scrollBySpy;
+      fireEvent.keyDown(reel, { key: 'ArrowLeft' });
+      expect(scrollBySpy).toHaveBeenCalledWith({ left: -200, behavior: 'smooth' });
+    });
+
+    it('scrolls right on ArrowRight key', () => {
+      const scrollBySpy = vi.fn();
+      render(
+        <Reel data-testid="reel">
+          <div>Content</div>
+        </Reel>
+      );
+      const reel = screen.getByTestId('reel');
+      reel.scrollBy = scrollBySpy;
+      fireEvent.keyDown(reel, { key: 'ArrowRight' });
+      expect(scrollBySpy).toHaveBeenCalledWith({ left: 200, behavior: 'smooth' });
+    });
+
+    it('respects custom scrollAmount', () => {
+      const scrollBySpy = vi.fn();
+      render(
+        <Reel scrollAmount={100} data-testid="reel">
+          <div>Content</div>
+        </Reel>
+      );
+      const reel = screen.getByTestId('reel');
+      reel.scrollBy = scrollBySpy;
+      fireEvent.keyDown(reel, { key: 'ArrowRight' });
+      expect(scrollBySpy).toHaveBeenCalledWith({ left: 100, behavior: 'smooth' });
+    });
+
+    it('calls custom onKeyDown handler', () => {
+      const onKeyDown = vi.fn();
+      render(
+        <Reel onKeyDown={onKeyDown} data-testid="reel">
+          <div>Content</div>
+        </Reel>
+      );
+      fireEvent.keyDown(screen.getByTestId('reel'), { key: 'ArrowRight' });
+      expect(onKeyDown).toHaveBeenCalled();
+    });
+
+    it('does not scroll on non-arrow keys', () => {
+      const scrollBySpy = vi.fn();
+      render(
+        <Reel data-testid="reel">
+          <div>Content</div>
+        </Reel>
+      );
+      const reel = screen.getByTestId('reel');
+      reel.scrollBy = scrollBySpy;
+      fireEvent.keyDown(reel, { key: 'Enter' });
+      expect(scrollBySpy).not.toHaveBeenCalled();
+    });
   });
 });

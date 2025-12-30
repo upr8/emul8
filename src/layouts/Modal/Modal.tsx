@@ -1,4 +1,4 @@
-import { forwardRef, useCallback, useEffect } from 'react';
+import { forwardRef, useCallback, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { cn } from '../../utils/cn';
 import type {
@@ -19,11 +19,15 @@ import {
   modalHeaderVariants,
 } from './Modal.variants';
 
+const FOCUSABLE_SELECTOR =
+  'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
 /**
  * Modal provides a semantic dialog overlay with backdrop.
  *
  * Compose with Modal.Content, Modal.Header, Modal.Body, Modal.Footer
- * for a complete modal structure.
+ * for a complete modal structure. Includes focus trap, auto-focus, and
+ * return focus for full accessibility.
  */
 const ModalRoot = forwardRef<HTMLDivElement, ModalProps>(
   (
@@ -34,10 +38,17 @@ const ModalRoot = forwardRef<HTMLDivElement, ModalProps>(
       onClose,
       closeOnBackdropClick = true,
       closeOnEscape = true,
+      trapFocus = true,
+      autoFocus = true,
+      returnFocus = true,
+      triggerRef,
       ...props
     },
     ref
   ) => {
+    const modalRef = useRef<HTMLDivElement>(null);
+    const previousActiveElement = useRef<HTMLElement | null>(null);
+
     const handleEscape = useCallback(
       (event: KeyboardEvent) => {
         if (closeOnEscape && event.key === 'Escape' && onClose) {
@@ -47,16 +58,71 @@ const ModalRoot = forwardRef<HTMLDivElement, ModalProps>(
       [closeOnEscape, onClose]
     );
 
+    const handleFocusTrap = useCallback(
+      (event: KeyboardEvent) => {
+        if (!trapFocus || event.key !== 'Tab') return;
+
+        const modal = modalRef.current;
+        if (!modal) return;
+
+        const focusableElements = modal.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR);
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (!firstElement) return;
+
+        if (event.shiftKey && document.activeElement === firstElement) {
+          event.preventDefault();
+          lastElement?.focus();
+        } else if (!event.shiftKey && document.activeElement === lastElement) {
+          event.preventDefault();
+          firstElement?.focus();
+        }
+      },
+      [trapFocus]
+    );
+
+    // Handle open/close effects
     useEffect(() => {
       if (open) {
+        // Store the element that had focus before opening
+        previousActiveElement.current =
+          (triggerRef?.current as HTMLElement) || (document.activeElement as HTMLElement);
+
         document.addEventListener('keydown', handleEscape);
+        document.addEventListener('keydown', handleFocusTrap);
         document.body.style.overflow = 'hidden';
+
+        // Auto-focus first focusable element
+        if (autoFocus) {
+          // Use setTimeout to ensure the modal is rendered before focusing
+          const timeoutId = setTimeout(() => {
+            const modal = modalRef.current;
+            if (modal) {
+              const firstFocusable = modal.querySelector<HTMLElement>(FOCUSABLE_SELECTOR);
+              firstFocusable?.focus();
+            }
+          }, 0);
+          return () => {
+            clearTimeout(timeoutId);
+            document.removeEventListener('keydown', handleEscape);
+            document.removeEventListener('keydown', handleFocusTrap);
+            document.body.style.overflow = '';
+          };
+        }
+
         return () => {
           document.removeEventListener('keydown', handleEscape);
+          document.removeEventListener('keydown', handleFocusTrap);
           document.body.style.overflow = '';
         };
       }
-    }, [open, handleEscape]);
+      // Return focus when modal closes
+      if (returnFocus && previousActiveElement.current) {
+        previousActiveElement.current.focus();
+        previousActiveElement.current = null;
+      }
+    }, [open, handleEscape, handleFocusTrap, autoFocus, returnFocus, triggerRef]);
 
     if (!open) return null;
 
@@ -68,7 +134,15 @@ const ModalRoot = forwardRef<HTMLDivElement, ModalProps>(
 
     const modal = (
       <div
-        ref={ref}
+        ref={(node) => {
+          // Handle both refs
+          (modalRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
+          if (typeof ref === 'function') {
+            ref(node);
+          } else if (ref) {
+            (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
+          }
+        }}
         role="dialog"
         aria-modal="true"
         className={cn(backdropVariants(), className)}
@@ -123,7 +197,13 @@ Title.displayName = 'Modal.Title';
  */
 const Description = forwardRef<HTMLParagraphElement, ModalDescriptionProps>(
   ({ className, ...props }, ref) => {
-    return <p ref={ref} className={cn('text-sm text-gray-500', className)} {...props} />;
+    return (
+      <p
+        ref={ref}
+        className={cn('text-sm text-gray-600 dark:text-gray-400', className)}
+        {...props}
+      />
+    );
   }
 );
 Description.displayName = 'Modal.Description';

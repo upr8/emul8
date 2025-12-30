@@ -1,5 +1,5 @@
 import type { VariantProps } from 'class-variance-authority';
-import type { HTMLAttributes } from 'react';
+import type { HTMLAttributes, RefObject } from 'react';
 import type {
   backdropVariants,
   modalBodyVariants,
@@ -8,6 +8,27 @@ import type {
   modalHeaderVariants,
 } from './Modal.variants';
 
+/**
+ * Props for the Modal component.
+ *
+ * Modal is fully accessible with focus trap, keyboard navigation, and ARIA attributes.
+ * Use `aria-labelledby` and `aria-describedby` to link to Modal.Title and Modal.Description.
+ *
+ * @example
+ * ```tsx
+ * <Modal
+ *   open={isOpen}
+ *   onClose={() => setIsOpen(false)}
+ *   aria-labelledby="modal-title"
+ *   aria-describedby="modal-desc"
+ * >
+ *   <Modal.Content>
+ *     <Modal.Title id="modal-title">Confirm</Modal.Title>
+ *     <Modal.Description id="modal-desc">Are you sure?</Modal.Description>
+ *   </Modal.Content>
+ * </Modal>
+ * ```
+ */
 export interface ModalProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * Whether the modal is open.
@@ -27,6 +48,26 @@ export interface ModalProps extends HTMLAttributes<HTMLDivElement> {
    * @default true
    */
   closeOnEscape?: boolean;
+  /**
+   * Whether to trap focus within the modal when open.
+   * @default true
+   */
+  trapFocus?: boolean;
+  /**
+   * Whether to auto-focus the first focusable element when opened.
+   * @default true
+   */
+  autoFocus?: boolean;
+  /**
+   * Whether to return focus to the trigger element when closed.
+   * @default true
+   */
+  returnFocus?: boolean;
+  /**
+   * Reference to the element that triggered the modal (for returning focus).
+   * If not provided, uses document.activeElement when modal opens.
+   */
+  triggerRef?: RefObject<HTMLElement>;
 }
 
 export interface ModalContentProps
