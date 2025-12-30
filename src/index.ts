@@ -1,2 +1,2 @@
 // Utilities
-export { cn, Slot } from "./utils";
+export { cn, Slot } from './utils';

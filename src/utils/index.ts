@@ -1,2 +1,2 @@
-export { cn } from "./cn";
-export { Slot } from "./slot";
+export { cn } from './cn';
+export { Slot } from './slot';
