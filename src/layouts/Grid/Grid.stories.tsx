@@ -9,8 +9,8 @@ const meta = {
   },
   argTypes: {
     gap: {
-      control: 'select',
-      options: ['none', 'xs', 'sm', 'md', 'lg', 'xl'],
+      control: 'text',
+      description: 'Gap size. Supports responsive @breakpoint notation (e.g., "sm md@md lg@lg")',
     },
     columns: {
       control: 'number',
@@ -168,5 +168,101 @@ export const ImageGallery: Story = {
         ))}
       </>
     ),
+  },
+};
+
+export const ResponsiveGap: Story = {
+  name: 'Responsive Gap',
+  render: () => (
+    <Grid gap="xs sm@sm md@md lg@lg" min="200px">
+      {[1, 2, 3, 4, 5, 6].map((n) => (
+        <Card key={n}>{n}</Card>
+      ))}
+    </Grid>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Gap adapts to screen size: gap-1 (mobile) → sm:gap-2 → md:gap-4 → lg:gap-6. Resize your browser to see the effect.',
+      },
+    },
+  },
+};
+
+export const ResponsiveGapBreakpointsOnly: Story = {
+  name: 'Responsive Gap (Breakpoints Only)',
+  render: () => (
+    <Grid gap="md@md lg@lg" min="200px">
+      {[1, 2, 3, 4, 5, 6].map((n) => (
+        <Card key={n}>{n}</Card>
+      ))}
+    </Grid>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'No base gap, starts at md breakpoint. Useful when you want no gap on mobile.',
+      },
+    },
+  },
+};
+
+export const ResponsiveProductGrid: Story = {
+  name: 'Responsive Product Grid',
+  render: () => (
+    <Grid gap="sm md@md lg@lg" min="280px">
+      {[1, 2, 3, 4, 5, 6].map((n) => (
+        <div key={n} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+          <div className="bg-gray-200 dark:bg-gray-700 h-40 rounded mb-4" />
+          <h3 className="font-bold mb-2">Product {n}</h3>
+          <p className="text-gray-600 dark:text-gray-400 text-sm">$99.99</p>
+        </div>
+      ))}
+    </Grid>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Real-world e-commerce grid with responsive gap. Tighter spacing on mobile, more breathing room on larger screens.',
+      },
+    },
+  },
+};
+
+export const ResponsiveGapComparison: Story = {
+  name: 'Responsive vs Static Gap',
+  render: () => (
+    <div className="space-y-8">
+      <div>
+        <p className="text-sm text-gray-500 mb-2 font-mono">
+          gap=&quot;sm md@md lg@lg&quot; (responsive)
+        </p>
+        <Grid gap="sm md@md lg@lg" min="150px">
+          <Card>1</Card>
+          <Card>2</Card>
+          <Card>3</Card>
+          <Card>4</Card>
+        </Grid>
+      </div>
+      <div>
+        <p className="text-sm text-gray-500 mb-2 font-mono">gap=&quot;md&quot; (static)</p>
+        <Grid gap="md" min="150px">
+          <Card>1</Card>
+          <Card>2</Card>
+          <Card>3</Card>
+          <Card>4</Card>
+        </Grid>
+      </div>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Compare responsive gap that adapts to screen size vs static gap that stays the same.',
+      },
+    },
   },
 };

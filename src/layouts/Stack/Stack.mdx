@@ -5,13 +5,13 @@ import * as StackStories from "./Stack.stories";
 <Meta of={StackStories} />
 <Title />
 
-Stack arranges items vertically or horizontally with consistent spacing.
+Stack arranges items vertically or horizontally with consistent, responsive spacing.
 
 ## Features
 
 - **Flexible direction** - Vertical or horizontal stacking
+- **Responsive gap** - Cedar-style `@breakpoint` notation for adaptive spacing
 - **Split layout** - Push content to opposite ends with `splitAfter`
-- **Gap control** - Consistent spacing between items
 - **Alignment** - Control cross-axis and main-axis alignment
 
 ## Example
@@ -30,12 +30,64 @@ import { Stack } from "emul8";
   <div>Item 2</div>
 </Stack>
 
-// Horizontal stack with alignment
-<Stack direction="horizontal" gap="md" align="center">
+// Horizontal stack with responsive gap
+<Stack direction="horizontal" gap="sm md@md lg@lg" align="center">
   <Icon />
   <span>Label</span>
 </Stack>
+
+// Form with adaptive spacing
+<Stack gap="sm md@md">
+  <FormField label="Email" />
+  <FormField label="Password" />
+  <Button>Submit</Button>
+</Stack>
 ```
+
+## Responsive Gap
+
+Use Cedar-style `@breakpoint` notation for adaptive spacing:
+
+```tsx
+// gap="base breakpoint@breakpoint"
+<Stack gap="sm md@md lg@lg">
+  {/* gap-2 (mobile) → md:gap-4 (tablet) → lg:gap-6 (desktop) */}
+</Stack>
+
+// Horizontal nav with responsive spacing
+<Stack direction="horizontal" gap="xs sm@md lg@lg">
+  <NavItem />
+  <NavItem />
+  <NavItem />
+</Stack>
+```
+
+<Markdown>
+{`
+| Notation | Description |
+| -------- | ----------- |
+| \`md\` | Static gap (gap-4) at all sizes |
+| \`sm md@md\` | gap-2 base, md:gap-4 at medium screens |
+| \`sm md@md lg@lg\` | Grows with each breakpoint |
+| \`md@md lg@xl\` | No base, starts at md breakpoint |
+`}
+</Markdown>
+
+## Gap Sizes
+
+<Markdown>
+{`
+| Size | Tailwind Class | Pixels |
+| ---- | -------------- | ------ |
+| \`none\` | gap-0 | 0px |
+| \`xs\` | gap-1 | 4px |
+| \`sm\` | gap-2 | 8px |
+| \`md\` | gap-4 | 16px |
+| \`lg\` | gap-6 | 24px |
+| \`xl\` | gap-8 | 32px |
+| \`2xl\` | gap-12 | 48px |
+`}
+</Markdown>
 
 ## Split Layout
 
@@ -48,6 +100,13 @@ The `splitAfter` prop pushes content after a specific index to the opposite end:
   <main>Content pushed down</main>
   <footer>Footer at bottom</footer>
 </Stack>
+
+// Combine with responsive gap
+<Stack splitAfter={0} gap="sm md@md" className="h-screen">
+  <Header />
+  <MainContent />
+  <Footer />
+</Stack>
 ```
 
 ## Props
@@ -57,13 +116,73 @@ The `splitAfter` prop pushes content after a specific index to the opposite end:
 | Prop | Type | Default | Description |
 | ---- | ---- | ------- | ----------- |
 | \`direction\` | \`"vertical" \\| "horizontal"\` | \`"vertical"\` | Stack direction |
-| \`gap\` | \`"none" \\| "xs" \\| "sm" \\| "md" \\| "lg" \\| "xl" \\| "2xl"\` | \`"md"\` | Space between items |
+| \`gap\` | \`"none" \\| "xs" \\| "sm" \\| "md" \\| "lg" \\| "xl" \\| "2xl"\` or responsive | \`"md"\` | Space between items |
 | \`align\` | \`"start" \\| "center" \\| "end" \\| "stretch" \\| "baseline"\` | - | Cross-axis alignment |
 | \`justify\` | \`"start" \\| "center" \\| "end" \\| "between" \\| "around" \\| "evenly"\` | - | Main-axis alignment |
 | \`wrap\` | \`boolean\` | \`false\` | Allow items to wrap |
 | \`splitAfter\` | \`number\` | - | Push items after this index to opposite end |
 `}
 </Markdown>
+
+## Best Practices
+
+### Form Layouts
+
+Use responsive gap for forms - tighter on mobile, more breathing room on desktop:
+
+```tsx
+<Stack gap="sm md@md">
+  <TextField label="Name" />
+  <TextField label="Email" />
+  <TextArea label="Message" />
+  <Button>Submit</Button>
+</Stack>
+```
+
+### Navigation Headers
+
+Horizontal stack with responsive gap for nav items:
+
+```tsx
+<Stack direction="horizontal" gap="sm md@md lg@lg" align="center">
+  <Logo />
+  <nav>
+    <Stack direction="horizontal" gap="xs sm@md">
+      <NavLink>Home</NavLink>
+      <NavLink>About</NavLink>
+      <NavLink>Contact</NavLink>
+    </Stack>
+  </nav>
+</Stack>
+```
+
+### Card Content
+
+Stack content within cards with consistent spacing:
+
+```tsx
+<Card>
+  <Stack gap="sm md@md">
+    <CardHeader />
+    <CardBody />
+    <CardFooter />
+  </Stack>
+</Card>
+```
+
+### Page Layouts with Split
+
+Combine responsive gap with splitAfter for full-page layouts:
+
+```tsx
+<Stack splitAfter={1} gap="md lg@lg" className="min-h-screen">
+  <Header />
+  <main className="flex-1">
+    <Stack gap="sm md@md">{/* Content */}</Stack>
+  </main>
+  <Footer />
+</Stack>
+```
 
 ## All Stories
 

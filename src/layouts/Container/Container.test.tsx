@@ -67,6 +67,76 @@ describe('Container', () => {
   });
 });
 
+describe('Container fluid variant', () => {
+  it('applies fluid variant removing max-width', () => {
+    render(<Container fluid>Content</Container>);
+    expect(screen.getByText('Content')).toHaveClass('max-w-none');
+  });
+
+  it('fluid ignores size prop', () => {
+    render(
+      <Container fluid size="sm">
+        Content
+      </Container>
+    );
+    const element = screen.getByText('Content');
+    expect(element).toHaveClass('max-w-none');
+    expect(element).not.toHaveClass('max-w-screen-sm');
+  });
+
+  it('fluid maintains padding', () => {
+    render(
+      <Container fluid padding="lg">
+        Content
+      </Container>
+    );
+    const element = screen.getByText('Content');
+    expect(element).toHaveClass('max-w-none');
+    expect(element).toHaveClass('px-8');
+  });
+
+  it('fluid maintains center variant', () => {
+    render(
+      <Container fluid center>
+        Content
+      </Container>
+    );
+    const element = screen.getByText('Content');
+    expect(element).toHaveClass('max-w-none');
+    expect(element).toHaveClass('flex');
+    expect(element).toHaveClass('items-center');
+  });
+});
+
+describe('Container responsive padding', () => {
+  it('applies responsive padding with @breakpoint notation', () => {
+    render(<Container padding="sm md@md lg@lg">Content</Container>);
+    const element = screen.getByText('Content');
+    expect(element).toHaveClass('px-4');
+    expect(element).toHaveClass('md:px-6');
+    expect(element).toHaveClass('lg:px-8');
+  });
+
+  it('applies responsive padding with only breakpoint values', () => {
+    render(<Container padding="md@md xl@xl">Content</Container>);
+    const element = screen.getByText('Content');
+    expect(element).toHaveClass('md:px-6');
+    expect(element).toHaveClass('xl:px-12');
+  });
+
+  it('combines fluid with responsive padding', () => {
+    render(
+      <Container fluid padding="sm md@lg">
+        Content
+      </Container>
+    );
+    const element = screen.getByText('Content');
+    expect(element).toHaveClass('max-w-none');
+    expect(element).toHaveClass('px-4');
+    expect(element).toHaveClass('lg:px-6');
+  });
+});
+
 describe('Center', () => {
   it('is an alias for Container', () => {
     expect(Center).toBe(Container);

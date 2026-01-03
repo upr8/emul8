@@ -150,3 +150,53 @@ describe('Stack', () => {
     expect(Stack.displayName).toBe('Stack');
   });
 });
+
+describe('Stack responsive gap', () => {
+  it('applies responsive gap with @breakpoint notation', () => {
+    render(
+      <Stack gap="sm md@md lg@lg" data-testid="stack">
+        <div>Content</div>
+      </Stack>
+    );
+    const element = screen.getByTestId('stack');
+    expect(element).toHaveClass('gap-2');
+    expect(element).toHaveClass('md:gap-4');
+    expect(element).toHaveClass('lg:gap-6');
+  });
+
+  it('applies responsive gap with only breakpoint values', () => {
+    render(
+      <Stack gap="md@md xl@xl" data-testid="stack">
+        <div>Content</div>
+      </Stack>
+    );
+    const element = screen.getByTestId('stack');
+    expect(element).toHaveClass('md:gap-4');
+    expect(element).toHaveClass('xl:gap-8');
+  });
+
+  it('combines responsive gap with direction', () => {
+    render(
+      <Stack gap="xs sm@lg" direction="horizontal" data-testid="stack">
+        <div>Content</div>
+      </Stack>
+    );
+    const element = screen.getByTestId('stack');
+    expect(element).toHaveClass('flex-row');
+    expect(element).toHaveClass('gap-1');
+    expect(element).toHaveClass('lg:gap-2');
+  });
+
+  it('combines responsive gap with splitAfter', () => {
+    render(
+      <Stack gap="sm md@md" direction="horizontal" splitAfter={0} data-testid="stack">
+        <div data-testid="child-0">First</div>
+        <div data-testid="child-1">Second</div>
+      </Stack>
+    );
+    const element = screen.getByTestId('stack');
+    expect(element).toHaveClass('gap-2');
+    expect(element).toHaveClass('md:gap-4');
+    expect(screen.getByTestId('child-1')).toHaveClass('ml-auto');
+  });
+});

@@ -5,14 +5,14 @@ import * as ContainerStories from "./Container.stories";
 <Meta of={ContainerStories} />
 <Title />
 
-Container centers and constrains content width.
+Container centers and constrains content width with responsive padding support.
 
 ## Features
 
-- **Max-width constraint** - Multiple size presets
-- **Horizontal padding** - Built-in responsive padding
+- **Max-width constraint** - Multiple size presets (sm to 2xl)
+- **Fluid mode** - Full-width layouts without max-width constraints
+- **Responsive padding** - Cedar-style `@breakpoint` notation
 - **Content centering** - Center children within container
-- **Intrinsic sizing** - Content-based width centering
 - **Text centering** - Optional text alignment
 
 ## Example
@@ -31,15 +31,65 @@ import { Container, Center } from "emul8";
   <p>Content constrained to medium width...</p>
 </Container>
 
-// Center with intrinsic sizing (content determines width)
-<Center intrinsic andText>
-  <Logo />
-  <h1>Welcome</h1>
-</Center>
+// Fluid container (full-width hero)
+<Container fluid padding="md">
+  <HeroSection />
+</Container>
+
+// Responsive padding that adapts to screen size
+<Container padding="sm md@md lg@lg">
+  <MainContent />
+</Container>
 
 // Container with centered children
-<Container size="lg" center>
-  <Card />
+<Container size="lg" center andText>
+  <Logo />
+  <h1>Welcome</h1>
+</Container>
+```
+
+## Responsive Padding
+
+Use Cedar-style `@breakpoint` notation for responsive padding:
+
+```tsx
+// padding="base breakpoint@breakpoint"
+<Container padding="sm md@md lg@lg">
+  {/* px-4 (mobile) → md:px-6 (tablet) → lg:px-8 (desktop) */}
+</Container>
+
+// Only apply padding at certain breakpoints
+<Container padding="md@md xl@xl">
+  {/* No base padding, md:px-6, xl:px-12 */}
+</Container>
+```
+
+<Markdown>
+{`
+| Notation | Description |
+| -------- | ----------- |
+| \`sm\` | Static padding (px-4) at all sizes |
+| \`sm md@md\` | px-4 base, md:px-6 at medium screens |
+| \`sm md@md lg@lg\` | Grows with each breakpoint |
+| \`md@md lg@xl\` | No base, starts at md breakpoint |
+`}
+</Markdown>
+
+## Fluid Mode
+
+Use `fluid` for full-width layouts without max-width constraints:
+
+```tsx
+// Full-width hero section
+<Container fluid padding="md">
+  <div className="bg-gradient-to-r from-blue-500 to-purple-500">
+    <h1>Edge-to-Edge Hero</h1>
+  </div>
+</Container>
+
+// Fluid with responsive padding
+<Container fluid padding="xs sm@sm md@md lg@lg">
+  <FullWidthBanner />
 </Container>
 ```
 
@@ -58,6 +108,21 @@ import { Container, Center } from "emul8";
 `}
 </Markdown>
 
+## Padding Sizes
+
+<Markdown>
+{`
+| Size | Tailwind Class | Pixels |
+| ---- | -------------- | ------ |
+| \`none\` | px-0 | 0px |
+| \`xs\` | px-2 | 8px |
+| \`sm\` | px-4 | 16px |
+| \`md\` | px-6 | 24px |
+| \`lg\` | px-8 | 32px |
+| \`xl\` | px-12 | 48px |
+`}
+</Markdown>
+
 ## Props
 
 <Markdown>
@@ -65,12 +130,46 @@ import { Container, Center } from "emul8";
 | Prop | Type | Default | Description |
 | ---- | ---- | ------- | ----------- |
 | \`size\` | \`"sm" \\| "md" \\| "lg" \\| "xl" \\| "2xl" \\| "full"\` | \`"lg"\` | Max-width preset |
-| \`padding\` | \`"none" \\| "sm" \\| "md" \\| "lg"\` | \`"md"\` | Horizontal padding |
+| \`padding\` | \`"none" \\| "xs" \\| "sm" \\| "md" \\| "lg" \\| "xl"\` or responsive | \`"md"\` | Horizontal padding |
+| \`fluid\` | \`boolean\` | \`false\` | Full-width mode (no max-width) |
 | \`center\` | \`boolean\` | \`false\` | Center children horizontally |
-| \`intrinsic\` | \`boolean\` | \`false\` | Content-based width centering |
 | \`andText\` | \`boolean\` | \`false\` | Also center text content |
 `}
 </Markdown>
+
+## Best Practices
+
+### Page Layout Pattern
+
+```tsx
+// Typical page with fluid header, constrained content
+<>
+  <Container fluid padding="sm md@md">
+    <Header />
+  </Container>
+
+  <Container size="lg" padding="sm md@md lg@lg">
+    <main>
+      <article>...</article>
+    </main>
+  </Container>
+
+  <Container fluid padding="md">
+    <Footer />
+  </Container>
+</>
+```
+
+### Responsive Design
+
+Start with smaller padding on mobile, increase on larger screens:
+
+```tsx
+// Mobile-first responsive padding
+<Container padding="xs sm@sm md@md lg@lg">
+  {/* Padding grows as screen size increases */}
+</Container>
+```
 
 ## Center Alias
 
@@ -79,9 +178,10 @@ import { Container, Center } from "emul8";
 ```tsx
 import { Center } from "emul8";
 
-<Center size="md" intrinsic andText>
-  <h1>Centered Heading</h1>
-  <p>Centered paragraph text</p>
+<Center size="md" center andText>
+  <Logo />
+  <h1>Welcome to Our App</h1>
+  <p>Centered content with centered text</p>
 </Center>
 ```
 

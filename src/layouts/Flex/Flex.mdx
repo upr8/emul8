@@ -5,11 +5,12 @@ import * as FlexStories from "./Flex.stories";
 <Meta of={FlexStories} />
 <Title />
 
-Flex is an explicit flexbox container with comprehensive flex props.
+Flex is an explicit flexbox container with comprehensive flex props and responsive gap support.
 
 ## Features
 
 - **Full flexbox API** - Direction, align, justify, wrap, and gap
+- **Responsive gap** - Cedar-style `@breakpoint` notation for adaptive spacing
 - **Inline support** - Use `inline` prop for inline-flex
 - **Reverse directions** - `rowReverse` and `columnReverse`
 - **Slot support** - Render as child element with `asChild`
@@ -30,16 +31,16 @@ import { Flex } from "emul8";
   <Item />
 </Flex>
 
+// Responsive gap for navigation
+<Flex gap="sm md@md lg@lg" align="center">
+  <Logo />
+  <Nav />
+  <UserMenu />
+</Flex>
+
 // Centered content
 <Flex align="center" justify="center" className="h-48">
   <Content />
-</Flex>
-
-// Space between with wrapping
-<Flex justify="between" wrap="wrap" gap="sm">
-  <Tag>One</Tag>
-  <Tag>Two</Tag>
-  <Tag>Three</Tag>
 </Flex>
 
 // Inline flex within text
@@ -47,6 +48,50 @@ import { Flex } from "emul8";
   Click the <Flex inline align="center" gap="xs"><Icon /> button</Flex> to continue.
 </p>
 ```
+
+## Responsive Gap
+
+Use Cedar-style `@breakpoint` notation for adaptive spacing:
+
+```tsx
+// gap="base breakpoint@breakpoint"
+<Flex gap="sm md@md lg@lg" align="center">
+  {/* gap-2 (mobile) → md:gap-4 (tablet) → lg:gap-6 (desktop) */}
+</Flex>
+
+// Toolbar with responsive spacing
+<Flex gap="xs sm@md" justify="between">
+  <ButtonGroup />
+  <ActionButtons />
+</Flex>
+```
+
+<Markdown>
+{`
+| Notation | Description |
+| -------- | ----------- |
+| \`md\` | Static gap (gap-4) at all sizes |
+| \`sm md@md\` | gap-2 base, md:gap-4 at medium screens |
+| \`sm md@md lg@lg\` | Grows with each breakpoint |
+| \`md@md lg@xl\` | No base, starts at md breakpoint |
+`}
+</Markdown>
+
+## Gap Sizes
+
+<Markdown>
+{`
+| Size | Tailwind Class | Pixels |
+| ---- | -------------- | ------ |
+| \`none\` | gap-0 | 0px |
+| \`xs\` | gap-1 | 4px |
+| \`sm\` | gap-2 | 8px |
+| \`md\` | gap-4 | 16px |
+| \`lg\` | gap-6 | 24px |
+| \`xl\` | gap-8 | 32px |
+| \`2xl\` | gap-12 | 48px |
+`}
+</Markdown>
 
 ## Props
 
@@ -58,16 +103,96 @@ import { Flex } from "emul8";
 | \`align\` | \`"start" \\| "center" \\| "end" \\| "stretch" \\| "baseline"\` | \`"stretch"\` | Align items |
 | \`justify\` | \`"start" \\| "center" \\| "end" \\| "between" \\| "around" \\| "evenly"\` | \`"start"\` | Justify content |
 | \`wrap\` | \`"nowrap" \\| "wrap" \\| "wrapReverse"\` | \`"nowrap"\` | Flex wrap behavior |
-| \`gap\` | \`"none" \\| "xs" \\| "sm" \\| "md" \\| "lg" \\| "xl" \\| "2xl"\` | \`"none"\` | Gap between items |
+| \`gap\` | \`"none" \\| "xs" \\| "sm" \\| "md" \\| "lg" \\| "xl" \\| "2xl"\` or responsive | \`"none"\` | Gap between items |
 | \`inline\` | \`boolean\` | \`false\` | Use inline-flex |
 | \`asChild\` | \`boolean\` | \`false\` | Render as child element |
 `}
 </Markdown>
 
+## Best Practices
+
+### Toolbars and Headers
+
+Use responsive gap for app toolbars:
+
+```tsx
+<Flex gap="sm md@md lg@lg" align="center" justify="between">
+  <Flex gap="xs sm@md" align="center">
+    <Logo />
+    <AppName />
+  </Flex>
+  <Flex gap="xs sm@md" align="center">
+    <SearchButton />
+    <SettingsButton />
+    <ProfileButton />
+  </Flex>
+</Flex>
+```
+
+### Card Layouts
+
+Responsive gap for card content:
+
+```tsx
+<Flex direction="column" gap="sm md@md lg@lg">
+  <CardImage />
+  <Flex direction="column" gap="xs sm@md">
+    <CardTitle />
+    <CardDescription />
+  </Flex>
+  <Flex gap="xs sm@md">
+    <PrimaryAction />
+    <SecondaryAction />
+  </Flex>
+</Flex>
+```
+
+### Navigation Bars
+
+Adaptive spacing for nav items:
+
+```tsx
+<Flex gap="md lg@lg" align="center">
+  <Brand />
+  <Flex gap="sm md@lg" align="center" className="ml-auto">
+    <NavLink>Home</NavLink>
+    <NavLink>Products</NavLink>
+    <NavLink>About</NavLink>
+  </Flex>
+</Flex>
+```
+
+### Wrapping Content
+
+Responsive gap with wrap for tag clouds or button groups:
+
+```tsx
+<Flex gap="xs sm@md" wrap="wrap">
+  {tags.map(tag => (
+    <Tag key={tag.id}>{tag.name}</Tag>
+  ))}
+</Flex>
+```
+
 ## Flex vs Stack
 
 Use **Stack** for simple vertical/horizontal stacking with the `splitAfter` feature.
 Use **Flex** when you need full control over justify, wrap modes, or inline-flex.
+
+```tsx
+// Stack - simple stacking with split
+<Stack gap="md" splitAfter={0}>
+  <Header />
+  <Content />
+  <Footer />
+</Stack>
+
+// Flex - full flexbox control
+<Flex gap="sm md@md" justify="between" wrap="wrap">
+  <Item />
+  <Item />
+</Flex>
+```
 
 ## All Stories
 

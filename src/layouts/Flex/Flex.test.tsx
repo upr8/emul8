@@ -86,3 +86,53 @@ describe('Flex', () => {
     expect(Flex.displayName).toBe('Flex');
   });
 });
+
+describe('Flex responsive gap', () => {
+  it('applies responsive gap with @breakpoint notation', () => {
+    render(
+      <Flex gap="sm md@md lg@lg" data-testid="flex">
+        Content
+      </Flex>
+    );
+    const element = screen.getByTestId('flex');
+    expect(element).toHaveClass('gap-2');
+    expect(element).toHaveClass('md:gap-4');
+    expect(element).toHaveClass('lg:gap-6');
+  });
+
+  it('applies responsive gap with only breakpoint values', () => {
+    render(
+      <Flex gap="md@md xl@xl" data-testid="flex">
+        Content
+      </Flex>
+    );
+    const element = screen.getByTestId('flex');
+    expect(element).toHaveClass('md:gap-4');
+    expect(element).toHaveClass('xl:gap-8');
+  });
+
+  it('combines responsive gap with other variants', () => {
+    render(
+      <Flex gap="xs sm@lg" direction="column" align="center" data-testid="flex">
+        Content
+      </Flex>
+    );
+    const element = screen.getByTestId('flex');
+    expect(element).toHaveClass('flex-col');
+    expect(element).toHaveClass('items-center');
+    expect(element).toHaveClass('gap-1');
+    expect(element).toHaveClass('lg:gap-2');
+  });
+
+  it('combines responsive gap with asChild', () => {
+    render(
+      <Flex asChild gap="sm md@md" data-testid="flex">
+        <nav>Content</nav>
+      </Flex>
+    );
+    const element = screen.getByTestId('flex');
+    expect(element.tagName).toBe('NAV');
+    expect(element).toHaveClass('gap-2');
+    expect(element).toHaveClass('md:gap-4');
+  });
+});

@@ -176,3 +176,56 @@ describe('Grid', () => {
     expect(Grid.displayName).toBe('Grid');
   });
 });
+
+describe('Grid responsive gap', () => {
+  it('applies responsive gap with @breakpoint notation', () => {
+    render(
+      <Grid gap="sm md@md lg@lg" data-testid="grid">
+        <div>Content</div>
+      </Grid>
+    );
+    const element = screen.getByTestId('grid');
+    expect(element).toHaveClass('gap-2');
+    expect(element).toHaveClass('md:gap-4');
+    expect(element).toHaveClass('lg:gap-6');
+  });
+
+  it('applies responsive gap with only breakpoint values', () => {
+    render(
+      <Grid gap="md@md xl@xl" data-testid="grid">
+        <div>Content</div>
+      </Grid>
+    );
+    const element = screen.getByTestId('grid');
+    expect(element).toHaveClass('md:gap-4');
+    expect(element).toHaveClass('xl:gap-8');
+  });
+
+  it('combines responsive gap with columns', () => {
+    render(
+      <Grid gap="xs sm@lg" columns={3} data-testid="grid">
+        <div>Content</div>
+      </Grid>
+    );
+    const element = screen.getByTestId('grid');
+    expect(element).toHaveClass('gap-1');
+    expect(element).toHaveClass('lg:gap-2');
+    expect(element).toHaveStyle({
+      gridTemplateColumns: 'repeat(3, 1fr)',
+    });
+  });
+
+  it('combines responsive gap with asChild', () => {
+    render(
+      <Grid asChild gap="sm md@md" data-testid="grid">
+        <ul>
+          <li>Item</li>
+        </ul>
+      </Grid>
+    );
+    const element = screen.getByTestId('grid');
+    expect(element.tagName).toBe('UL');
+    expect(element).toHaveClass('gap-2');
+    expect(element).toHaveClass('md:gap-4');
+  });
+});

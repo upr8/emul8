@@ -5,14 +5,15 @@ import * as GridStories from "./Grid.stories";
 <Meta of={GridStories} />
 <Title />
 
-Grid creates an auto-filling responsive grid.
+Grid creates an auto-filling responsive grid with optional responsive gap.
 
 ## Features
 
 - **Auto-fill** - Items automatically fill available space
 - **Responsive** - Wraps when items can't maintain minimum width
 - **Flexible minimum** - Control minimum item width
-- **Gap control** - Consistent spacing between items
+- **Responsive gap** - Cedar-style `@breakpoint` notation for adaptive spacing
+- **Fixed columns** - Optional fixed column count
 
 ## Example
 
@@ -32,20 +33,64 @@ import { Grid } from "emul8";
   <Card />
 </Grid>
 
-// Grid with larger minimum item width
-<Grid min="300px" gap="md">
+// Grid with responsive gap
+<Grid gap="sm md@md lg@lg" min="280px">
   <ProductCard />
   <ProductCard />
   <ProductCard />
 </Grid>
 
-// Narrow grid for sidebar content
-<Grid min="150px" gap="sm">
-  <Thumbnail />
-  <Thumbnail />
-  <Thumbnail />
+// Fixed 3-column layout
+<Grid columns={3} gap="md">
+  <Item />
+  <Item />
+  <Item />
 </Grid>
 ```
+
+## Responsive Gap
+
+Use Cedar-style `@breakpoint` notation for adaptive spacing:
+
+```tsx
+// gap="base breakpoint@breakpoint"
+<Grid gap="sm md@md lg@lg" min="200px">
+  {/* gap-2 (mobile) → md:gap-4 (tablet) → lg:gap-6 (desktop) */}
+</Grid>
+
+// No base gap, starts at md breakpoint
+<Grid gap="md@md lg@lg">
+  {/* No gap on mobile, md:gap-4, lg:gap-6 */}
+</Grid>
+```
+
+<Markdown>
+{`
+| Notation | Description |
+| -------- | ----------- |
+| \`md\` | Static gap (gap-4) at all sizes |
+| \`sm md@md\` | gap-2 base, md:gap-4 at medium screens |
+| \`sm md@md lg@lg\` | Grows with each breakpoint |
+| \`md@md lg@xl\` | No base, starts at md breakpoint |
+`}
+</Markdown>
+
+## Gap Sizes
+
+<Markdown>
+{`
+| Size | Tailwind Class | Pixels |
+| ---- | -------------- | ------ |
+| \`none\` | gap-0 | 0px |
+| \`xs\` | gap-1 | 4px |
+| \`sm\` | gap-2 | 8px |
+| \`md\` | gap-4 | 16px |
+| \`lg\` | gap-6 | 24px |
+| \`xl\` | gap-8 | 32px |
+| \`2xl\` | gap-10 | 40px |
+| \`3xl\` | gap-12 | 48px |
+`}
+</Markdown>
 
 ## How It Works
 
@@ -65,11 +110,61 @@ grid-template-columns: repeat(auto-fill, minmax(min(250px, 100%), 1fr))
 {`
 | Prop | Type | Default | Description |
 | ---- | ---- | ------- | ----------- |
-| \`gap\` | \`"none" \\| "xs" \\| "sm" \\| "md" \\| "lg" \\| "xl"\` | \`"md"\` | Space between items |
+| \`gap\` | \`"none" \\| "xs" \\| "sm" \\| "md" \\| "lg" \\| "xl"\` or responsive | \`"md"\` | Space between items |
 | \`min\` | \`string\` | \`"250px"\` | Minimum item width before wrapping |
+| \`columns\` | \`number\` | - | Fixed column count (overrides auto-fill) |
 | \`asChild\` | \`boolean\` | \`false\` | Render as child element |
 `}
 </Markdown>
+
+## Best Practices
+
+### Product Grids
+
+Use responsive gap for e-commerce layouts:
+
+```tsx
+<Grid gap="sm md@md lg@lg" min="280px">
+  {products.map(product => (
+    <ProductCard key={product.id} {...product} />
+  ))}
+</Grid>
+```
+
+### Image Galleries
+
+Tighter gaps for visual grids:
+
+```tsx
+<Grid gap="xs sm@md" min="200px">
+  {images.map(img => (
+    <img key={img.id} src={img.src} alt={img.alt} />
+  ))}
+</Grid>
+```
+
+### Dashboard Widgets
+
+Larger gaps for distinct cards:
+
+```tsx
+<Grid gap="md lg@lg" min="300px">
+  <StatsCard />
+  <ChartCard />
+  <ActivityCard />
+</Grid>
+```
+
+### Mobile-First Approach
+
+Start with smaller gaps on mobile, increase on larger screens:
+
+```tsx
+// Tight on mobile, spacious on desktop
+<Grid gap="xs sm@sm md@md lg@lg">
+  {items.map(item => <Card key={item.id} {...item} />)}
+</Grid>
+```
 
 ## All Stories
 

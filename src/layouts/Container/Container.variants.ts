@@ -12,9 +12,18 @@ export const containerVariants = cva('mx-auto w-full', {
     },
     padding: {
       none: 'px-0',
+      xs: 'px-2',
       sm: 'px-4',
       md: 'px-6',
       lg: 'px-8',
+      xl: 'px-12',
+    },
+    /**
+     * Enable fluid mode for full-width layouts without max-width constraints.
+     * Useful for hero sections or edge-to-edge designs.
+     */
+    fluid: {
+      true: 'max-w-none',
     },
     /**
      * Center child elements using flexbox.

@@ -5,12 +5,12 @@ import * as WrapStories from "./Wrap.stories";
 <Meta of={WrapStories} />
 <Title />
 
-Wrap creates a flex container that wraps its children naturally.
+Wrap creates a flex container that wraps its children naturally with responsive gap support.
 
 ## Features
 
 - **Natural wrapping** - Items wrap to next line when space runs out
-- **Gap control** - Consistent spacing between wrapped items
+- **Responsive gap** - Cedar-style `@breakpoint` notation for adaptive spacing
 - **Alignment options** - Control cross-axis and main-axis alignment
 - **Slot support** - Render as child element with `asChild`
 
@@ -24,28 +24,70 @@ Wrap creates a flex container that wraps its children naturally.
 ```tsx
 import { Wrap } from "emul8";
 
-// Tag cloud
-<Wrap gap="sm">
+// Tag cloud with responsive gap
+<Wrap gap="xs sm@md">
   <Tag>JavaScript</Tag>
   <Tag>TypeScript</Tag>
   <Tag>React</Tag>
   <Tag>Vue</Tag>
 </Wrap>
 
-// Centered wrapping
-<Wrap gap="md" justify="center">
-  <Chip>One</Chip>
-  <Chip>Two</Chip>
-  <Chip>Three</Chip>
-</Wrap>
-
-// Button group
-<Wrap gap="sm">
+// Centered wrapping button group
+<Wrap gap="sm md@md" justify="center">
   <Button>Edit</Button>
   <Button>Delete</Button>
   <Button>Share</Button>
 </Wrap>
+
+// Filter chips with responsive spacing
+<Wrap gap="xs sm@sm md@md">
+  {filters.map(f => <Chip key={f.id}>{f.name}</Chip>)}
+</Wrap>
 ```
+
+## Responsive Gap
+
+Use Cedar-style `@breakpoint` notation for adaptive spacing:
+
+```tsx
+// gap="base breakpoint@breakpoint"
+<Wrap gap="xs sm@md lg@lg">
+  {/* gap-1 (mobile) → md:gap-2 → lg:gap-6 */}
+</Wrap>
+
+// Compact on mobile, spacious on desktop
+<Wrap gap="xs sm@sm md@md">
+  <Tag>One</Tag>
+  <Tag>Two</Tag>
+  <Tag>Three</Tag>
+</Wrap>
+```
+
+<Markdown>
+{`
+| Notation | Description |
+| -------- | ----------- |
+| \`sm\` | Static gap (gap-2) at all sizes |
+| \`xs sm@md\` | gap-1 base, md:gap-2 at medium screens |
+| \`xs sm@sm md@md\` | Grows with each breakpoint |
+| \`sm@md lg@lg\` | No base, starts at md breakpoint |
+`}
+</Markdown>
+
+## Gap Sizes
+
+<Markdown>
+{`
+| Size | Tailwind Class | Pixels |
+| ---- | -------------- | ------ |
+| \`none\` | gap-0 | 0px |
+| \`xs\` | gap-1 | 4px |
+| \`sm\` | gap-2 | 8px |
+| \`md\` | gap-4 | 16px |
+| \`lg\` | gap-6 | 24px |
+| \`xl\` | gap-8 | 32px |
+`}
+</Markdown>
 
 ## Props
 
@@ -53,17 +95,112 @@ import { Wrap } from "emul8";
 {`
 | Prop | Type | Default | Description |
 | ---- | ---- | ------- | ----------- |
-| \`gap\` | \`"none" \\| "xs" \\| "sm" \\| "md" \\| "lg" \\| "xl"\` | \`"sm"\` | Gap between items |
+| \`gap\` | \`"none" \\| "xs" \\| "sm" \\| "md" \\| "lg" \\| "xl"\` or responsive | \`"sm"\` | Gap between items |
 | \`align\` | \`"start" \\| "center" \\| "end" \\| "stretch" \\| "baseline"\` | \`"center"\` | Cross-axis alignment |
 | \`justify\` | \`"start" \\| "center" \\| "end"\` | \`"start"\` | Main-axis alignment |
 | \`asChild\` | \`boolean\` | \`false\` | Render as child element |
 `}
 </Markdown>
 
-## Wrap vs Cluster
+## Best Practices
 
-Both create wrapping flex layouts. Use **Wrap** for general-purpose wrapping with simpler defaults.
-Use **Cluster** when you need `between`, `around`, or `evenly` justify options.
+### Tag Clouds
+
+Use responsive gap for tag clouds - compact on mobile for better touch targets:
+
+```tsx
+<Wrap gap="xs sm@md">
+  {tags.map(tag => (
+    <span key={tag.id} className="px-3 py-1 bg-gray-100 rounded-full text-sm">
+      {tag.name}
+    </span>
+  ))}
+</Wrap>
+```
+
+### Filter Chips
+
+Responsive spacing for filter UIs:
+
+```tsx
+<Wrap gap="xs sm@sm md@md">
+  {filters.map(filter => (
+    <button
+      key={filter.id}
+      className={cn(
+        'px-3 py-1 rounded-full text-sm',
+        filter.active ? 'bg-blue-500 text-white' : 'border'
+      )}
+    >
+      {filter.label}
+    </button>
+  ))}
+</Wrap>
+```
+
+### Button Groups
+
+Wrapping button groups that adapt to screen size:
+
+```tsx
+<Wrap gap="xs sm@md">
+  <Button variant="primary">Save</Button>
+  <Button variant="secondary">Cancel</Button>
+  <Button variant="secondary">Reset</Button>
+  <Button variant="danger">Delete</Button>
+</Wrap>
+```
+
+### Skill Badges
+
+Organized badge sections:
+
+```tsx
+<div className="space-y-4">
+  <div>
+    <h3>Frontend</h3>
+    <Wrap gap="xs sm@md">
+      {frontend.map(skill => <Badge key={skill}>{skill}</Badge>)}
+    </Wrap>
+  </div>
+  <div>
+    <h3>Backend</h3>
+    <Wrap gap="xs sm@md">
+      {backend.map(skill => <Badge key={skill}>{skill}</Badge>)}
+    </Wrap>
+  </div>
+</div>
+```
+
+### Mobile-First Approach
+
+Start with tight spacing on mobile, increase on larger screens:
+
+```tsx
+// Compact on mobile, spacious on desktop
+<Wrap gap="xs sm@sm md@md lg@lg">
+  {items.map(item => <Item key={item.id} {...item} />)}
+</Wrap>
+```
+
+## Wrap vs Flex with wrap
+
+Both can create wrapping layouts. Use **Wrap** for simple tag clouds and button groups.
+Use **Flex with wrap="wrap"** when you need `justify="between"`, `around`, or `evenly`.
+
+```tsx
+// Wrap - simple wrapping, limited justify options
+<Wrap gap="sm" justify="center">
+  <Tag>A</Tag>
+  <Tag>B</Tag>
+</Wrap>
+
+// Flex - full flexbox control
+<Flex gap="sm" wrap="wrap" justify="between">
+  <Tag>A</Tag>
+  <Tag>B</Tag>
+</Flex>
+```
 
 ## All Stories
 

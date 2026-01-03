@@ -1,10 +1,15 @@
 import { Children, cloneElement, forwardRef, isValidElement } from 'react';
 import { cn } from '../../utils/cn';
+import { responsiveGap } from '../../utils/responsive';
 import type { StackProps } from './Stack.types';
 import { stackVariants } from './Stack.variants';
 
 /**
  * Stack component for vertical or horizontal layouts with consistent spacing.
+ *
+ * Supports responsive gap using Cedar-style @breakpoint notation:
+ * @example
+ * <Stack gap="sm md@md lg@lg" />
  */
 export const Stack = forwardRef<HTMLDivElement, StackProps>(
   (
@@ -21,6 +26,7 @@ export const Stack = forwardRef<HTMLDivElement, StackProps>(
     },
     ref
   ) => {
+    const isResponsiveGap = typeof gap === 'string' && gap.includes('@');
     let processedChildren = children;
 
     if (splitAfter !== undefined && splitAfter >= 0) {
@@ -39,7 +45,17 @@ export const Stack = forwardRef<HTMLDivElement, StackProps>(
     return (
       <div
         ref={ref}
-        className={cn(stackVariants({ direction, gap, align, justify, wrap }), className)}
+        className={cn(
+          stackVariants({
+            direction,
+            gap: isResponsiveGap ? undefined : gap,
+            align,
+            justify,
+            wrap,
+          }),
+          isResponsiveGap && responsiveGap(gap),
+          className
+        )}
         {...props}
       >
         {processedChildren}
