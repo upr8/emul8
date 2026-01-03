@@ -26,7 +26,7 @@ const meta = {
     },
     gap: {
       control: 'text',
-      description: 'Gap size. Supports responsive @breakpoint notation (e.g., "sm md@md lg@lg")',
+      description: 'Gap size. Supports responsive object syntax (e.g., { base: "sm", md: "md" })',
     },
     inline: {
       control: 'boolean',
@@ -168,7 +168,7 @@ export const InlineFlex: Story = {
 export const ResponsiveGap: Story = {
   name: 'Responsive Gap',
   render: () => (
-    <Flex gap="xs sm@sm md@md lg@lg" wrap="wrap" className="max-w-md">
+    <Flex gap={{ base: 'xs', sm: 'sm', md: 'md', lg: 'lg' }} wrap="wrap" className="max-w-md">
       {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
         <Box key={n}>{n}</Box>
       ))}
@@ -188,16 +188,16 @@ export const ResponsiveToolbar: Story = {
   name: 'Responsive Toolbar',
   render: () => (
     <Flex
-      gap="sm md@md lg@lg"
+      gap={{ base: 'sm', md: 'md', lg: 'lg' }}
       align="center"
       justify="between"
       className="p-4 bg-gray-100 dark:bg-gray-800 rounded"
     >
-      <Flex gap="xs sm@md" align="center">
+      <Flex gap={{ base: 'xs', md: 'sm' }} align="center">
         <div className="w-8 h-8 bg-blue-500 rounded" />
         <span className="font-bold">App Name</span>
       </Flex>
-      <Flex gap="xs sm@md" align="center">
+      <Flex gap={{ base: 'xs', md: 'sm' }} align="center">
         <button type="button" className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded text-sm">
           Settings
         </button>
@@ -219,15 +219,15 @@ export const ResponsiveToolbar: Story = {
 export const ResponsiveCardLayout: Story = {
   name: 'Responsive Card Layout',
   render: () => (
-    <Flex direction="column" gap="sm md@md lg@lg" className="max-w-sm">
+    <Flex direction="column" gap={{ base: 'sm', md: 'md', lg: 'lg' }} className="max-w-sm">
       <div className="bg-gray-200 dark:bg-gray-700 h-48 rounded" />
-      <Flex direction="column" gap="xs sm@md">
+      <Flex direction="column" gap={{ base: 'xs', md: 'sm' }}>
         <h3 className="text-lg font-bold">Card Title</h3>
         <p className="text-gray-600 dark:text-gray-400 text-sm">
           Card description with some text content that explains what this card is about.
         </p>
       </Flex>
-      <Flex gap="xs sm@md">
+      <Flex gap={{ base: 'xs', md: 'sm' }}>
         <button type="button" className="flex-1 px-4 py-2 bg-blue-500 text-white rounded">
           Primary
         </button>
@@ -250,12 +250,12 @@ export const ResponsiveCardLayout: Story = {
 export const ResponsiveNavigation: Story = {
   name: 'Responsive Navigation',
   render: () => (
-    <Flex gap="md lg@lg" align="center" className="p-4">
-      <Flex gap="xs sm@md" align="center">
+    <Flex gap={{ base: 'md', lg: 'lg' }} align="center" className="p-4">
+      <Flex gap={{ base: 'xs', md: 'sm' }} align="center">
         <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg" />
         <span className="font-bold text-lg">Brand</span>
       </Flex>
-      <Flex gap="sm md@lg" align="center" className="ml-auto">
+      <Flex gap={{ base: 'sm', lg: 'md' }} align="center" className="ml-auto">
         <a
           href="#"
           className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
@@ -298,9 +298,9 @@ export const ResponsiveGapComparison: Story = {
     <div className="space-y-8">
       <div>
         <p className="text-sm text-gray-500 mb-2 font-mono">
-          gap=&quot;sm md@md lg@lg&quot; (responsive)
+          {'gap={{ base: "sm", md: "md", lg: "lg" }} (responsive)'}
         </p>
-        <Flex gap="sm md@md lg@lg">
+        <Flex gap={{ base: 'sm', md: 'md', lg: 'lg' }}>
           <Box>1</Box>
           <Box>2</Box>
           <Box>3</Box>

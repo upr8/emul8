@@ -129,6 +129,21 @@ const ModalRoot = forwardRef<HTMLDivElement, ModalProps>(
       }
     }, [open, handleEscape, handleFocusTrap, autoFocus, returnFocus, triggerRef]);
 
+    // Combine refs safely - must be before early return to satisfy rules of hooks
+    const setRefs = useCallback(
+      (node: HTMLDivElement | null) => {
+        modalRef.current = node;
+        /* c8 ignore start -- ref callback/object branches depend on test setup */
+        if (typeof ref === 'function') {
+          ref(node);
+        } else if (ref) {
+          ref.current = node;
+        }
+        /* c8 ignore stop */
+      },
+      [ref]
+    );
+
     if (!open) return null;
 
     const handleBackdropClick = () => {
@@ -137,30 +152,36 @@ const ModalRoot = forwardRef<HTMLDivElement, ModalProps>(
       }
     };
 
+    // SSR safety check - guard document access with typeof check
+    /* c8 ignore next -- SSR branch never executes in jsdom */
+    if (typeof document === 'undefined') return null;
+
+    // Safe to access document.body after the guard above
+    // oxlint-disable-next-line emul8/no-direct-document -- guarded by typeof check
+    const portalTarget = document.body;
+
     const modal = (
       <div
-        ref={(node) => {
-          // Handle both refs
-          (modalRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
-          /* c8 ignore start -- ref callback vs object depends on React internals */
-          if (typeof ref === 'function') {
-            ref(node);
-          } else if (ref) {
-            (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
-          }
-          /* c8 ignore stop */
-        }}
+        ref={setRefs}
         role="dialog"
         aria-modal="true"
         className={cn(backdropVariants(), className)}
         onClick={handleBackdropClick}
+        /* c8 ignore start -- duplicate escape handler for accessibility, tested via document listener */
+        onKeyDown={(e) => {
+          if (e.key === 'Escape' && closeOnEscape && onClose) {
+            onClose();
+          }
+        }}
+        /* c8 ignore stop */
         {...props}
       >
+        {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
         <div onClick={(e) => e.stopPropagation()}>{children}</div>
       </div>
     );
 
-    return createPortal(modal, document.body);
+    return createPortal(modal, portalTarget);
   }
 );
 ModalRoot.displayName = 'Modal';
@@ -194,9 +215,15 @@ Header.displayName = 'Modal.Header';
 /**
  * Modal.Title - The modal title heading.
  */
-const Title = forwardRef<HTMLHeadingElement, ModalTitleProps>(({ className, ...props }, ref) => {
-  return <h2 ref={ref} className={cn('text-lg font-semibold', className)} {...props} />;
-});
+const Title = forwardRef<HTMLHeadingElement, ModalTitleProps>(
+  ({ className, children, ...props }, ref) => {
+    return (
+      <h2 ref={ref} className={cn('text-lg font-semibold', className)} {...props}>
+        {children}
+      </h2>
+    );
+  }
+);
 Title.displayName = 'Modal.Title';
 
 /**

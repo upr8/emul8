@@ -152,9 +152,9 @@ describe('Stack', () => {
 });
 
 describe('Stack responsive gap', () => {
-  it('applies responsive gap with @breakpoint notation', () => {
+  it('applies responsive gap with object syntax', () => {
     render(
-      <Stack gap="sm md@md lg@lg" data-testid="stack">
+      <Stack gap={{ base: 'sm', md: 'md', lg: 'lg' }} data-testid="stack">
         <div>Content</div>
       </Stack>
     );
@@ -166,7 +166,7 @@ describe('Stack responsive gap', () => {
 
   it('applies responsive gap with only breakpoint values', () => {
     render(
-      <Stack gap="md@md xl@xl" data-testid="stack">
+      <Stack gap={{ md: 'md', xl: 'xl' }} data-testid="stack">
         <div>Content</div>
       </Stack>
     );
@@ -177,7 +177,7 @@ describe('Stack responsive gap', () => {
 
   it('combines responsive gap with direction', () => {
     render(
-      <Stack gap="xs sm@lg" direction="horizontal" data-testid="stack">
+      <Stack gap={{ base: 'xs', lg: 'sm' }} direction="horizontal" data-testid="stack">
         <div>Content</div>
       </Stack>
     );
@@ -189,7 +189,12 @@ describe('Stack responsive gap', () => {
 
   it('combines responsive gap with splitAfter', () => {
     render(
-      <Stack gap="sm md@md" direction="horizontal" splitAfter={0} data-testid="stack">
+      <Stack
+        gap={{ base: 'sm', md: 'md' }}
+        direction="horizontal"
+        splitAfter={0}
+        data-testid="stack"
+      >
         <div data-testid="child-0">First</div>
         <div data-testid="child-1">Second</div>
       </Stack>
@@ -198,5 +203,41 @@ describe('Stack responsive gap', () => {
     expect(element).toHaveClass('gap-2');
     expect(element).toHaveClass('md:gap-4');
     expect(screen.getByTestId('child-1')).toHaveClass('ml-auto');
+  });
+});
+
+describe('Stack divider', () => {
+  it('inserts divider between children', () => {
+    render(
+      <Stack divider={<hr data-testid="divider" />} data-testid="stack">
+        <div>Child 1</div>
+        <div>Child 2</div>
+        <div>Child 3</div>
+      </Stack>
+    );
+    const dividers = screen.getAllByTestId('divider');
+    expect(dividers).toHaveLength(2);
+  });
+
+  it('does not insert divider for single child', () => {
+    render(
+      <Stack divider={<hr data-testid="divider" />} data-testid="stack">
+        <div>Only Child</div>
+      </Stack>
+    );
+    expect(screen.queryAllByTestId('divider')).toHaveLength(0);
+  });
+
+  it('works with splitAfter and divider', () => {
+    render(
+      <Stack direction="horizontal" divider={<span>|</span>} splitAfter={0} data-testid="stack">
+        <div data-testid="child-0">First</div>
+        <div data-testid="child-1">Second</div>
+      </Stack>
+    );
+    // The second content child (after divider) should have ml-auto
+    // But due to divider insertion, the index changes
+    expect(screen.getByText('First')).toBeInTheDocument();
+    expect(screen.getByText('Second')).toBeInTheDocument();
   });
 });

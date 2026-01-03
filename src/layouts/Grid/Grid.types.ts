@@ -1,6 +1,6 @@
 import type { VariantProps } from 'class-variance-authority';
 import type { HTMLAttributes } from 'react';
-import type { ResponsiveValue } from '../../utils/responsive';
+import type { GapSize, ResponsiveValue } from '../../utils/responsive';
 import type { gridVariants } from './Grid.variants';
 
 export interface GridProps
@@ -8,7 +8,7 @@ export interface GridProps
     Omit<VariantProps<typeof gridVariants>, 'gap'> {
   /**
    * Gap between grid items.
-   * Supports responsive values using Cedar-style @breakpoint notation.
+   * Supports responsive values using object syntax.
    *
    * @example
    * // Static gap
@@ -16,9 +16,27 @@ export interface GridProps
    *
    * @example
    * // Responsive gap
-   * <Grid gap="sm md@md lg@lg" />
+   * <Grid gap={{ base: 'sm', md: 'md', lg: 'lg' }} />
    */
-  gap?: VariantProps<typeof gridVariants>['gap'] | ResponsiveValue;
+  gap?: VariantProps<typeof gridVariants>['gap'] | ResponsiveValue<GapSize>;
+  /**
+   * Column gap (horizontal spacing between items).
+   * Overrides `gap` for the horizontal axis.
+   *
+   * @example
+   * <Grid gapX="lg" gapY="sm" />
+   * <Grid gapX={{ base: 'sm', md: 'lg' }} />
+   */
+  gapX?: ResponsiveValue<GapSize>;
+  /**
+   * Row gap (vertical spacing between items).
+   * Overrides `gap` for the vertical axis.
+   *
+   * @example
+   * <Grid gapX="lg" gapY="sm" />
+   * <Grid gapY={{ base: 'xs', md: 'md' }} />
+   */
+  gapY?: ResponsiveValue<GapSize>;
   /**
    * Fixed number of columns. When set, overrides auto-fill behavior.
    * Use this for predictable column layouts.

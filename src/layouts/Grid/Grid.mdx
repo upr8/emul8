@@ -12,7 +12,7 @@ Grid creates an auto-filling responsive grid with optional responsive gap.
 - **Auto-fill** - Items automatically fill available space
 - **Responsive** - Wraps when items can't maintain minimum width
 - **Flexible minimum** - Control minimum item width
-- **Responsive gap** - Cedar-style `@breakpoint` notation for adaptive spacing
+- **Responsive gap** - Object syntax for adaptive spacing
 - **Fixed columns** - Optional fixed column count
 
 ## Example
@@ -34,7 +34,7 @@ import { Grid } from "emul8";
 </Grid>
 
 // Grid with responsive gap
-<Grid gap="sm md@md lg@lg" min="280px">
+<Grid gap={{ base: 'sm', md: 'md', lg: 'lg' }} min="280px">
   <ProductCard />
   <ProductCard />
   <ProductCard />
@@ -50,16 +50,16 @@ import { Grid } from "emul8";
 
 ## Responsive Gap
 
-Use Cedar-style `@breakpoint` notation for adaptive spacing:
+Use object syntax for adaptive spacing across breakpoints:
 
 ```tsx
-// gap="base breakpoint@breakpoint"
-<Grid gap="sm md@md lg@lg" min="200px">
+// Object syntax for responsive gap
+<Grid gap={{ base: 'sm', md: 'md', lg: 'lg' }} min="200px">
   {/* gap-2 (mobile) → md:gap-4 (tablet) → lg:gap-6 (desktop) */}
 </Grid>
 
 // No base gap, starts at md breakpoint
-<Grid gap="md@md lg@lg">
+<Grid gap={{ md: 'md', lg: 'lg' }}>
   {/* No gap on mobile, md:gap-4, lg:gap-6 */}
 </Grid>
 ```
@@ -68,10 +68,10 @@ Use Cedar-style `@breakpoint` notation for adaptive spacing:
 {`
 | Notation | Description |
 | -------- | ----------- |
-| \`md\` | Static gap (gap-4) at all sizes |
-| \`sm md@md\` | gap-2 base, md:gap-4 at medium screens |
-| \`sm md@md lg@lg\` | Grows with each breakpoint |
-| \`md@md lg@xl\` | No base, starts at md breakpoint |
+| \`"md"\` | Static gap (gap-4) at all sizes |
+| \`{ base: 'sm', md: 'md' }\` | gap-2 base, md:gap-4 at medium screens |
+| \`{ base: 'sm', md: 'md', lg: 'lg' }\` | Grows with each breakpoint |
+| \`{ md: 'md', xl: 'lg' }\` | No base, starts at md breakpoint |
 `}
 </Markdown>
 
@@ -87,8 +87,7 @@ Use Cedar-style `@breakpoint` notation for adaptive spacing:
 | \`md\` | gap-4 | 16px |
 | \`lg\` | gap-6 | 24px |
 | \`xl\` | gap-8 | 32px |
-| \`2xl\` | gap-10 | 40px |
-| \`3xl\` | gap-12 | 48px |
+| \`2xl\` | gap-12 | 48px |
 `}
 </Markdown>
 
@@ -110,7 +109,7 @@ grid-template-columns: repeat(auto-fill, minmax(min(250px, 100%), 1fr))
 {`
 | Prop | Type | Default | Description |
 | ---- | ---- | ------- | ----------- |
-| \`gap\` | \`"none" \\| "xs" \\| "sm" \\| "md" \\| "lg" \\| "xl"\` or responsive | \`"md"\` | Space between items |
+| \`gap\` | \`"none" \\| "xs" \\| "sm" \\| "md" \\| "lg" \\| "xl" \\| "2xl"\` or responsive object | \`"md"\` | Space between items |
 | \`min\` | \`string\` | \`"250px"\` | Minimum item width before wrapping |
 | \`columns\` | \`number\` | - | Fixed column count (overrides auto-fill) |
 | \`asChild\` | \`boolean\` | \`false\` | Render as child element |
@@ -124,7 +123,7 @@ grid-template-columns: repeat(auto-fill, minmax(min(250px, 100%), 1fr))
 Use responsive gap for e-commerce layouts:
 
 ```tsx
-<Grid gap="sm md@md lg@lg" min="280px">
+<Grid gap={{ base: 'sm', md: 'md', lg: 'lg' }} min="280px">
   {products.map(product => (
     <ProductCard key={product.id} {...product} />
   ))}
@@ -136,7 +135,7 @@ Use responsive gap for e-commerce layouts:
 Tighter gaps for visual grids:
 
 ```tsx
-<Grid gap="xs sm@md" min="200px">
+<Grid gap={{ base: 'xs', md: 'sm' }} min="200px">
   {images.map(img => (
     <img key={img.id} src={img.src} alt={img.alt} />
   ))}
@@ -148,7 +147,7 @@ Tighter gaps for visual grids:
 Larger gaps for distinct cards:
 
 ```tsx
-<Grid gap="md lg@lg" min="300px">
+<Grid gap={{ base: 'md', lg: 'lg' }} min="300px">
   <StatsCard />
   <ChartCard />
   <ActivityCard />
@@ -161,7 +160,7 @@ Start with smaller gaps on mobile, increase on larger screens:
 
 ```tsx
 // Tight on mobile, spacious on desktop
-<Grid gap="xs sm@sm md@md lg@lg">
+<Grid gap={{ base: 'xs', sm: 'sm', md: 'md', lg: 'lg' }}>
   {items.map(item => <Card key={item.id} {...item} />)}
 </Grid>
 ```

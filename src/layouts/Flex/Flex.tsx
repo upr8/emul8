@@ -1,6 +1,11 @@
 import { forwardRef } from 'react';
 import { cn } from '../../utils/cn';
-import { responsiveGap } from '../../utils/responsive';
+import {
+  isResponsiveObject,
+  responsiveGap,
+  responsiveGapX,
+  responsiveGapY,
+} from '../../utils/responsive';
 import { Slot } from '../../utils/slot';
 import type { FlexProps } from './Flex.types';
 import { flexVariants } from './Flex.variants';
@@ -11,14 +16,31 @@ import { flexVariants } from './Flex.variants';
  * Use Flex when you want to signal "this is a flex layout" and need
  * fine-grained control over flex behavior.
  *
- * Supports responsive gap using Cedar-style @breakpoint notation:
+ * Supports responsive gap using object syntax:
  * @example
- * <Flex gap="sm md@md lg@lg" />
+ * <Flex gap={{ base: 'sm', md: 'md', lg: 'lg' }} />
+ * <Flex gapX="md" gapY="lg" />
  */
 export const Flex = forwardRef<HTMLDivElement, FlexProps>(
-  ({ className, direction, align, justify, wrap, gap, inline, asChild = false, ...props }, ref) => {
+  (
+    {
+      className,
+      direction,
+      align,
+      justify,
+      wrap,
+      gap,
+      gapX,
+      gapY,
+      inline,
+      asChild = false,
+      ...props
+    },
+    ref
+  ) => {
     const Comp = asChild ? Slot : 'div';
-    const isResponsiveGap = typeof gap === 'string' && gap.includes('@');
+    const isResponsiveGap = isResponsiveObject(gap);
+    const hasSeparateGaps = gapX !== undefined || gapY !== undefined;
 
     return (
       <Comp
@@ -29,10 +51,12 @@ export const Flex = forwardRef<HTMLDivElement, FlexProps>(
             align,
             justify,
             wrap,
-            gap: isResponsiveGap ? undefined : gap,
+            gap: isResponsiveGap || hasSeparateGaps ? undefined : gap,
             inline,
           }),
           isResponsiveGap && responsiveGap(gap),
+          gapX && responsiveGapX(gapX),
+          gapY && responsiveGapY(gapY),
           className
         )}
         {...props}

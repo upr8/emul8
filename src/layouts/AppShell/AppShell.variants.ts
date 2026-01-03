@@ -39,7 +39,7 @@ export const appShellSidebarVariants = cva('shrink-0 border-r overflow-y-auto', 
     },
     position: {
       left: 'order-first',
-      right: 'order-last border-r-0 border-l',
+      right: 'order-last border-e-0 border-l',
     },
   },
   defaultVariants: {

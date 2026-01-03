@@ -26,17 +26,17 @@ describe('groupVariants', () => {
 
     it('applies md gap', () => {
       const classes = groupVariants({ gap: 'md' });
-      expect(classes).toContain('gap-3');
+      expect(classes).toContain('gap-4');
     });
 
     it('applies lg gap', () => {
       const classes = groupVariants({ gap: 'lg' });
-      expect(classes).toContain('gap-4');
+      expect(classes).toContain('gap-6');
     });
 
     it('applies xl gap', () => {
       const classes = groupVariants({ gap: 'xl' });
-      expect(classes).toContain('gap-6');
+      expect(classes).toContain('gap-8');
     });
   });
 

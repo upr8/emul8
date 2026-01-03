@@ -27,11 +27,25 @@ export const Reel = forwardRef<HTMLDivElement, ReelProps>(
     ref
   ) => {
     const internalRef = useRef<HTMLDivElement>(null);
-    const reelRef = (ref as React.RefObject<HTMLDivElement>) || internalRef;
+
+    // Combine refs safely without type casting
+    const setRefs = useCallback(
+      (node: HTMLDivElement | null) => {
+        internalRef.current = node;
+        /* c8 ignore start -- ref callback/object branches depend on test setup */
+        if (typeof ref === 'function') {
+          ref(node);
+        } else if (ref) {
+          ref.current = node;
+        }
+        /* c8 ignore stop */
+      },
+      [ref]
+    );
 
     const handleKeyDown = useCallback(
       (event: React.KeyboardEvent<HTMLDivElement>) => {
-        const element = reelRef.current;
+        const element = internalRef.current;
         /* c8 ignore next -- element always exists when rendered */
         if (!element) return;
 
@@ -45,7 +59,7 @@ export const Reel = forwardRef<HTMLDivElement, ReelProps>(
 
         onKeyDown?.(event);
       },
-      [scrollAmount, onKeyDown, reelRef]
+      [scrollAmount, onKeyDown]
     );
 
     const reelStyle: CSSProperties = {
@@ -59,7 +73,7 @@ export const Reel = forwardRef<HTMLDivElement, ReelProps>(
 
     return (
       <div
-        ref={reelRef}
+        ref={setRefs}
         role="region"
         tabIndex={0}
         className={cn(reelVariants({ gap, noBar }), className)}

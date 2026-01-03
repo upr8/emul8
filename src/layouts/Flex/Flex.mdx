@@ -10,7 +10,7 @@ Flex is an explicit flexbox container with comprehensive flex props and responsi
 ## Features
 
 - **Full flexbox API** - Direction, align, justify, wrap, and gap
-- **Responsive gap** - Cedar-style `@breakpoint` notation for adaptive spacing
+- **Responsive gap** - Object syntax for adaptive spacing
 - **Inline support** - Use `inline` prop for inline-flex
 - **Reverse directions** - `rowReverse` and `columnReverse`
 - **Slot support** - Render as child element with `asChild`
@@ -32,7 +32,7 @@ import { Flex } from "emul8";
 </Flex>
 
 // Responsive gap for navigation
-<Flex gap="sm md@md lg@lg" align="center">
+<Flex gap={{ base: 'sm', md: 'md', lg: 'lg' }} align="center">
   <Logo />
   <Nav />
   <UserMenu />
@@ -51,16 +51,16 @@ import { Flex } from "emul8";
 
 ## Responsive Gap
 
-Use Cedar-style `@breakpoint` notation for adaptive spacing:
+Use object syntax for adaptive spacing across breakpoints:
 
 ```tsx
-// gap="base breakpoint@breakpoint"
-<Flex gap="sm md@md lg@lg" align="center">
+// Object syntax for responsive gap
+<Flex gap={{ base: 'sm', md: 'md', lg: 'lg' }} align="center">
   {/* gap-2 (mobile) → md:gap-4 (tablet) → lg:gap-6 (desktop) */}
 </Flex>
 
 // Toolbar with responsive spacing
-<Flex gap="xs sm@md" justify="between">
+<Flex gap={{ base: 'xs', md: 'sm' }} justify="between">
   <ButtonGroup />
   <ActionButtons />
 </Flex>
@@ -70,10 +70,10 @@ Use Cedar-style `@breakpoint` notation for adaptive spacing:
 {`
 | Notation | Description |
 | -------- | ----------- |
-| \`md\` | Static gap (gap-4) at all sizes |
-| \`sm md@md\` | gap-2 base, md:gap-4 at medium screens |
-| \`sm md@md lg@lg\` | Grows with each breakpoint |
-| \`md@md lg@xl\` | No base, starts at md breakpoint |
+| \`"md"\` | Static gap (gap-4) at all sizes |
+| \`{ base: 'sm', md: 'md' }\` | gap-2 base, md:gap-4 at medium screens |
+| \`{ base: 'sm', md: 'md', lg: 'lg' }\` | Grows with each breakpoint |
+| \`{ md: 'md', xl: 'lg' }\` | No base, starts at md breakpoint |
 `}
 </Markdown>
 
@@ -103,7 +103,7 @@ Use Cedar-style `@breakpoint` notation for adaptive spacing:
 | \`align\` | \`"start" \\| "center" \\| "end" \\| "stretch" \\| "baseline"\` | \`"stretch"\` | Align items |
 | \`justify\` | \`"start" \\| "center" \\| "end" \\| "between" \\| "around" \\| "evenly"\` | \`"start"\` | Justify content |
 | \`wrap\` | \`"nowrap" \\| "wrap" \\| "wrapReverse"\` | \`"nowrap"\` | Flex wrap behavior |
-| \`gap\` | \`"none" \\| "xs" \\| "sm" \\| "md" \\| "lg" \\| "xl" \\| "2xl"\` or responsive | \`"none"\` | Gap between items |
+| \`gap\` | \`"none" \\| "xs" \\| "sm" \\| "md" \\| "lg" \\| "xl" \\| "2xl"\` or responsive object | \`"none"\` | Gap between items |
 | \`inline\` | \`boolean\` | \`false\` | Use inline-flex |
 | \`asChild\` | \`boolean\` | \`false\` | Render as child element |
 `}
@@ -116,12 +116,12 @@ Use Cedar-style `@breakpoint` notation for adaptive spacing:
 Use responsive gap for app toolbars:
 
 ```tsx
-<Flex gap="sm md@md lg@lg" align="center" justify="between">
-  <Flex gap="xs sm@md" align="center">
+<Flex gap={{ base: 'sm', md: 'md', lg: 'lg' }} align="center" justify="between">
+  <Flex gap={{ base: 'xs', md: 'sm' }} align="center">
     <Logo />
     <AppName />
   </Flex>
-  <Flex gap="xs sm@md" align="center">
+  <Flex gap={{ base: 'xs', md: 'sm' }} align="center">
     <SearchButton />
     <SettingsButton />
     <ProfileButton />
@@ -134,13 +134,13 @@ Use responsive gap for app toolbars:
 Responsive gap for card content:
 
 ```tsx
-<Flex direction="column" gap="sm md@md lg@lg">
+<Flex direction="column" gap={{ base: 'sm', md: 'md', lg: 'lg' }}>
   <CardImage />
-  <Flex direction="column" gap="xs sm@md">
+  <Flex direction="column" gap={{ base: 'xs', md: 'sm' }}>
     <CardTitle />
     <CardDescription />
   </Flex>
-  <Flex gap="xs sm@md">
+  <Flex gap={{ base: 'xs', md: 'sm' }}>
     <PrimaryAction />
     <SecondaryAction />
   </Flex>
@@ -152,9 +152,9 @@ Responsive gap for card content:
 Adaptive spacing for nav items:
 
 ```tsx
-<Flex gap="md lg@lg" align="center">
+<Flex gap={{ base: 'md', lg: 'lg' }} align="center">
   <Brand />
-  <Flex gap="sm md@lg" align="center" className="ml-auto">
+  <Flex gap={{ base: 'sm', lg: 'md' }} align="center" className="ml-auto">
     <NavLink>Home</NavLink>
     <NavLink>Products</NavLink>
     <NavLink>About</NavLink>
@@ -167,7 +167,7 @@ Adaptive spacing for nav items:
 Responsive gap with wrap for tag clouds or button groups:
 
 ```tsx
-<Flex gap="xs sm@md" wrap="wrap">
+<Flex gap={{ base: 'xs', md: 'sm' }} wrap="wrap">
   {tags.map(tag => (
     <Tag key={tag.id}>{tag.name}</Tag>
   ))}
@@ -188,7 +188,7 @@ Use **Flex** when you need full control over justify, wrap modes, or inline-flex
 </Stack>
 
 // Flex - full flexbox control
-<Flex gap="sm md@md" justify="between" wrap="wrap">
+<Flex gap={{ base: 'sm', md: 'md' }} justify="between" wrap="wrap">
   <Item />
   <Item />
 </Flex>

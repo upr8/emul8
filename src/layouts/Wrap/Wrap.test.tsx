@@ -74,9 +74,9 @@ describe('Wrap', () => {
 });
 
 describe('Wrap responsive gap', () => {
-  it('applies responsive gap with @breakpoint notation', () => {
+  it('applies responsive gap with object syntax', () => {
     render(
-      <Wrap gap="sm md@md lg@lg" data-testid="wrap">
+      <Wrap gap={{ base: 'sm', md: 'md', lg: 'lg' }} data-testid="wrap">
         Content
       </Wrap>
     );
@@ -88,7 +88,7 @@ describe('Wrap responsive gap', () => {
 
   it('applies responsive gap with only breakpoint values', () => {
     render(
-      <Wrap gap="md@md xl@xl" data-testid="wrap">
+      <Wrap gap={{ md: 'md', xl: 'xl' }} data-testid="wrap">
         Content
       </Wrap>
     );
@@ -99,7 +99,7 @@ describe('Wrap responsive gap', () => {
 
   it('combines responsive gap with other variants', () => {
     render(
-      <Wrap gap="xs sm@lg" align="start" justify="center" data-testid="wrap">
+      <Wrap gap={{ base: 'xs', lg: 'sm' }} align="start" justify="center" data-testid="wrap">
         Content
       </Wrap>
     );
@@ -112,7 +112,7 @@ describe('Wrap responsive gap', () => {
 
   it('combines responsive gap with asChild', () => {
     render(
-      <Wrap asChild gap="sm md@md" data-testid="wrap">
+      <Wrap asChild gap={{ base: 'sm', md: 'md' }} data-testid="wrap">
         <ul>Content</ul>
       </Wrap>
     );
@@ -120,5 +120,47 @@ describe('Wrap responsive gap', () => {
     expect(element.tagName).toBe('UL');
     expect(element).toHaveClass('gap-2');
     expect(element).toHaveClass('md:gap-4');
+  });
+});
+
+describe('Wrap gapX/gapY', () => {
+  it('applies gapX', () => {
+    render(
+      <Wrap gapX="lg" data-testid="wrap">
+        Content
+      </Wrap>
+    );
+    expect(screen.getByTestId('wrap')).toHaveClass('gap-x-6');
+  });
+
+  it('applies gapY', () => {
+    render(
+      <Wrap gapY="sm" data-testid="wrap">
+        Content
+      </Wrap>
+    );
+    expect(screen.getByTestId('wrap')).toHaveClass('gap-y-2');
+  });
+
+  it('applies both gapX and gapY', () => {
+    render(
+      <Wrap gapX="lg" gapY="sm" data-testid="wrap">
+        Content
+      </Wrap>
+    );
+    const element = screen.getByTestId('wrap');
+    expect(element).toHaveClass('gap-x-6');
+    expect(element).toHaveClass('gap-y-2');
+  });
+
+  it('applies responsive object gap', () => {
+    render(
+      <Wrap gap={{ base: 'sm', md: 'lg' }} data-testid="wrap">
+        Content
+      </Wrap>
+    );
+    const element = screen.getByTestId('wrap');
+    expect(element).toHaveClass('gap-2');
+    expect(element).toHaveClass('md:gap-6');
   });
 });

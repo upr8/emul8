@@ -1,20 +1,23 @@
 import { forwardRef } from 'react';
 import { cn } from '../../utils/cn';
-import { responsivePadding } from '../../utils/responsive';
-import type { ContainerProps } from './Container.types';
+import { isResponsiveObject, responsivePadding } from '../../utils/responsive';
+import type { ContainerPadding, ContainerProps } from './Container.types';
 import { containerVariants } from './Container.variants';
 
 /**
  * Container component for centering and constraining content width.
  *
- * Supports responsive padding using Cedar-style @breakpoint notation:
+ * Supports responsive padding using object syntax:
  * @example
- * <Container padding="sm md@md lg@lg" />
+ * <Container padding={{ base: 'sm', md: 'md', lg: 'lg' }} />
  */
 export const Container = forwardRef<HTMLDivElement, ContainerProps>(
   ({ className, size, padding, fluid, center, andText, ...props }, ref) => {
-    // Check if padding is a responsive value (contains @)
-    const isResponsivePadding = typeof padding === 'string' && padding.includes('@');
+    const isResponsivePadding = isResponsiveObject(padding);
+    // When not responsive, padding is a simple string literal or null/undefined
+    const staticPadding = isResponsivePadding
+      ? undefined
+      : (padding as ContainerPadding | null | undefined);
 
     return (
       <div
@@ -22,7 +25,7 @@ export const Container = forwardRef<HTMLDivElement, ContainerProps>(
         className={cn(
           containerVariants({
             size: fluid ? undefined : size,
-            padding: isResponsivePadding ? undefined : padding,
+            padding: staticPadding,
             fluid,
             center,
             andText,

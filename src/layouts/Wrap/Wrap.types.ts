@@ -1,6 +1,6 @@
 import type { VariantProps } from 'class-variance-authority';
 import type { HTMLAttributes } from 'react';
-import type { ResponsiveValue } from '../../utils/responsive';
+import type { GapSize, ResponsiveValue } from '../../utils/responsive';
 import type { wrapVariants } from './Wrap.variants';
 
 export interface WrapProps
@@ -8,7 +8,7 @@ export interface WrapProps
     Omit<VariantProps<typeof wrapVariants>, 'gap'> {
   /**
    * Gap between wrapped items.
-   * Supports responsive values using Cedar-style @breakpoint notation.
+   * Supports responsive values using object syntax.
    *
    * @example
    * // Static gap
@@ -16,9 +16,27 @@ export interface WrapProps
    *
    * @example
    * // Responsive gap
-   * <Wrap gap="sm md@md lg@lg" />
+   * <Wrap gap={{ base: 'sm', md: 'md', lg: 'lg' }} />
    */
-  gap?: VariantProps<typeof wrapVariants>['gap'] | ResponsiveValue;
+  gap?: VariantProps<typeof wrapVariants>['gap'] | ResponsiveValue<GapSize>;
+  /**
+   * Column gap (horizontal spacing between items).
+   * Overrides `gap` for the horizontal axis.
+   *
+   * @example
+   * <Wrap gapX="lg" gapY="sm" />
+   * <Wrap gapX={{ base: 'sm', md: 'lg' }} />
+   */
+  gapX?: ResponsiveValue<GapSize>;
+  /**
+   * Row gap (vertical spacing between items).
+   * Overrides `gap` for the vertical axis.
+   *
+   * @example
+   * <Wrap gapX="lg" gapY="sm" />
+   * <Wrap gapY={{ base: 'xs', md: 'md' }} />
+   */
+  gapY?: ResponsiveValue<GapSize>;
   /**
    * Render as a different element using the Slot pattern.
    */

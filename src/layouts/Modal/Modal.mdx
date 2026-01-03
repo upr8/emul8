@@ -13,6 +13,10 @@ Modal provides a semantic dialog overlay with backdrop and proper accessibility.
 - **Backdrop click** - Closes on backdrop click (configurable)
 - **Escape key** - Closes on Escape press (configurable)
 - **Body scroll lock** - Prevents background scrolling when open
+- **Focus trap** - Keeps focus within the modal (configurable)
+- **Auto-focus** - Focuses first focusable element on open
+- **Return focus** - Returns focus to trigger element on close
+- **SSR safe** - Guards document access for server-side rendering
 - **Compound component** - Header, Body, Footer sub-components
 - **Size variants** - sm, md, lg, xl, 2xl, full
 - **Portal rendering** - Renders to document.body
@@ -69,6 +73,10 @@ The root component that handles open state, backdrop, and event listeners.
 | \`onClose\` | \`() => void\` | - | Callback when close is requested |
 | \`closeOnBackdropClick\` | \`boolean\` | \`true\` | Close when backdrop is clicked |
 | \`closeOnEscape\` | \`boolean\` | \`true\` | Close when Escape is pressed |
+| \`trapFocus\` | \`boolean\` | \`true\` | Keep focus within the modal |
+| \`autoFocus\` | \`boolean\` | \`true\` | Focus first element on open |
+| \`returnFocus\` | \`boolean\` | \`true\` | Return focus to trigger on close |
+| \`triggerRef\` | \`RefObject\` | - | Ref to trigger element for return focus |
 `}
 </Markdown>
 
@@ -154,9 +162,12 @@ Modal is a **pure structural component** - it handles only layout concerns (posi
 ## Accessibility
 
 - Uses `role="dialog"` and `aria-modal="true"`
-- Escape key closes the modal (configurable)
+- **Focus trap** - Tab cycles through focusable elements within the modal
+- **Auto-focus** - First focusable element receives focus on open
+- **Return focus** - Focus returns to trigger element on close (use `triggerRef` for precise control)
+- Escape key closes the modal (configurable via `closeOnEscape`)
 - Body scroll is locked when open
-- Focus should be managed by the consuming application
+- Keyboard and click handlers ensure proper event handling
 
 ## All Stories
 

@@ -178,9 +178,9 @@ describe('Grid', () => {
 });
 
 describe('Grid responsive gap', () => {
-  it('applies responsive gap with @breakpoint notation', () => {
+  it('applies responsive gap with object syntax', () => {
     render(
-      <Grid gap="sm md@md lg@lg" data-testid="grid">
+      <Grid gap={{ base: 'sm', md: 'md', lg: 'lg' }} data-testid="grid">
         <div>Content</div>
       </Grid>
     );
@@ -192,7 +192,7 @@ describe('Grid responsive gap', () => {
 
   it('applies responsive gap with only breakpoint values', () => {
     render(
-      <Grid gap="md@md xl@xl" data-testid="grid">
+      <Grid gap={{ md: 'md', xl: 'xl' }} data-testid="grid">
         <div>Content</div>
       </Grid>
     );
@@ -203,7 +203,7 @@ describe('Grid responsive gap', () => {
 
   it('combines responsive gap with columns', () => {
     render(
-      <Grid gap="xs sm@lg" columns={3} data-testid="grid">
+      <Grid gap={{ base: 'xs', lg: 'sm' }} columns={3} data-testid="grid">
         <div>Content</div>
       </Grid>
     );
@@ -217,7 +217,7 @@ describe('Grid responsive gap', () => {
 
   it('combines responsive gap with asChild', () => {
     render(
-      <Grid asChild gap="sm md@md" data-testid="grid">
+      <Grid asChild gap={{ base: 'sm', md: 'md' }} data-testid="grid">
         <ul>
           <li>Item</li>
         </ul>
@@ -227,5 +227,36 @@ describe('Grid responsive gap', () => {
     expect(element.tagName).toBe('UL');
     expect(element).toHaveClass('gap-2');
     expect(element).toHaveClass('md:gap-4');
+  });
+});
+
+describe('Grid gapX/gapY', () => {
+  it('applies gapX', () => {
+    render(
+      <Grid gapX="lg" data-testid="grid">
+        <div>Content</div>
+      </Grid>
+    );
+    expect(screen.getByTestId('grid')).toHaveClass('gap-x-6');
+  });
+
+  it('applies gapY', () => {
+    render(
+      <Grid gapY="sm" data-testid="grid">
+        <div>Content</div>
+      </Grid>
+    );
+    expect(screen.getByTestId('grid')).toHaveClass('gap-y-2');
+  });
+
+  it('applies both gapX and gapY', () => {
+    render(
+      <Grid gapX="lg" gapY="sm" data-testid="grid">
+        <div>Content</div>
+      </Grid>
+    );
+    const element = screen.getByTestId('grid');
+    expect(element).toHaveClass('gap-x-6');
+    expect(element).toHaveClass('gap-y-2');
   });
 });

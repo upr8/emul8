@@ -2,11 +2,19 @@ import { describe, expect, it } from 'vitest';
 import {
   BREAKPOINTS,
   GAP_VARIANTS,
+  isResponsiveObject,
   PADDING_VARIANTS,
   parseResponsive,
   responsiveClasses,
   responsiveGap,
+  responsiveGapX,
+  responsiveGapY,
+  responsiveGridColumns,
+  responsiveM,
+  responsiveMx,
+  responsiveP,
   responsivePadding,
+  responsivePx,
 } from './responsive';
 
 describe('parseResponsive', () => {
@@ -22,12 +30,12 @@ describe('parseResponsive', () => {
     expect(parseResponsive('sm')).toEqual({ base: 'sm' });
   });
 
-  it('parses value with single breakpoint', () => {
-    expect(parseResponsive('sm md@md')).toEqual({ base: 'sm', md: 'md' });
+  it('returns object with single breakpoint as-is', () => {
+    expect(parseResponsive({ base: 'sm', md: 'md' })).toEqual({ base: 'sm', md: 'md' });
   });
 
-  it('parses value with multiple breakpoints', () => {
-    expect(parseResponsive('xs sm@sm md@md lg@lg')).toEqual({
+  it('returns object with multiple breakpoints as-is', () => {
+    expect(parseResponsive({ base: 'xs', sm: 'sm', md: 'md', lg: 'lg' })).toEqual({
       base: 'xs',
       sm: 'sm',
       md: 'md',
@@ -35,20 +43,12 @@ describe('parseResponsive', () => {
     });
   });
 
-  it('parses only breakpoint values without base', () => {
-    expect(parseResponsive('md@md lg@lg')).toEqual({ md: 'md', lg: 'lg' });
-  });
-
-  it('handles extra whitespace', () => {
-    expect(parseResponsive('  sm   md@md  ')).toEqual({ base: 'sm', md: 'md' });
-  });
-
-  it('ignores invalid breakpoints', () => {
-    expect(parseResponsive('sm md@invalid')).toEqual({ base: 'sm' });
+  it('returns object without base as-is', () => {
+    expect(parseResponsive({ md: 'md', lg: 'lg' })).toEqual({ md: 'md', lg: 'lg' });
   });
 
   it('handles xl breakpoint', () => {
-    expect(parseResponsive('sm xl@xl')).toEqual({ base: 'sm', xl: 'xl' });
+    expect(parseResponsive({ base: 'sm', xl: 'xl' })).toEqual({ base: 'sm', xl: 'xl' });
   });
 });
 
@@ -96,7 +96,7 @@ describe('responsiveGap', () => {
   });
 
   it('returns responsive gap classes', () => {
-    expect(responsiveGap('sm md@md lg@lg')).toBe('gap-2 md:gap-4 lg:gap-6');
+    expect(responsiveGap({ base: 'sm', md: 'md', lg: 'lg' })).toBe('gap-2 md:gap-4 lg:gap-6');
   });
 
   it('handles all gap sizes', () => {
@@ -121,7 +121,7 @@ describe('responsivePadding', () => {
   });
 
   it('returns responsive padding classes', () => {
-    expect(responsivePadding('sm md@md lg@lg')).toBe('px-4 md:px-6 lg:px-8');
+    expect(responsivePadding({ base: 'sm', md: 'md', lg: 'lg' })).toBe('px-4 md:px-6 lg:px-8');
   });
 
   it('handles all padding sizes', () => {
@@ -153,5 +153,87 @@ describe('constants', () => {
     expect(Object.keys(PADDING_VARIANTS)).toContain('sm');
     expect(Object.keys(PADDING_VARIANTS)).toContain('md');
     expect(Object.keys(PADDING_VARIANTS)).toContain('lg');
+  });
+});
+
+describe('isResponsiveObject', () => {
+  it('returns false for undefined', () => {
+    expect(isResponsiveObject(undefined)).toBe(false);
+  });
+
+  it('returns false for string', () => {
+    expect(isResponsiveObject('sm')).toBe(false);
+  });
+
+  it('returns true for object', () => {
+    expect(isResponsiveObject({ base: 'sm', md: 'md' })).toBe(true);
+  });
+});
+
+describe('parseResponsive with object syntax', () => {
+  it('returns object as-is', () => {
+    const obj = { base: 'sm', md: 'md', lg: 'lg' };
+    expect(parseResponsive(obj)).toEqual(obj);
+  });
+});
+
+describe('responsiveGapX', () => {
+  it('returns empty string for undefined', () => {
+    expect(responsiveGapX(undefined)).toBe('');
+  });
+
+  it('returns gap-x class', () => {
+    expect(responsiveGapX('md')).toBe('gap-x-4');
+  });
+
+  it('returns responsive gap-x classes', () => {
+    expect(responsiveGapX({ base: 'sm', md: 'md' })).toBe('gap-x-2 md:gap-x-4');
+  });
+});
+
+describe('responsiveGapY', () => {
+  it('returns empty string for undefined', () => {
+    expect(responsiveGapY(undefined)).toBe('');
+  });
+
+  it('returns gap-y class', () => {
+    expect(responsiveGapY('lg')).toBe('gap-y-6');
+  });
+});
+
+describe('responsiveGridColumns', () => {
+  it('returns empty string for undefined', () => {
+    expect(responsiveGridColumns(undefined)).toBe('');
+  });
+
+  it('returns grid-cols class', () => {
+    expect(responsiveGridColumns('3')).toBe('grid-cols-3');
+  });
+
+  it('returns responsive grid-cols classes', () => {
+    expect(responsiveGridColumns({ base: '1', md: '3' })).toBe('grid-cols-1 md:grid-cols-3');
+  });
+});
+
+describe('responsive spacing helpers', () => {
+  it('responsiveP returns p- classes', () => {
+    expect(responsiveP('4')).toBe('p-4');
+    expect(responsiveP({ base: '2', md: '4' })).toBe('p-2 md:p-4');
+  });
+
+  it('responsivePx returns px- classes', () => {
+    expect(responsivePx('4')).toBe('px-4');
+  });
+
+  it('responsiveM returns m- classes', () => {
+    expect(responsiveM('4')).toBe('m-4');
+  });
+
+  it('responsiveMx returns mx- classes', () => {
+    expect(responsiveMx('auto')).toBe('mx-auto');
+  });
+
+  it('returns empty string for undefined', () => {
+    expect(responsiveP(undefined)).toBe('');
   });
 });

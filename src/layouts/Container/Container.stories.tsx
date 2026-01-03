@@ -15,7 +15,7 @@ const meta = {
     padding: {
       control: 'text',
       description:
-        'Padding size. Supports responsive @breakpoint notation (e.g., "sm md@md lg@lg")',
+        'Padding size. Supports responsive object syntax (e.g., { base: "sm", md: "md" })',
     },
     fluid: {
       control: 'boolean',
@@ -130,11 +130,11 @@ export const Fluid: Story = {
 export const ResponsivePadding: Story = {
   name: 'Responsive Padding',
   render: () => (
-    <Container padding="sm md@md lg@lg">
+    <Container padding={{ base: 'sm', md: 'md', lg: 'lg' }}>
       <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded">
         <h2 className="text-lg font-bold mb-2">Responsive Padding</h2>
         <p className="text-gray-600 dark:text-gray-400 font-mono text-sm">
-          padding=&quot;sm md@md lg@lg&quot;
+          {'padding={{ base: "sm", md: "md", lg: "lg" }}'}
         </p>
         <p className="text-gray-600 dark:text-gray-400 mt-2">
           Padding adjusts at different breakpoints: px-4 (base), md:px-6, lg:px-8
@@ -147,10 +147,12 @@ export const ResponsivePadding: Story = {
 export const FluidWithResponsivePadding: Story = {
   name: 'Fluid + Responsive Padding',
   render: () => (
-    <Container fluid padding="xs sm@sm md@md lg@lg">
+    <Container fluid padding={{ base: 'xs', sm: 'sm', md: 'md', lg: 'lg' }}>
       <div className="bg-gradient-to-r from-green-500 to-teal-500 p-8 rounded text-white">
         <h2 className="text-2xl font-bold mb-2">Full Width with Responsive Padding</h2>
-        <p className="font-mono text-sm mb-2">fluid padding=&quot;xs sm@sm md@md lg@lg&quot;</p>
+        <p className="font-mono text-sm mb-2">
+          {'fluid padding={{ base: "xs", sm: "sm", md: "md", lg: "lg" }}'}
+        </p>
         <p>Combines fluid (no max-width) with responsive padding at each breakpoint.</p>
       </div>
     </Container>

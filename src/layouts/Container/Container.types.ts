@@ -3,12 +3,17 @@ import type { HTMLAttributes } from 'react';
 import type { ResponsiveValue } from '../../utils/responsive';
 import type { containerVariants } from './Container.variants';
 
+/**
+ * Valid padding sizes for Container.
+ */
+export type ContainerPadding = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+
 export interface ContainerProps
   extends HTMLAttributes<HTMLDivElement>,
     Omit<VariantProps<typeof containerVariants>, 'padding'> {
   /**
    * Padding applied to the container.
-   * Supports responsive values using Cedar-style @breakpoint notation.
+   * Supports responsive values using object syntax.
    *
    * @example
    * // Static padding
@@ -16,7 +21,7 @@ export interface ContainerProps
    *
    * @example
    * // Responsive padding
-   * <Container padding="sm md@md lg@lg" />
+   * <Container padding={{ base: 'sm', md: 'md', lg: 'lg' }} />
    */
-  padding?: VariantProps<typeof containerVariants>['padding'] | ResponsiveValue;
+  padding?: ContainerPadding | ResponsiveValue<ContainerPadding> | null;
 }

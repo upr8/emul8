@@ -88,9 +88,9 @@ describe('Flex', () => {
 });
 
 describe('Flex responsive gap', () => {
-  it('applies responsive gap with @breakpoint notation', () => {
+  it('applies responsive gap with object syntax', () => {
     render(
-      <Flex gap="sm md@md lg@lg" data-testid="flex">
+      <Flex gap={{ base: 'sm', md: 'md', lg: 'lg' }} data-testid="flex">
         Content
       </Flex>
     );
@@ -102,7 +102,7 @@ describe('Flex responsive gap', () => {
 
   it('applies responsive gap with only breakpoint values', () => {
     render(
-      <Flex gap="md@md xl@xl" data-testid="flex">
+      <Flex gap={{ md: 'md', xl: 'xl' }} data-testid="flex">
         Content
       </Flex>
     );
@@ -113,7 +113,7 @@ describe('Flex responsive gap', () => {
 
   it('combines responsive gap with other variants', () => {
     render(
-      <Flex gap="xs sm@lg" direction="column" align="center" data-testid="flex">
+      <Flex gap={{ base: 'xs', lg: 'sm' }} direction="column" align="center" data-testid="flex">
         Content
       </Flex>
     );
@@ -126,7 +126,7 @@ describe('Flex responsive gap', () => {
 
   it('combines responsive gap with asChild', () => {
     render(
-      <Flex asChild gap="sm md@md" data-testid="flex">
+      <Flex asChild gap={{ base: 'sm', md: 'md' }} data-testid="flex">
         <nav>Content</nav>
       </Flex>
     );
@@ -134,5 +134,36 @@ describe('Flex responsive gap', () => {
     expect(element.tagName).toBe('NAV');
     expect(element).toHaveClass('gap-2');
     expect(element).toHaveClass('md:gap-4');
+  });
+});
+
+describe('Flex gapX/gapY', () => {
+  it('applies gapX', () => {
+    render(
+      <Flex gapX="lg" data-testid="flex">
+        Content
+      </Flex>
+    );
+    expect(screen.getByTestId('flex')).toHaveClass('gap-x-6');
+  });
+
+  it('applies gapY', () => {
+    render(
+      <Flex gapY="sm" data-testid="flex">
+        Content
+      </Flex>
+    );
+    expect(screen.getByTestId('flex')).toHaveClass('gap-y-2');
+  });
+
+  it('applies both gapX and gapY', () => {
+    render(
+      <Flex gapX="lg" gapY="sm" data-testid="flex">
+        Content
+      </Flex>
+    );
+    const element = screen.getByTestId('flex');
+    expect(element).toHaveClass('gap-x-6');
+    expect(element).toHaveClass('gap-y-2');
   });
 });

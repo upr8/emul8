@@ -151,4 +151,85 @@ describe('Box', () => {
   it('has correct displayName', () => {
     expect(Box.displayName).toBe('Box');
   });
+
+  describe('as prop', () => {
+    it('renders as a different element', () => {
+      render(
+        <Box as="section" data-testid="box">
+          Content
+        </Box>
+      );
+      expect(screen.getByTestId('box').tagName).toBe('SECTION');
+    });
+
+    it('asChild takes priority over as', () => {
+      render(
+        <Box as="section" asChild data-testid="box">
+          <article>Content</article>
+        </Box>
+      );
+      expect(screen.getByTestId('box').tagName).toBe('ARTICLE');
+    });
+  });
+
+  describe('shorthand props', () => {
+    it('applies p prop', () => {
+      render(
+        <Box p="4" data-testid="box">
+          Content
+        </Box>
+      );
+      expect(screen.getByTestId('box')).toHaveClass('p-4');
+    });
+
+    it('applies px prop', () => {
+      render(
+        <Box px="4" data-testid="box">
+          Content
+        </Box>
+      );
+      expect(screen.getByTestId('box')).toHaveClass('px-4');
+    });
+
+    it('applies m prop', () => {
+      render(
+        <Box m="4" data-testid="box">
+          Content
+        </Box>
+      );
+      expect(screen.getByTestId('box')).toHaveClass('m-4');
+    });
+
+    it('applies mx auto', () => {
+      render(
+        <Box mx="auto" data-testid="box">
+          Content
+        </Box>
+      );
+      expect(screen.getByTestId('box')).toHaveClass('mx-auto');
+    });
+
+    it('applies responsive p prop', () => {
+      render(
+        <Box p={{ base: '2', md: '4' }} data-testid="box">
+          Content
+        </Box>
+      );
+      const box = screen.getByTestId('box');
+      expect(box).toHaveClass('p-2');
+      expect(box).toHaveClass('md:p-4');
+    });
+
+    it('shorthand props override default padding', () => {
+      render(
+        <Box p="8" data-testid="box">
+          Content
+        </Box>
+      );
+      const box = screen.getByTestId('box');
+      expect(box).toHaveClass('p-8');
+      // twMerge deduplicates conflicting classes, so p-0 is removed
+      expect(box).not.toHaveClass('p-4'); // Default md padding is overridden
+    });
+  });
 });

@@ -10,7 +10,7 @@ Wrap creates a flex container that wraps its children naturally with responsive 
 ## Features
 
 - **Natural wrapping** - Items wrap to next line when space runs out
-- **Responsive gap** - Cedar-style `@breakpoint` notation for adaptive spacing
+- **Responsive gap** - Object syntax for adaptive spacing
 - **Alignment options** - Control cross-axis and main-axis alignment
 - **Slot support** - Render as child element with `asChild`
 
@@ -25,7 +25,7 @@ Wrap creates a flex container that wraps its children naturally with responsive 
 import { Wrap } from "emul8";
 
 // Tag cloud with responsive gap
-<Wrap gap="xs sm@md">
+<Wrap gap={{ base: 'xs', md: 'sm' }}>
   <Tag>JavaScript</Tag>
   <Tag>TypeScript</Tag>
   <Tag>React</Tag>
@@ -33,30 +33,30 @@ import { Wrap } from "emul8";
 </Wrap>
 
 // Centered wrapping button group
-<Wrap gap="sm md@md" justify="center">
+<Wrap gap={{ base: 'sm', md: 'md' }} justify="center">
   <Button>Edit</Button>
   <Button>Delete</Button>
   <Button>Share</Button>
 </Wrap>
 
 // Filter chips with responsive spacing
-<Wrap gap="xs sm@sm md@md">
+<Wrap gap={{ base: 'xs', sm: 'sm', md: 'md' }}>
   {filters.map(f => <Chip key={f.id}>{f.name}</Chip>)}
 </Wrap>
 ```
 
 ## Responsive Gap
 
-Use Cedar-style `@breakpoint` notation for adaptive spacing:
+Use object syntax for adaptive spacing across breakpoints:
 
 ```tsx
-// gap="base breakpoint@breakpoint"
-<Wrap gap="xs sm@md lg@lg">
+// Object syntax for responsive gap
+<Wrap gap={{ base: 'xs', md: 'sm', lg: 'lg' }}>
   {/* gap-1 (mobile) → md:gap-2 → lg:gap-6 */}
 </Wrap>
 
 // Compact on mobile, spacious on desktop
-<Wrap gap="xs sm@sm md@md">
+<Wrap gap={{ base: 'xs', sm: 'sm', md: 'md' }}>
   <Tag>One</Tag>
   <Tag>Two</Tag>
   <Tag>Three</Tag>
@@ -67,10 +67,10 @@ Use Cedar-style `@breakpoint` notation for adaptive spacing:
 {`
 | Notation | Description |
 | -------- | ----------- |
-| \`sm\` | Static gap (gap-2) at all sizes |
-| \`xs sm@md\` | gap-1 base, md:gap-2 at medium screens |
-| \`xs sm@sm md@md\` | Grows with each breakpoint |
-| \`sm@md lg@lg\` | No base, starts at md breakpoint |
+| \`"sm"\` | Static gap (gap-2) at all sizes |
+| \`{ base: 'xs', md: 'sm' }\` | gap-1 base, md:gap-2 at medium screens |
+| \`{ base: 'xs', sm: 'sm', md: 'md' }\` | Grows with each breakpoint |
+| \`{ md: 'sm', lg: 'lg' }\` | No base, starts at md breakpoint |
 `}
 </Markdown>
 
@@ -86,6 +86,7 @@ Use Cedar-style `@breakpoint` notation for adaptive spacing:
 | \`md\` | gap-4 | 16px |
 | \`lg\` | gap-6 | 24px |
 | \`xl\` | gap-8 | 32px |
+| \`2xl\` | gap-12 | 48px |
 `}
 </Markdown>
 
@@ -95,7 +96,7 @@ Use Cedar-style `@breakpoint` notation for adaptive spacing:
 {`
 | Prop | Type | Default | Description |
 | ---- | ---- | ------- | ----------- |
-| \`gap\` | \`"none" \\| "xs" \\| "sm" \\| "md" \\| "lg" \\| "xl"\` or responsive | \`"sm"\` | Gap between items |
+| \`gap\` | \`"none" \\| "xs" \\| "sm" \\| "md" \\| "lg" \\| "xl" \\| "2xl"\` or responsive object | \`"sm"\` | Gap between items |
 | \`align\` | \`"start" \\| "center" \\| "end" \\| "stretch" \\| "baseline"\` | \`"center"\` | Cross-axis alignment |
 | \`justify\` | \`"start" \\| "center" \\| "end"\` | \`"start"\` | Main-axis alignment |
 | \`asChild\` | \`boolean\` | \`false\` | Render as child element |
@@ -109,7 +110,7 @@ Use Cedar-style `@breakpoint` notation for adaptive spacing:
 Use responsive gap for tag clouds - compact on mobile for better touch targets:
 
 ```tsx
-<Wrap gap="xs sm@md">
+<Wrap gap={{ base: 'xs', md: 'sm' }}>
   {tags.map(tag => (
     <span key={tag.id} className="px-3 py-1 bg-gray-100 rounded-full text-sm">
       {tag.name}
@@ -123,7 +124,7 @@ Use responsive gap for tag clouds - compact on mobile for better touch targets:
 Responsive spacing for filter UIs:
 
 ```tsx
-<Wrap gap="xs sm@sm md@md">
+<Wrap gap={{ base: 'xs', sm: 'sm', md: 'md' }}>
   {filters.map(filter => (
     <button
       key={filter.id}
@@ -143,7 +144,7 @@ Responsive spacing for filter UIs:
 Wrapping button groups that adapt to screen size:
 
 ```tsx
-<Wrap gap="xs sm@md">
+<Wrap gap={{ base: 'xs', md: 'sm' }}>
   <Button variant="primary">Save</Button>
   <Button variant="secondary">Cancel</Button>
   <Button variant="secondary">Reset</Button>
@@ -159,13 +160,13 @@ Organized badge sections:
 <div className="space-y-4">
   <div>
     <h3>Frontend</h3>
-    <Wrap gap="xs sm@md">
+    <Wrap gap={{ base: 'xs', md: 'sm' }}>
       {frontend.map(skill => <Badge key={skill}>{skill}</Badge>)}
     </Wrap>
   </div>
   <div>
     <h3>Backend</h3>
-    <Wrap gap="xs sm@md">
+    <Wrap gap={{ base: 'xs', md: 'sm' }}>
       {backend.map(skill => <Badge key={skill}>{skill}</Badge>)}
     </Wrap>
   </div>
@@ -178,7 +179,7 @@ Start with tight spacing on mobile, increase on larger screens:
 
 ```tsx
 // Compact on mobile, spacious on desktop
-<Wrap gap="xs sm@sm md@md lg@lg">
+<Wrap gap={{ base: 'xs', sm: 'sm', md: 'md', lg: 'lg' }}>
   {items.map(item => <Item key={item.id} {...item} />)}
 </Wrap>
 ```

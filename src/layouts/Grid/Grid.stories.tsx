@@ -10,7 +10,7 @@ const meta = {
   argTypes: {
     gap: {
       control: 'text',
-      description: 'Gap size. Supports responsive @breakpoint notation (e.g., "sm md@md lg@lg")',
+      description: 'Gap size. Supports responsive object syntax (e.g., { base: "sm", md: "md" })',
     },
     columns: {
       control: 'number',
@@ -174,7 +174,7 @@ export const ImageGallery: Story = {
 export const ResponsiveGap: Story = {
   name: 'Responsive Gap',
   render: () => (
-    <Grid gap="xs sm@sm md@md lg@lg" min="200px">
+    <Grid gap={{ base: 'xs', sm: 'sm', md: 'md', lg: 'lg' }} min="200px">
       {[1, 2, 3, 4, 5, 6].map((n) => (
         <Card key={n}>{n}</Card>
       ))}
@@ -193,7 +193,7 @@ export const ResponsiveGap: Story = {
 export const ResponsiveGapBreakpointsOnly: Story = {
   name: 'Responsive Gap (Breakpoints Only)',
   render: () => (
-    <Grid gap="md@md lg@lg" min="200px">
+    <Grid gap={{ md: 'md', lg: 'lg' }} min="200px">
       {[1, 2, 3, 4, 5, 6].map((n) => (
         <Card key={n}>{n}</Card>
       ))}
@@ -211,7 +211,7 @@ export const ResponsiveGapBreakpointsOnly: Story = {
 export const ResponsiveProductGrid: Story = {
   name: 'Responsive Product Grid',
   render: () => (
-    <Grid gap="sm md@md lg@lg" min="280px">
+    <Grid gap={{ base: 'sm', md: 'md', lg: 'lg' }} min="280px">
       {[1, 2, 3, 4, 5, 6].map((n) => (
         <div key={n} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
           <div className="bg-gray-200 dark:bg-gray-700 h-40 rounded mb-4" />
@@ -237,9 +237,9 @@ export const ResponsiveGapComparison: Story = {
     <div className="space-y-8">
       <div>
         <p className="text-sm text-gray-500 mb-2 font-mono">
-          gap=&quot;sm md@md lg@lg&quot; (responsive)
+          {'gap={{ base: "sm", md: "md", lg: "lg" }} (responsive)'}
         </p>
-        <Grid gap="sm md@md lg@lg" min="150px">
+        <Grid gap={{ base: 'sm', md: 'md', lg: 'lg' }} min="150px">
           <Card>1</Card>
           <Card>2</Card>
           <Card>3</Card>

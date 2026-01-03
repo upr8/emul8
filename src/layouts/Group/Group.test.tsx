@@ -32,7 +32,7 @@ describe('Group', () => {
 
   it('applies gap variant', () => {
     render(<Group gap="lg">Content</Group>);
-    expect(screen.getByRole('group')).toHaveClass('gap-4');
+    expect(screen.getByRole('group')).toHaveClass('gap-6');
   });
 
   it('applies align variant', () => {

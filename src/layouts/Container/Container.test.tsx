@@ -109,8 +109,8 @@ describe('Container fluid variant', () => {
 });
 
 describe('Container responsive padding', () => {
-  it('applies responsive padding with @breakpoint notation', () => {
-    render(<Container padding="sm md@md lg@lg">Content</Container>);
+  it('applies responsive padding with object syntax', () => {
+    render(<Container padding={{ base: 'sm', md: 'md', lg: 'lg' }}>Content</Container>);
     const element = screen.getByText('Content');
     expect(element).toHaveClass('px-4');
     expect(element).toHaveClass('md:px-6');
@@ -118,7 +118,7 @@ describe('Container responsive padding', () => {
   });
 
   it('applies responsive padding with only breakpoint values', () => {
-    render(<Container padding="md@md xl@xl">Content</Container>);
+    render(<Container padding={{ md: 'md', xl: 'xl' }}>Content</Container>);
     const element = screen.getByText('Content');
     expect(element).toHaveClass('md:px-6');
     expect(element).toHaveClass('xl:px-12');
@@ -126,7 +126,7 @@ describe('Container responsive padding', () => {
 
   it('combines fluid with responsive padding', () => {
     render(
-      <Container fluid padding="sm md@lg">
+      <Container fluid padding={{ base: 'sm', lg: 'md' }}>
         Content
       </Container>
     );

@@ -10,7 +10,7 @@ const meta = {
   argTypes: {
     gap: {
       control: 'text',
-      description: 'Gap size. Supports responsive @breakpoint notation (e.g., "sm md@md lg@lg")',
+      description: 'Gap size. Supports responsive object syntax (e.g., { base: "sm", md: "md" })',
     },
     align: {
       control: 'select',
@@ -153,7 +153,7 @@ export const VariableWidths: Story = {
 export const ResponsiveGap: Story = {
   name: 'Responsive Gap',
   render: () => (
-    <Wrap gap="xs sm@sm md@md lg@lg" className="max-w-md">
+    <Wrap gap={{ base: 'xs', sm: 'sm', md: 'md', lg: 'lg' }} className="max-w-md">
       {['JavaScript', 'TypeScript', 'React', 'Vue', 'Angular', 'Svelte', 'Node.js', 'Deno'].map(
         (tag) => (
           <Tag key={tag}>{tag}</Tag>
@@ -174,7 +174,7 @@ export const ResponsiveGap: Story = {
 export const ResponsiveTagCloud: Story = {
   name: 'Responsive Tag Cloud',
   render: () => (
-    <Wrap gap="xs sm@md" className="max-w-lg">
+    <Wrap gap={{ base: 'xs', md: 'sm' }} className="max-w-lg">
       {[
         'Design Systems',
         'UI',
@@ -210,7 +210,7 @@ export const ResponsiveTagCloud: Story = {
 export const ResponsiveButtonGroup: Story = {
   name: 'Responsive Button Group',
   render: () => (
-    <Wrap gap="xs sm@md" className="max-w-sm">
+    <Wrap gap={{ base: 'xs', md: 'sm' }} className="max-w-sm">
       <button type="button" className="px-4 py-2 bg-blue-500 text-white rounded">
         Save
       </button>
@@ -237,7 +237,7 @@ export const ResponsiveButtonGroup: Story = {
 export const ResponsiveFilterChips: Story = {
   name: 'Responsive Filter Chips',
   render: () => (
-    <Wrap gap="xs sm@sm md@md" className="max-w-md">
+    <Wrap gap={{ base: 'xs', sm: 'sm', md: 'md' }} className="max-w-md">
       {['All', 'Active', 'Completed', 'Pending', 'Cancelled', 'Archived', 'Draft'].map(
         (filter, i) => (
           <button
@@ -270,7 +270,7 @@ export const ResponsiveSkillBadges: Story = {
     <div className="space-y-4 max-w-lg">
       <div>
         <p className="text-sm text-gray-500 mb-2">Frontend</p>
-        <Wrap gap="xs sm@md">
+        <Wrap gap={{ base: 'xs', md: 'sm' }}>
           {['React', 'Vue', 'TypeScript', 'Tailwind'].map((skill) => (
             <span
               key={skill}
@@ -283,7 +283,7 @@ export const ResponsiveSkillBadges: Story = {
       </div>
       <div>
         <p className="text-sm text-gray-500 mb-2">Backend</p>
-        <Wrap gap="xs sm@md">
+        <Wrap gap={{ base: 'xs', md: 'sm' }}>
           {['Node.js', 'Python', 'Go', 'PostgreSQL'].map((skill) => (
             <span
               key={skill}
@@ -311,9 +311,12 @@ export const ResponsiveGapComparison: Story = {
     <div className="space-y-8 max-w-md">
       <div>
         <p className="text-sm text-gray-500 mb-2 font-mono">
-          gap=&quot;sm md@md lg@lg&quot; (responsive)
+          {'gap={{ base: "sm", md: "md", lg: "lg" }} (responsive)'}
         </p>
-        <Wrap gap="sm md@md lg@lg" className="bg-gray-100 dark:bg-gray-800 p-4 rounded">
+        <Wrap
+          gap={{ base: 'sm', md: 'md', lg: 'lg' }}
+          className="bg-gray-100 dark:bg-gray-800 p-4 rounded"
+        >
           <Tag>A</Tag>
           <Tag>B</Tag>
           <Tag>C</Tag>

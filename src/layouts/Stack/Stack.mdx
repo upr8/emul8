@@ -10,8 +10,9 @@ Stack arranges items vertically or horizontally with consistent, responsive spac
 ## Features
 
 - **Flexible direction** - Vertical or horizontal stacking
-- **Responsive gap** - Cedar-style `@breakpoint` notation for adaptive spacing
+- **Responsive gap** - Object syntax for adaptive spacing
 - **Split layout** - Push content to opposite ends with `splitAfter`
+- **Dividers** - Optional divider elements between items
 - **Alignment** - Control cross-axis and main-axis alignment
 
 ## Example
@@ -31,13 +32,13 @@ import { Stack } from "emul8";
 </Stack>
 
 // Horizontal stack with responsive gap
-<Stack direction="horizontal" gap="sm md@md lg@lg" align="center">
+<Stack direction="horizontal" gap={{ base: 'sm', md: 'md', lg: 'lg' }} align="center">
   <Icon />
   <span>Label</span>
 </Stack>
 
 // Form with adaptive spacing
-<Stack gap="sm md@md">
+<Stack gap={{ base: 'sm', md: 'md' }}>
   <FormField label="Email" />
   <FormField label="Password" />
   <Button>Submit</Button>
@@ -46,16 +47,16 @@ import { Stack } from "emul8";
 
 ## Responsive Gap
 
-Use Cedar-style `@breakpoint` notation for adaptive spacing:
+Use object syntax for adaptive spacing across breakpoints:
 
 ```tsx
-// gap="base breakpoint@breakpoint"
-<Stack gap="sm md@md lg@lg">
+// Object syntax for responsive gap
+<Stack gap={{ base: 'sm', md: 'md', lg: 'lg' }}>
   {/* gap-2 (mobile) → md:gap-4 (tablet) → lg:gap-6 (desktop) */}
 </Stack>
 
 // Horizontal nav with responsive spacing
-<Stack direction="horizontal" gap="xs sm@md lg@lg">
+<Stack direction="horizontal" gap={{ base: 'xs', md: 'sm', lg: 'lg' }}>
   <NavItem />
   <NavItem />
   <NavItem />
@@ -66,10 +67,10 @@ Use Cedar-style `@breakpoint` notation for adaptive spacing:
 {`
 | Notation | Description |
 | -------- | ----------- |
-| \`md\` | Static gap (gap-4) at all sizes |
-| \`sm md@md\` | gap-2 base, md:gap-4 at medium screens |
-| \`sm md@md lg@lg\` | Grows with each breakpoint |
-| \`md@md lg@xl\` | No base, starts at md breakpoint |
+| \`"md"\` | Static gap (gap-4) at all sizes |
+| \`{ base: 'sm', md: 'md' }\` | gap-2 base, md:gap-4 at medium screens |
+| \`{ base: 'sm', md: 'md', lg: 'lg' }\` | Grows with each breakpoint |
+| \`{ md: 'md', xl: 'lg' }\` | No base, starts at md breakpoint |
 `}
 </Markdown>
 
@@ -102,9 +103,29 @@ The `splitAfter` prop pushes content after a specific index to the opposite end:
 </Stack>
 
 // Combine with responsive gap
-<Stack splitAfter={0} gap="sm md@md" className="h-screen">
+<Stack splitAfter={0} gap={{ base: 'sm', md: 'md' }} className="h-screen">
   <Header />
   <MainContent />
+  <Footer />
+</Stack>
+```
+
+## Dividers
+
+Add visual separators between items:
+
+```tsx
+// With divider
+<Stack gap="md" divider={<Divider />}>
+  <div>Section 1</div>
+  <div>Section 2</div>
+  <div>Section 3</div>
+</Stack>
+
+// Divider with splitAfter
+<Stack gap="md" divider={<Divider />} splitAfter={0}>
+  <Header />
+  <Content />
   <Footer />
 </Stack>
 ```
@@ -116,11 +137,12 @@ The `splitAfter` prop pushes content after a specific index to the opposite end:
 | Prop | Type | Default | Description |
 | ---- | ---- | ------- | ----------- |
 | \`direction\` | \`"vertical" \\| "horizontal"\` | \`"vertical"\` | Stack direction |
-| \`gap\` | \`"none" \\| "xs" \\| "sm" \\| "md" \\| "lg" \\| "xl" \\| "2xl"\` or responsive | \`"md"\` | Space between items |
+| \`gap\` | \`"none" \\| "xs" \\| "sm" \\| "md" \\| "lg" \\| "xl" \\| "2xl"\` or responsive object | \`"md"\` | Space between items |
 | \`align\` | \`"start" \\| "center" \\| "end" \\| "stretch" \\| "baseline"\` | - | Cross-axis alignment |
 | \`justify\` | \`"start" \\| "center" \\| "end" \\| "between" \\| "around" \\| "evenly"\` | - | Main-axis alignment |
 | \`wrap\` | \`boolean\` | \`false\` | Allow items to wrap |
 | \`splitAfter\` | \`number\` | - | Push items after this index to opposite end |
+| \`divider\` | \`ReactNode\` | - | Element to insert between items |
 `}
 </Markdown>
 
@@ -131,7 +153,7 @@ The `splitAfter` prop pushes content after a specific index to the opposite end:
 Use responsive gap for forms - tighter on mobile, more breathing room on desktop:
 
 ```tsx
-<Stack gap="sm md@md">
+<Stack gap={{ base: 'sm', md: 'md' }}>
   <TextField label="Name" />
   <TextField label="Email" />
   <TextArea label="Message" />
@@ -144,10 +166,10 @@ Use responsive gap for forms - tighter on mobile, more breathing room on desktop
 Horizontal stack with responsive gap for nav items:
 
 ```tsx
-<Stack direction="horizontal" gap="sm md@md lg@lg" align="center">
+<Stack direction="horizontal" gap={{ base: 'sm', md: 'md', lg: 'lg' }} align="center">
   <Logo />
   <nav>
-    <Stack direction="horizontal" gap="xs sm@md">
+    <Stack direction="horizontal" gap={{ base: 'xs', md: 'sm' }}>
       <NavLink>Home</NavLink>
       <NavLink>About</NavLink>
       <NavLink>Contact</NavLink>
@@ -162,7 +184,7 @@ Stack content within cards with consistent spacing:
 
 ```tsx
 <Card>
-  <Stack gap="sm md@md">
+  <Stack gap={{ base: 'sm', md: 'md' }}>
     <CardHeader />
     <CardBody />
     <CardFooter />
@@ -175,10 +197,10 @@ Stack content within cards with consistent spacing:
 Combine responsive gap with splitAfter for full-page layouts:
 
 ```tsx
-<Stack splitAfter={1} gap="md lg@lg" className="min-h-screen">
+<Stack splitAfter={1} gap={{ base: 'md', lg: 'lg' }} className="min-h-screen">
   <Header />
   <main className="flex-1">
-    <Stack gap="sm md@md">{/* Content */}</Stack>
+    <Stack gap={{ base: 'sm', md: 'md' }}>{/* Content */}</Stack>
   </main>
   <Footer />
 </Stack>

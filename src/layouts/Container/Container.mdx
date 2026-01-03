@@ -11,7 +11,7 @@ Container centers and constrains content width with responsive padding support.
 
 - **Max-width constraint** - Multiple size presets (sm to 2xl)
 - **Fluid mode** - Full-width layouts without max-width constraints
-- **Responsive padding** - Cedar-style `@breakpoint` notation
+- **Responsive padding** - Object syntax for adaptive padding
 - **Content centering** - Center children within container
 - **Text centering** - Optional text alignment
 
@@ -37,7 +37,7 @@ import { Container, Center } from "emul8";
 </Container>
 
 // Responsive padding that adapts to screen size
-<Container padding="sm md@md lg@lg">
+<Container padding={{ base: 'sm', md: 'md', lg: 'lg' }}>
   <MainContent />
 </Container>
 
@@ -50,16 +50,16 @@ import { Container, Center } from "emul8";
 
 ## Responsive Padding
 
-Use Cedar-style `@breakpoint` notation for responsive padding:
+Use object syntax for responsive padding across breakpoints:
 
 ```tsx
-// padding="base breakpoint@breakpoint"
-<Container padding="sm md@md lg@lg">
+// Object syntax for responsive padding
+<Container padding={{ base: 'sm', md: 'md', lg: 'lg' }}>
   {/* px-4 (mobile) → md:px-6 (tablet) → lg:px-8 (desktop) */}
 </Container>
 
 // Only apply padding at certain breakpoints
-<Container padding="md@md xl@xl">
+<Container padding={{ md: 'md', xl: 'xl' }}>
   {/* No base padding, md:px-6, xl:px-12 */}
 </Container>
 ```
@@ -68,10 +68,10 @@ Use Cedar-style `@breakpoint` notation for responsive padding:
 {`
 | Notation | Description |
 | -------- | ----------- |
-| \`sm\` | Static padding (px-4) at all sizes |
-| \`sm md@md\` | px-4 base, md:px-6 at medium screens |
-| \`sm md@md lg@lg\` | Grows with each breakpoint |
-| \`md@md lg@xl\` | No base, starts at md breakpoint |
+| \`"sm"\` | Static padding (px-4) at all sizes |
+| \`{ base: 'sm', md: 'md' }\` | px-4 base, md:px-6 at medium screens |
+| \`{ base: 'sm', md: 'md', lg: 'lg' }\` | Grows with each breakpoint |
+| \`{ md: 'md', xl: 'lg' }\` | No base, starts at md breakpoint |
 `}
 </Markdown>
 
@@ -88,7 +88,7 @@ Use `fluid` for full-width layouts without max-width constraints:
 </Container>
 
 // Fluid with responsive padding
-<Container fluid padding="xs sm@sm md@md lg@lg">
+<Container fluid padding={{ base: 'xs', sm: 'sm', md: 'md', lg: 'lg' }}>
   <FullWidthBanner />
 </Container>
 ```
@@ -130,7 +130,7 @@ Use `fluid` for full-width layouts without max-width constraints:
 | Prop | Type | Default | Description |
 | ---- | ---- | ------- | ----------- |
 | \`size\` | \`"sm" \\| "md" \\| "lg" \\| "xl" \\| "2xl" \\| "full"\` | \`"lg"\` | Max-width preset |
-| \`padding\` | \`"none" \\| "xs" \\| "sm" \\| "md" \\| "lg" \\| "xl"\` or responsive | \`"md"\` | Horizontal padding |
+| \`padding\` | \`"none" \\| "xs" \\| "sm" \\| "md" \\| "lg" \\| "xl"\` or responsive object | \`"md"\` | Horizontal padding |
 | \`fluid\` | \`boolean\` | \`false\` | Full-width mode (no max-width) |
 | \`center\` | \`boolean\` | \`false\` | Center children horizontally |
 | \`andText\` | \`boolean\` | \`false\` | Also center text content |
@@ -144,11 +144,11 @@ Use `fluid` for full-width layouts without max-width constraints:
 ```tsx
 // Typical page with fluid header, constrained content
 <>
-  <Container fluid padding="sm md@md">
+  <Container fluid padding={{ base: 'sm', md: 'md' }}>
     <Header />
   </Container>
 
-  <Container size="lg" padding="sm md@md lg@lg">
+  <Container size="lg" padding={{ base: 'sm', md: 'md', lg: 'lg' }}>
     <main>
       <article>...</article>
     </main>
@@ -166,7 +166,7 @@ Start with smaller padding on mobile, increase on larger screens:
 
 ```tsx
 // Mobile-first responsive padding
-<Container padding="xs sm@sm md@md lg@lg">
+<Container padding={{ base: 'xs', sm: 'sm', md: 'md', lg: 'lg' }}>
   {/* Padding grows as screen size increases */}
 </Container>
 ```

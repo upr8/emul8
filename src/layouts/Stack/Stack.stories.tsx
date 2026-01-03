@@ -14,7 +14,7 @@ const meta = {
     },
     gap: {
       control: 'text',
-      description: 'Gap size. Supports responsive @breakpoint notation (e.g., "sm md@md lg@lg")',
+      description: 'Gap size. Supports responsive object syntax (e.g., { base: "sm", md: "md" })',
     },
     align: {
       control: 'select',
@@ -94,7 +94,7 @@ export const SplitAfter: Story = {
 export const ResponsiveGap: Story = {
   name: 'Responsive Gap',
   render: () => (
-    <Stack gap="xs sm@sm md@md lg@lg" direction="vertical">
+    <Stack gap={{ base: 'xs', sm: 'sm', md: 'md', lg: 'lg' }} direction="vertical">
       <DemoBox>Item 1</DemoBox>
       <DemoBox>Item 2</DemoBox>
       <DemoBox>Item 3</DemoBox>
@@ -114,7 +114,7 @@ export const ResponsiveGap: Story = {
 export const ResponsiveHorizontalStack: Story = {
   name: 'Responsive Horizontal Stack',
   render: () => (
-    <Stack gap="sm md@md lg@lg" direction="horizontal" align="center">
+    <Stack gap={{ base: 'sm', md: 'md', lg: 'lg' }} direction="horizontal" align="center">
       <DemoBox>Logo</DemoBox>
       <DemoBox>Nav</DemoBox>
       <DemoBox>Search</DemoBox>
@@ -133,7 +133,7 @@ export const ResponsiveHorizontalStack: Story = {
 export const ResponsiveFormLayout: Story = {
   name: 'Responsive Form Layout',
   render: () => (
-    <Stack gap="sm md@md" className="max-w-md">
+    <Stack gap={{ base: 'sm', md: 'md' }} className="max-w-md">
       <div>
         <label className="block text-sm font-medium mb-1">Email</label>
         <input
@@ -169,7 +169,7 @@ export const ResponsiveSplitLayout: Story = {
   name: 'Responsive Split Layout',
   render: () => (
     <Stack
-      gap="sm md@md"
+      gap={{ base: 'sm', md: 'md' }}
       splitAfter={0}
       className="h-64 border border-gray-300 dark:border-gray-600 rounded p-4"
     >
@@ -194,8 +194,10 @@ export const ResponsiveGapComparison: Story = {
   render: () => (
     <div className="grid grid-cols-2 gap-8">
       <div>
-        <p className="text-sm text-gray-500 mb-2 font-mono">gap=&quot;sm md@md lg@lg&quot;</p>
-        <Stack gap="sm md@md lg@lg">
+        <p className="text-sm text-gray-500 mb-2 font-mono">
+          {'gap={{ base: "sm", md: "md", lg: "lg" }}'}
+        </p>
+        <Stack gap={{ base: 'sm', md: 'md', lg: 'lg' }}>
           <DemoBox>1</DemoBox>
           <DemoBox>2</DemoBox>
           <DemoBox>3</DemoBox>

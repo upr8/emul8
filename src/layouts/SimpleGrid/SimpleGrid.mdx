@@ -1,0 +1,205 @@
+{/* SimpleGrid.mdx */}
+import { Meta, Primary, Controls, Stories, Title, Markdown } from "@storybook/addon-docs/blocks";
+import * as SimpleGridStories from "./SimpleGrid.stories";
+
+<Meta of={SimpleGridStories} />
+<Title />
+
+SimpleGrid creates a responsive grid with equal-width columns. Simpler than Grid, with built-in responsive column support.
+
+## Features
+
+- **Responsive columns** - Object syntax for breakpoint-specific column counts
+- **Auto-responsive** - Use `minChildWidth` for automatic column calculation
+- **Responsive gap** - Both string and object syntax for adaptive spacing
+- **Separate axis gaps** - Independent `gapX` and `gapY` control
+- **Slot support** - Render as child element with `asChild`
+
+## Example
+
+<Primary />
+<Controls />
+
+## Usage
+
+```tsx
+import { SimpleGrid } from "emul8";
+
+// Fixed columns with responsive breakpoints
+<SimpleGrid columns={{ base: '1', sm: '2', md: '3', lg: '4' }} gap="md">
+  <Card />
+  <Card />
+  <Card />
+  <Card />
+</SimpleGrid>
+
+// Auto-responsive based on minimum child width
+<SimpleGrid minChildWidth="200px" gap="md">
+  <Card />
+  <Card />
+</SimpleGrid>
+
+// Responsive gap
+<SimpleGrid columns="3" gap={{ base: 'sm', md: 'md', lg: 'lg' }}>
+  <Item />
+  <Item />
+</SimpleGrid>
+
+// Separate horizontal and vertical gaps
+<SimpleGrid columns="3" gapX="lg" gapY="sm">
+  <Item />
+  <Item />
+</SimpleGrid>
+```
+
+## Responsive Columns
+
+Use object syntax for different column counts at each breakpoint:
+
+```tsx
+<SimpleGrid columns={{ base: '1', sm: '2', md: '3', lg: '4' }}>
+  {items.map(item => <Card key={item.id} {...item} />)}
+</SimpleGrid>
+```
+
+<Markdown>
+{`
+| Breakpoint | Description |
+| ---------- | ----------- |
+| \`base\` | Default (mobile first) |
+| \`sm\` | 640px and up |
+| \`md\` | 768px and up |
+| \`lg\` | 1024px and up |
+| \`xl\` | 1280px and up |
+`}
+</Markdown>
+
+## Auto-Responsive Mode
+
+Use `minChildWidth` for grids that automatically adjust based on available space:
+
+```tsx
+// Items will be at least 200px wide
+<SimpleGrid minChildWidth="200px" gap="md">
+  <ProductCard />
+  <ProductCard />
+  <ProductCard />
+</SimpleGrid>
+```
+
+When `minChildWidth` is set, `columns` is ignored.
+
+## Gap Sizes
+
+<Markdown>
+{`
+| Size | Tailwind Class | Pixels |
+| ---- | -------------- | ------ |
+| \`none\` | gap-0 | 0px |
+| \`xs\` | gap-1 | 4px |
+| \`sm\` | gap-2 | 8px |
+| \`md\` | gap-4 | 16px |
+| \`lg\` | gap-6 | 24px |
+| \`xl\` | gap-8 | 32px |
+| \`2xl\` | gap-10 | 40px |
+| \`3xl\` | gap-12 | 48px |
+`}
+</Markdown>
+
+## Props
+
+<Markdown>
+{`
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| \`columns\` | \`"1"-"12"\` or responsive object | - | Number of columns |
+| \`minChildWidth\` | \`string\` | - | Min width for auto-responsive columns |
+| \`gap\` | \`"none" \\| "xs" \\| "sm" \\| "md" \\| "lg" \\| "xl"\` or responsive | \`"md"\` | Gap between items |
+| \`gapX\` | Same as gap | - | Horizontal gap only |
+| \`gapY\` | Same as gap | - | Vertical gap only |
+| \`asChild\` | \`boolean\` | \`false\` | Render as child element |
+`}
+</Markdown>
+
+## Best Practices
+
+### Product Grids
+
+Use responsive columns for e-commerce layouts:
+
+```tsx
+<SimpleGrid columns={{ base: '1', sm: '2', lg: '3' }} gap={{ base: 'sm', md: 'lg' }}>
+  {products.map(product => (
+    <ProductCard key={product.id} {...product} />
+  ))}
+</SimpleGrid>
+```
+
+### Dashboard Metrics
+
+Responsive metrics cards:
+
+```tsx
+<SimpleGrid columns={{ base: '1', sm: '2', lg: '4' }} gap="md">
+  <MetricCard title="Revenue" value="$12,345" />
+  <MetricCard title="Users" value="1,234" />
+  <MetricCard title="Orders" value="567" />
+  <MetricCard title="Conversion" value="12.5%" />
+</SimpleGrid>
+```
+
+### Image Galleries
+
+Auto-responsive for variable content:
+
+```tsx
+<SimpleGrid minChildWidth="150px" gap="sm">
+  {images.map(img => (
+    <img key={img.id} src={img.url} className="aspect-square object-cover rounded" />
+  ))}
+</SimpleGrid>
+```
+
+### Card Layouts
+
+Content cards with consistent sizing:
+
+```tsx
+<SimpleGrid columns={{ base: '1', md: '2', lg: '3' }} gap="md">
+  {articles.map(article => (
+    <ArticleCard key={article.id} {...article} />
+  ))}
+</SimpleGrid>
+```
+
+## SimpleGrid vs Grid
+
+Use **SimpleGrid** when you need:
+- Simple equal-width columns
+- Responsive column counts with object syntax
+- Quick auto-responsive layouts
+
+Use **Grid** when you need:
+- Custom grid-template-columns
+- More complex grid layouts
+- CSS Grid-specific features
+
+```tsx
+// SimpleGrid - simple responsive columns
+<SimpleGrid columns={{ base: '1', md: '3' }} gap="md">
+  <Card />
+  <Card />
+  <Card />
+</SimpleGrid>
+
+// Grid - more control
+<Grid columns={3} gap="md">
+  <Card />
+  <Card />
+  <Card />
+</Grid>
+```
+
+## All Stories
+
+<Stories />

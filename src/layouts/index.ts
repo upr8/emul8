@@ -11,6 +11,7 @@ export * from './Modal';
 export * from './Reel';
 export * from './Section';
 export * from './Sidebar';
+export * from './SimpleGrid';
 export * from './Spacer';
 export * from './Stack';
 export * from './Wrap';
