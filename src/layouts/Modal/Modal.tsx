@@ -22,6 +22,9 @@ import {
 const FOCUSABLE_SELECTOR =
   'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
+/** Track number of open modals for stack-safe body overflow management */
+let openModalCount = 0;
+
 /**
  * Modal provides a semantic dialog overlay with backdrop.
  *
@@ -46,17 +49,12 @@ const ModalRoot = forwardRef<HTMLDivElement, ModalProps>(
     },
     ref
   ) => {
+    // SSR safety check - must be BEFORE any hooks that access document
+    // oxlint-disable-next-line emul8/no-direct-document -- SSR guard check
+    const isSSR = typeof document === 'undefined';
+
     const modalRef = useRef<HTMLDivElement>(null);
     const previousActiveElement = useRef<HTMLElement | null>(null);
-
-    const handleEscape = useCallback(
-      (event: KeyboardEvent) => {
-        if (closeOnEscape && event.key === 'Escape' && onClose) {
-          onClose();
-        }
-      },
-      [closeOnEscape, onClose]
-    );
 
     const handleFocusTrap = useCallback(
       (event: KeyboardEvent) => {
@@ -86,21 +84,41 @@ const ModalRoot = forwardRef<HTMLDivElement, ModalProps>(
       [trapFocus]
     );
 
+    // Handle keyboard events including Escape and Tab (focus trap)
+    const handleKeyDown = useCallback(
+      (event: React.KeyboardEvent<HTMLDivElement>) => {
+        if (event.key === 'Escape' && closeOnEscape && onClose) {
+          onClose();
+        }
+        // Focus trap handling for Tab key
+        if (trapFocus && event.key === 'Tab') {
+          handleFocusTrap(event.nativeEvent);
+        }
+      },
+      [closeOnEscape, onClose, trapFocus, handleFocusTrap]
+    );
+
     // Handle open/close effects
     useEffect(() => {
+      // Skip all document access during SSR
+      if (isSSR) return;
+
       if (open) {
         // Store the element that had focus before opening
         previousActiveElement.current =
-          (triggerRef?.current as HTMLElement) || (document.activeElement as HTMLElement);
+          (triggerRef?.current as HTMLElement) || (document.activeElement as HTMLElement | null);
 
-        document.addEventListener('keydown', handleEscape);
-        document.addEventListener('keydown', handleFocusTrap);
-        document.body.style.overflow = 'hidden';
+        // Stack-safe body overflow management
+        openModalCount++;
+        if (openModalCount === 1) {
+          document.body.style.overflow = 'hidden';
+        }
 
         // Auto-focus first focusable element
+        let timeoutId: ReturnType<typeof setTimeout> | undefined;
         if (autoFocus) {
           // Use setTimeout to ensure the modal is rendered before focusing
-          const timeoutId = setTimeout(() => {
+          timeoutId = setTimeout(() => {
             const modal = modalRef.current;
             /* c8 ignore next -- modal always exists in timeout */
             if (modal) {
@@ -108,18 +126,15 @@ const ModalRoot = forwardRef<HTMLDivElement, ModalProps>(
               firstFocusable?.focus();
             }
           }, 0);
-          return () => {
-            clearTimeout(timeoutId);
-            document.removeEventListener('keydown', handleEscape);
-            document.removeEventListener('keydown', handleFocusTrap);
-            document.body.style.overflow = '';
-          };
         }
 
         return () => {
-          document.removeEventListener('keydown', handleEscape);
-          document.removeEventListener('keydown', handleFocusTrap);
-          document.body.style.overflow = '';
+          if (timeoutId) clearTimeout(timeoutId);
+          // Stack-safe body overflow cleanup
+          openModalCount--;
+          if (openModalCount === 0) {
+            document.body.style.overflow = '';
+          }
         };
       }
       // Return focus when modal closes
@@ -127,7 +142,7 @@ const ModalRoot = forwardRef<HTMLDivElement, ModalProps>(
         previousActiveElement.current.focus();
         previousActiveElement.current = null;
       }
-    }, [open, handleEscape, handleFocusTrap, autoFocus, returnFocus, triggerRef]);
+    }, [open, autoFocus, returnFocus, triggerRef, isSSR]);
 
     // Combine refs safely - must be before early return to satisfy rules of hooks
     const setRefs = useCallback(
@@ -144,7 +159,10 @@ const ModalRoot = forwardRef<HTMLDivElement, ModalProps>(
       [ref]
     );
 
+    // Early returns after all hooks
     if (!open) return null;
+    /* c8 ignore next -- SSR branch never executes in jsdom */
+    if (isSSR) return null;
 
     const handleBackdropClick = () => {
       if (closeOnBackdropClick && onClose) {
@@ -152,12 +170,8 @@ const ModalRoot = forwardRef<HTMLDivElement, ModalProps>(
       }
     };
 
-    // SSR safety check - guard document access with typeof check
-    /* c8 ignore next -- SSR branch never executes in jsdom */
-    if (typeof document === 'undefined') return null;
-
-    // Safe to access document.body after the guard above
-    // oxlint-disable-next-line emul8/no-direct-document -- guarded by typeof check
+    // Safe to access document.body after the SSR guard above
+    // oxlint-disable-next-line emul8/no-direct-document -- guarded by isSSR check
     const portalTarget = document.body;
 
     const modal = (
@@ -167,13 +181,7 @@ const ModalRoot = forwardRef<HTMLDivElement, ModalProps>(
         aria-modal="true"
         className={cn(backdropVariants(), className)}
         onClick={handleBackdropClick}
-        /* c8 ignore start -- duplicate escape handler for accessibility, tested via document listener */
-        onKeyDown={(e) => {
-          if (e.key === 'Escape' && closeOnEscape && onClose) {
-            onClose();
-          }
-        }}
-        /* c8 ignore stop */
+        onKeyDown={handleKeyDown}
         {...props}
       >
         {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}

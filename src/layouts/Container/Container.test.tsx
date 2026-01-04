@@ -25,9 +25,11 @@ describe('Container', () => {
     expect(screen.getByText('Content')).toHaveClass('max-w-screen-sm');
   });
 
-  it('applies padding variant', () => {
+  it('applies padding variant with RTL-safe logical properties', () => {
     render(<Container padding="lg">Content</Container>);
-    expect(screen.getByText('Content')).toHaveClass('px-8');
+    const element = screen.getByText('Content');
+    expect(element).toHaveClass('ps-8');
+    expect(element).toHaveClass('pe-8');
   });
 
   it('applies center variant', () => {
@@ -50,7 +52,8 @@ describe('Container', () => {
     );
     const element = screen.getByText('Content');
     expect(element).toHaveClass('max-w-screen-xl');
-    expect(element).toHaveClass('px-4');
+    expect(element).toHaveClass('ps-4');
+    expect(element).toHaveClass('pe-4');
     expect(element).toHaveClass('flex');
     expect(element).toHaveClass('text-center');
   });
@@ -92,7 +95,8 @@ describe('Container fluid variant', () => {
     );
     const element = screen.getByText('Content');
     expect(element).toHaveClass('max-w-none');
-    expect(element).toHaveClass('px-8');
+    expect(element).toHaveClass('ps-8');
+    expect(element).toHaveClass('pe-8');
   });
 
   it('fluid maintains center variant', () => {
@@ -109,19 +113,25 @@ describe('Container fluid variant', () => {
 });
 
 describe('Container responsive padding', () => {
-  it('applies responsive padding with object syntax', () => {
+  it('applies responsive padding with object syntax using logical properties', () => {
     render(<Container padding={{ base: 'sm', md: 'md', lg: 'lg' }}>Content</Container>);
     const element = screen.getByText('Content');
-    expect(element).toHaveClass('px-4');
-    expect(element).toHaveClass('md:px-6');
-    expect(element).toHaveClass('lg:px-8');
+    // Base responsive padding classes from responsivePadding utility
+    expect(element.className).toMatch(/ps-4/);
+    expect(element.className).toMatch(/pe-4/);
+    expect(element.className).toMatch(/md:ps-6/);
+    expect(element.className).toMatch(/md:pe-6/);
+    expect(element.className).toMatch(/lg:ps-8/);
+    expect(element.className).toMatch(/lg:pe-8/);
   });
 
   it('applies responsive padding with only breakpoint values', () => {
     render(<Container padding={{ md: 'md', xl: 'xl' }}>Content</Container>);
     const element = screen.getByText('Content');
-    expect(element).toHaveClass('md:px-6');
-    expect(element).toHaveClass('xl:px-12');
+    expect(element.className).toMatch(/md:ps-6/);
+    expect(element.className).toMatch(/md:pe-6/);
+    expect(element.className).toMatch(/xl:ps-12/);
+    expect(element.className).toMatch(/xl:pe-12/);
   });
 
   it('combines fluid with responsive padding', () => {
@@ -132,8 +142,10 @@ describe('Container responsive padding', () => {
     );
     const element = screen.getByText('Content');
     expect(element).toHaveClass('max-w-none');
-    expect(element).toHaveClass('px-4');
-    expect(element).toHaveClass('lg:px-6');
+    expect(element.className).toMatch(/ps-4/);
+    expect(element.className).toMatch(/pe-4/);
+    expect(element.className).toMatch(/lg:ps-6/);
+    expect(element.className).toMatch(/lg:pe-6/);
   });
 });
 

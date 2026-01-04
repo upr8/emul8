@@ -35,20 +35,28 @@ describe('containerVariants', () => {
   });
 
   describe('padding variant', () => {
-    it('applies none padding', () => {
-      expect(containerVariants({ padding: 'none' })).toContain('px-0');
+    it('applies none padding with logical properties', () => {
+      const classes = containerVariants({ padding: 'none' });
+      expect(classes).toContain('ps-0');
+      expect(classes).toContain('pe-0');
     });
 
-    it('applies sm padding', () => {
-      expect(containerVariants({ padding: 'sm' })).toContain('px-4');
+    it('applies sm padding with logical properties', () => {
+      const classes = containerVariants({ padding: 'sm' });
+      expect(classes).toContain('ps-4');
+      expect(classes).toContain('pe-4');
     });
 
-    it('applies md padding (default)', () => {
-      expect(containerVariants()).toContain('px-6');
+    it('applies md padding by default with logical properties', () => {
+      const classes = containerVariants();
+      expect(classes).toContain('ps-6');
+      expect(classes).toContain('pe-6');
     });
 
-    it('applies lg padding', () => {
-      expect(containerVariants({ padding: 'lg' })).toContain('px-8');
+    it('applies lg padding with logical properties', () => {
+      const classes = containerVariants({ padding: 'lg' });
+      expect(classes).toContain('ps-8');
+      expect(classes).toContain('pe-8');
     });
   });
 

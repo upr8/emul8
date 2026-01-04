@@ -105,7 +105,13 @@ export function responsiveClasses(
   for (const bp of BREAKPOINTS) {
     const value = parsed[bp];
     if (value && variantMap[value]) {
-      classes.push(`${bp}:${variantMap[value]}`);
+      // Handle multiple classes in a variant value (e.g., "ps-4 pe-4")
+      // by prefixing each class with the breakpoint
+      const prefixedClasses = variantMap[value]
+        .split(' ')
+        .map((cls) => `${bp}:${cls}`)
+        .join(' ');
+      classes.push(prefixedClasses);
     }
   }
 
@@ -143,14 +149,15 @@ export const GAP_VARIANTS_CVA = {
 
 /**
  * Common padding variant map for container components.
+ * Uses RTL-safe logical properties (ps/pe) instead of physical (px).
  */
 export const PADDING_VARIANTS: Record<string, string> = {
-  none: 'px-0',
-  xs: 'px-2',
-  sm: 'px-4',
-  md: 'px-6',
-  lg: 'px-8',
-  xl: 'px-12',
+  none: 'ps-0 pe-0',
+  xs: 'ps-2 pe-2',
+  sm: 'ps-4 pe-4',
+  md: 'ps-6 pe-6',
+  lg: 'ps-8 pe-8',
+  xl: 'ps-12 pe-12',
 };
 
 /**

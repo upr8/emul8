@@ -10,13 +10,17 @@ export const containerVariants = cva('mx-auto w-full', {
       '2xl': 'max-w-screen-2xl',
       full: 'max-w-full',
     },
+    /**
+     * Inline padding (start/end) for RTL support.
+     * Uses logical properties (ps/pe) instead of physical (pl/pr).
+     */
     padding: {
-      none: 'px-0',
-      xs: 'px-2',
-      sm: 'px-4',
-      md: 'px-6',
-      lg: 'px-8',
-      xl: 'px-12',
+      none: 'ps-0 pe-0',
+      xs: 'ps-2 pe-2',
+      sm: 'ps-4 pe-4',
+      md: 'ps-6 pe-6',
+      lg: 'ps-8 pe-8',
+      xl: 'ps-12 pe-12',
     },
     /**
      * Enable fluid mode for full-width layouts without max-width constraints.

@@ -6,10 +6,11 @@ export const backdropVariants = cva(
     variants: {
       /**
        * Animation state for the backdrop.
+       * Respects prefers-reduced-motion via motion-safe prefix.
        */
       animation: {
         none: '',
-        fade: 'animate-in fade-in duration-200',
+        fade: 'motion-safe:animate-in motion-safe:fade-in motion-safe:duration-200',
       },
     },
     defaultVariants: {
@@ -24,21 +25,23 @@ export const modalContentVariants = cva(
     variants: {
       /**
        * Size of the modal.
+       * Sizes are expanded 20% from Tailwind defaults to accommodate text expansion in translations.
        */
       size: {
-        sm: 'w-full max-w-sm',
-        md: 'w-full max-w-md',
-        lg: 'w-full max-w-lg',
-        xl: 'w-full max-w-xl',
-        '2xl': 'w-full max-w-2xl',
+        sm: 'w-full max-w-[460px]',
+        md: 'w-full max-w-[540px]',
+        lg: 'w-full max-w-[620px]',
+        xl: 'w-full max-w-[700px]',
+        '2xl': 'w-full max-w-[860px]',
         full: 'w-full max-w-[calc(100vw-2rem)] h-[calc(100vh-2rem)]',
       },
       /**
        * Animation for the modal content.
+       * Respects prefers-reduced-motion via motion-safe prefix.
        */
       animation: {
         none: '',
-        scale: 'animate-in zoom-in-95 duration-200',
+        scale: 'motion-safe:animate-in motion-safe:zoom-in-95 motion-safe:duration-200',
       },
     },
     defaultVariants: {
@@ -52,11 +55,12 @@ export const modalHeaderVariants = cva('shrink-0 border-b border-gray-200 dark:b
   variants: {
     /**
      * Padding size for the header.
+     * Uses logical properties (ps/pe) for RTL support.
      */
     padding: {
-      sm: 'px-4 py-3',
-      md: 'px-6 py-4',
-      lg: 'px-8 py-5',
+      sm: 'ps-4 pe-4 py-3',
+      md: 'ps-6 pe-6 py-4',
+      lg: 'ps-8 pe-8 py-5',
     },
   },
   defaultVariants: {
@@ -87,11 +91,12 @@ export const modalFooterVariants = cva(
     variants: {
       /**
        * Padding size for the footer.
+       * Uses logical properties (ps/pe) for RTL support.
        */
       padding: {
-        sm: 'px-4 py-3',
-        md: 'px-6 py-4',
-        lg: 'px-8 py-5',
+        sm: 'ps-4 pe-4 py-3',
+        md: 'ps-6 pe-6 py-4',
+        lg: 'ps-8 pe-8 py-5',
       },
     },
     defaultVariants: {

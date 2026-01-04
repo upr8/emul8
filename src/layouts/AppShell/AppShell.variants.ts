@@ -30,16 +30,20 @@ export const headerVariants = cva('shrink-0 border-b', {
   },
 });
 
-export const appShellSidebarVariants = cva('shrink-0 border-r overflow-y-auto', {
+export const appShellSidebarVariants = cva('shrink-0 overflow-y-auto', {
   variants: {
     width: {
       sm: 'w-48',
       md: 'w-64',
       lg: 'w-80',
     },
+    /**
+     * Position of the sidebar with RTL-safe border handling.
+     * Uses logical border properties (border-e/border-s) for RTL support.
+     */
     position: {
-      left: 'order-first',
-      right: 'order-last border-e-0 border-l',
+      left: 'order-first border-e',
+      right: 'order-last border-s',
     },
   },
   defaultVariants: {
@@ -73,10 +77,14 @@ export const mainVariants = cva('flex-1 overflow-auto', {
 
 export const footerVariants = cva('shrink-0 border-t', {
   variants: {
+    /**
+     * Padding with RTL-safe inline padding.
+     * Uses logical properties (ps/pe) instead of physical (pl/pr).
+     */
     padding: {
-      sm: 'py-4 px-4',
-      md: 'py-6 px-6',
-      lg: 'py-8 px-8',
+      sm: 'py-4 ps-4 pe-4',
+      md: 'py-6 ps-6 pe-6',
+      lg: 'py-8 ps-8 pe-8',
     },
   },
   defaultVariants: {

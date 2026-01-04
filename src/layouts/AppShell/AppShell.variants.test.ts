@@ -84,7 +84,6 @@ describe('appShellSidebarVariants', () => {
   it('includes base classes', () => {
     const classes = appShellSidebarVariants();
     expect(classes).toContain('shrink-0');
-    expect(classes).toContain('border-r');
     expect(classes).toContain('overflow-y-auto');
   });
 
@@ -106,15 +105,16 @@ describe('appShellSidebarVariants', () => {
   });
 
   describe('position variants', () => {
-    it('applies left position', () => {
+    it('applies left position with RTL-safe border', () => {
       const classes = appShellSidebarVariants({ position: 'left' });
       expect(classes).toContain('order-first');
+      expect(classes).toContain('border-e');
     });
 
-    it('applies right position', () => {
+    it('applies right position with RTL-safe border', () => {
       const classes = appShellSidebarVariants({ position: 'right' });
       expect(classes).toContain('order-last');
-      expect(classes).toContain('border-l');
+      expect(classes).toContain('border-s');
     });
   });
 
@@ -203,22 +203,25 @@ describe('footerVariants', () => {
   });
 
   describe('padding variants', () => {
-    it('applies sm padding', () => {
+    it('applies sm padding with RTL-safe logical properties', () => {
       const classes = footerVariants({ padding: 'sm' });
       expect(classes).toContain('py-4');
-      expect(classes).toContain('px-4');
+      expect(classes).toContain('ps-4');
+      expect(classes).toContain('pe-4');
     });
 
-    it('applies md padding', () => {
+    it('applies md padding with RTL-safe logical properties', () => {
       const classes = footerVariants({ padding: 'md' });
       expect(classes).toContain('py-6');
-      expect(classes).toContain('px-6');
+      expect(classes).toContain('ps-6');
+      expect(classes).toContain('pe-6');
     });
 
-    it('applies lg padding', () => {
+    it('applies lg padding with RTL-safe logical properties', () => {
       const classes = footerVariants({ padding: 'lg' });
       expect(classes).toContain('py-8');
-      expect(classes).toContain('px-8');
+      expect(classes).toContain('ps-8');
+      expect(classes).toContain('pe-8');
     });
   });
 
@@ -226,7 +229,8 @@ describe('footerVariants', () => {
     it('uses md padding by default', () => {
       const classes = footerVariants();
       expect(classes).toContain('py-6');
-      expect(classes).toContain('px-6');
+      expect(classes).toContain('ps-6');
+      expect(classes).toContain('pe-6');
     });
   });
 });

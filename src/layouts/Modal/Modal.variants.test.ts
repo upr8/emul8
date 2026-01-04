@@ -17,10 +17,10 @@ describe('backdropVariants', () => {
   });
 
   describe('animation variants', () => {
-    it('applies fade animation by default', () => {
+    it('applies fade animation by default with motion-safe prefix', () => {
       const classes = backdropVariants();
-      expect(classes).toContain('animate-in');
-      expect(classes).toContain('fade-in');
+      expect(classes).toContain('motion-safe:animate-in');
+      expect(classes).toContain('motion-safe:fade-in');
     });
 
     it('applies no animation when none', () => {
@@ -40,29 +40,29 @@ describe('modalContentVariants', () => {
   });
 
   describe('size variants', () => {
-    it('applies sm size', () => {
+    it('applies sm size (expanded for i18n)', () => {
       const classes = modalContentVariants({ size: 'sm' });
-      expect(classes).toContain('max-w-sm');
+      expect(classes).toContain('max-w-[460px]');
     });
 
-    it('applies md size by default', () => {
+    it('applies md size by default (expanded for i18n)', () => {
       const classes = modalContentVariants();
-      expect(classes).toContain('max-w-md');
+      expect(classes).toContain('max-w-[540px]');
     });
 
-    it('applies lg size', () => {
+    it('applies lg size (expanded for i18n)', () => {
       const classes = modalContentVariants({ size: 'lg' });
-      expect(classes).toContain('max-w-lg');
+      expect(classes).toContain('max-w-[620px]');
     });
 
-    it('applies xl size', () => {
+    it('applies xl size (expanded for i18n)', () => {
       const classes = modalContentVariants({ size: 'xl' });
-      expect(classes).toContain('max-w-xl');
+      expect(classes).toContain('max-w-[700px]');
     });
 
-    it('applies 2xl size', () => {
+    it('applies 2xl size (expanded for i18n)', () => {
       const classes = modalContentVariants({ size: '2xl' });
-      expect(classes).toContain('max-w-2xl');
+      expect(classes).toContain('max-w-[860px]');
     });
 
     it('applies full size', () => {
@@ -72,10 +72,10 @@ describe('modalContentVariants', () => {
   });
 
   describe('animation variants', () => {
-    it('applies scale animation by default', () => {
+    it('applies scale animation by default with motion-safe prefix', () => {
       const classes = modalContentVariants();
-      expect(classes).toContain('animate-in');
-      expect(classes).toContain('zoom-in-95');
+      expect(classes).toContain('motion-safe:animate-in');
+      expect(classes).toContain('motion-safe:zoom-in-95');
     });
 
     it('applies no animation when none', () => {
@@ -93,21 +93,24 @@ describe('modalHeaderVariants', () => {
   });
 
   describe('padding variants', () => {
-    it('applies sm padding', () => {
+    it('applies sm padding with logical properties', () => {
       const classes = modalHeaderVariants({ padding: 'sm' });
-      expect(classes).toContain('px-4');
+      expect(classes).toContain('ps-4');
+      expect(classes).toContain('pe-4');
       expect(classes).toContain('py-3');
     });
 
-    it('applies md padding by default', () => {
+    it('applies md padding by default with logical properties', () => {
       const classes = modalHeaderVariants();
-      expect(classes).toContain('px-6');
+      expect(classes).toContain('ps-6');
+      expect(classes).toContain('pe-6');
       expect(classes).toContain('py-4');
     });
 
-    it('applies lg padding', () => {
+    it('applies lg padding with logical properties', () => {
       const classes = modalHeaderVariants({ padding: 'lg' });
-      expect(classes).toContain('px-8');
+      expect(classes).toContain('ps-8');
+      expect(classes).toContain('pe-8');
       expect(classes).toContain('py-5');
     });
   });
@@ -154,21 +157,24 @@ describe('modalFooterVariants', () => {
   });
 
   describe('padding variants', () => {
-    it('applies sm padding', () => {
+    it('applies sm padding with logical properties', () => {
       const classes = modalFooterVariants({ padding: 'sm' });
-      expect(classes).toContain('px-4');
+      expect(classes).toContain('ps-4');
+      expect(classes).toContain('pe-4');
       expect(classes).toContain('py-3');
     });
 
-    it('applies md padding by default', () => {
+    it('applies md padding by default with logical properties', () => {
       const classes = modalFooterVariants();
-      expect(classes).toContain('px-6');
+      expect(classes).toContain('ps-6');
+      expect(classes).toContain('pe-6');
       expect(classes).toContain('py-4');
     });
 
-    it('applies lg padding', () => {
+    it('applies lg padding with logical properties', () => {
       const classes = modalFooterVariants({ padding: 'lg' });
-      expect(classes).toContain('px-8');
+      expect(classes).toContain('ps-8');
+      expect(classes).toContain('pe-8');
       expect(classes).toContain('py-5');
     });
   });

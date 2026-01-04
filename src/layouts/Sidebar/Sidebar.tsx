@@ -9,6 +9,9 @@ import { sidebarVariants } from './Sidebar.variants';
  * The sidebar has a fixed width while the content fills remaining space.
  * When the content would be narrower than `contentMin`, the layout wraps
  * to a vertical stack.
+ *
+ * For semantic HTML, use the `sidebarAs` and `contentAs` props to render
+ * as appropriate elements (e.g., `<aside>` for navigation sidebars).
  */
 export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
   (
@@ -20,6 +23,8 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
       sideWidth = '20rem',
       contentMin = '50%',
       sidebar,
+      sidebarAs: SidebarElement = 'aside',
+      contentAs: ContentElement = 'div',
       children,
       ...props
     },
@@ -36,9 +41,9 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
       minInlineSize: contentMin,
     };
 
-    const sidebarElement = <div style={sidebarStyle}>{sidebar}</div>;
+    const sidebarElement = <SidebarElement style={sidebarStyle}>{sidebar}</SidebarElement>;
 
-    const contentElement = <div style={contentStyle}>{children}</div>;
+    const contentElement = <ContentElement style={contentStyle}>{children}</ContentElement>;
 
     return (
       <div ref={ref} className={cn(sidebarVariants({ gap, noStretch }), className)} {...props}>

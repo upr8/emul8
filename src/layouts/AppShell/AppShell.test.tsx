@@ -96,11 +96,11 @@ describe('AppShell.Sidebar', () => {
     expect(screen.getByText('Content')).toHaveClass('w-80');
   });
 
-  it('applies position variant', () => {
+  it('applies position variant with RTL-safe border', () => {
     render(<AppShell.Sidebar position="right">Content</AppShell.Sidebar>);
     const element = screen.getByText('Content');
     expect(element).toHaveClass('order-last');
-    expect(element).toHaveClass('border-l');
+    expect(element).toHaveClass('border-s');
   });
 
   it('has correct displayName', () => {
@@ -159,11 +159,12 @@ describe('AppShell.Footer', () => {
     expect(screen.getByText('Content').tagName).toBe('FOOTER');
   });
 
-  it('applies padding variant', () => {
+  it('applies padding variant with RTL-safe logical properties', () => {
     render(<AppShell.Footer padding="lg">Content</AppShell.Footer>);
     const element = screen.getByText('Content');
     expect(element).toHaveClass('py-8');
-    expect(element).toHaveClass('px-8');
+    expect(element).toHaveClass('ps-8');
+    expect(element).toHaveClass('pe-8');
   });
 
   it('has correct displayName', () => {

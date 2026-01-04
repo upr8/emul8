@@ -116,21 +116,23 @@ describe('responsivePadding', () => {
     expect(responsivePadding(undefined)).toBe('');
   });
 
-  it('returns single padding class', () => {
-    expect(responsivePadding('md')).toBe('px-6');
+  it('returns RTL-safe logical padding classes', () => {
+    expect(responsivePadding('md')).toBe('ps-6 pe-6');
   });
 
-  it('returns responsive padding classes', () => {
-    expect(responsivePadding({ base: 'sm', md: 'md', lg: 'lg' })).toBe('px-4 md:px-6 lg:px-8');
+  it('returns responsive padding classes with logical properties', () => {
+    expect(responsivePadding({ base: 'sm', md: 'md', lg: 'lg' })).toBe(
+      'ps-4 pe-4 md:ps-6 md:pe-6 lg:ps-8 lg:pe-8'
+    );
   });
 
-  it('handles all padding sizes', () => {
-    expect(responsivePadding('none')).toBe('px-0');
-    expect(responsivePadding('xs')).toBe('px-2');
-    expect(responsivePadding('sm')).toBe('px-4');
-    expect(responsivePadding('md')).toBe('px-6');
-    expect(responsivePadding('lg')).toBe('px-8');
-    expect(responsivePadding('xl')).toBe('px-12');
+  it('handles all padding sizes with RTL-safe logical properties', () => {
+    expect(responsivePadding('none')).toBe('ps-0 pe-0');
+    expect(responsivePadding('xs')).toBe('ps-2 pe-2');
+    expect(responsivePadding('sm')).toBe('ps-4 pe-4');
+    expect(responsivePadding('md')).toBe('ps-6 pe-6');
+    expect(responsivePadding('lg')).toBe('ps-8 pe-8');
+    expect(responsivePadding('xl')).toBe('ps-12 pe-12');
   });
 });
 

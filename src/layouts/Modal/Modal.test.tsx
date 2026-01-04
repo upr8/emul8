@@ -67,7 +67,9 @@ describe('Modal', () => {
         Content
       </Modal>
     );
-    fireEvent.keyDown(document, { key: 'Escape' });
+    // Escape is now handled on the dialog element, not document
+    const dialog = screen.getByRole('dialog');
+    fireEvent.keyDown(dialog, { key: 'Escape' });
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
@@ -116,13 +118,13 @@ describe('Modal.Content', () => {
     expect(ref.current).toBeInstanceOf(HTMLDivElement);
   });
 
-  it('applies size variant', () => {
+  it('applies size variant (i18n-expanded widths)', () => {
     render(
       <Modal open>
         <Modal.Content size="lg">Content</Modal.Content>
       </Modal>
     );
-    expect(screen.getByText('Content')).toHaveClass('max-w-lg');
+    expect(screen.getByText('Content')).toHaveClass('max-w-[620px]');
   });
 
   it('has correct displayName', () => {
@@ -154,7 +156,7 @@ describe('Modal.Header', () => {
     expect(ref.current).toBeInstanceOf(HTMLDivElement);
   });
 
-  it('applies padding variant', () => {
+  it('applies padding variant with RTL-safe logical properties', () => {
     render(
       <Modal open>
         <Modal.Content>
@@ -162,7 +164,9 @@ describe('Modal.Header', () => {
         </Modal.Content>
       </Modal>
     );
-    expect(screen.getByText('Header')).toHaveClass('px-8');
+    const element = screen.getByText('Header');
+    expect(element).toHaveClass('ps-8');
+    expect(element).toHaveClass('pe-8');
   });
 
   it('has correct displayName', () => {
@@ -292,7 +296,7 @@ describe('Modal.Footer', () => {
     expect(ref.current).toBeInstanceOf(HTMLDivElement);
   });
 
-  it('applies padding variant', () => {
+  it('applies padding variant with RTL-safe logical properties', () => {
     render(
       <Modal open>
         <Modal.Content>
@@ -300,7 +304,9 @@ describe('Modal.Footer', () => {
         </Modal.Content>
       </Modal>
     );
-    expect(screen.getByText('Footer')).toHaveClass('px-8');
+    const element = screen.getByText('Footer');
+    expect(element).toHaveClass('ps-8');
+    expect(element).toHaveClass('pe-8');
   });
 
   it('has correct displayName', () => {
@@ -390,17 +396,18 @@ describe('Modal accessibility', () => {
       </Modal>
     );
 
+    const dialog = screen.getByRole('dialog');
     const firstButton = screen.getByRole('button', { name: 'First' });
     const lastButton = screen.getByRole('button', { name: 'Last' });
 
     // Focus first button and shift+tab should wrap to last
     firstButton.focus();
-    fireEvent.keyDown(document, { key: 'Tab', shiftKey: true });
+    fireEvent.keyDown(dialog, { key: 'Tab', shiftKey: true });
     expect(document.activeElement).toBe(lastButton);
 
     // Focus last button and tab should wrap to first
     lastButton.focus();
-    fireEvent.keyDown(document, { key: 'Tab', shiftKey: false });
+    fireEvent.keyDown(dialog, { key: 'Tab', shiftKey: false });
     expect(document.activeElement).toBe(firstButton);
   });
 
