@@ -1,0 +1,240 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Conflict resolution rules for coordinated agent reviews",
+
+  "priorityHierarchy": [
+    {
+      "rank": 1,
+      "category": "accessibility",
+      "agents": ["a11y-review"],
+      "rationale": "Legal requirement (ADA, EAA), ethical obligation"
+    },
+    {
+      "rank": 2,
+      "category": "security",
+      "agents": [],
+      "rationale": "Safety critical, data protection"
+    },
+    {
+      "rank": 3,
+      "category": "correctness",
+      "agents": ["component-review"],
+      "rationale": "Must function correctly"
+    },
+    {
+      "rank": 4,
+      "category": "performance",
+      "agents": ["perf-review"],
+      "rationale": "User experience, Core Web Vitals"
+    },
+    {
+      "rank": 5,
+      "category": "internationalization",
+      "agents": ["i18n-review"],
+      "rationale": "Global audience reach"
+    },
+    {
+      "rank": 6,
+      "category": "platform",
+      "agents": ["m3-review", "hig-review", "fluent-review", "cross-platform-review"],
+      "rationale": "Native platform conventions"
+    },
+    {
+      "rank": 7,
+      "category": "style",
+      "agents": ["llm-api-review"],
+      "rationale": "Subjective preferences, DX"
+    }
+  ],
+
+  "resolutionStrategies": {
+    "accessibilityWins": {
+      "description": "When conflict involves accessibility, always choose the accessible option",
+      "appliesTo": ["touchTarget", "contrast", "focusIndicator", "timing"]
+    },
+    "platformSpecific": {
+      "description": "Create variants for each platform using CSS custom properties",
+      "appliesTo": ["spacing", "typography", "animation", "iconSize"]
+    },
+    "strictestWins": {
+      "description": "When requirements differ, use the stricter value",
+      "appliesTo": ["contrast", "touchTarget", "timeout"]
+    },
+    "documentTradeoff": {
+      "description": "If truly unresolvable, document the trade-off in component MDX",
+      "appliesTo": ["complexInteractions", "platformBehavior"]
+    }
+  },
+
+  "knownConflicts": [
+    {
+      "id": "touch-target-size",
+      "description": "Minimum touch target size differs across platforms",
+      "sources": {
+        "m3-review": { "value": "48dp", "reference": "Material Design 3 accessibility" },
+        "hig-review": { "value": "44pt", "reference": "Apple HIG touch targets" },
+        "fluent-review": { "value": "32px", "reference": "Fluent expanded touch" },
+        "a11y-review": { "value": "44x44 CSS pixels", "reference": "WCAG 2.5.5 Target Size" }
+      },
+      "resolution": {
+        "strategy": "accessibilityWins",
+        "value": "48px minimum (largest requirement)",
+        "implementation": "Use 48px base, allow platform override via --touch-target-size"
+      }
+    },
+    {
+      "id": "focus-indicator-style",
+      "description": "Focus indicator appearance differs across platforms",
+      "sources": {
+        "m3-review": { "value": "state layer ripple", "reference": "M3 interaction states" },
+        "hig-review": { "value": "system focus ring", "reference": "HIG keyboard focus" },
+        "fluent-review": { "value": "reveal focus", "reference": "Fluent focus visuals" },
+        "a11y-review": { "value": "visible 2px+ contrast", "reference": "WCAG 2.4.7" }
+      },
+      "resolution": {
+        "strategy": "platformSpecific",
+        "value": "Platform-specific with a11y baseline",
+        "implementation": "Always show visible focus (a11y), style varies by platform"
+      }
+    },
+    {
+      "id": "animation-duration",
+      "description": "Standard animation durations differ across platforms",
+      "sources": {
+        "m3-review": { "value": "300ms standard", "reference": "M3 motion duration" },
+        "hig-review": { "value": "250ms standard", "reference": "HIG animation timing" },
+        "fluent-review": { "value": "167ms fast", "reference": "Fluent motion" },
+        "a11y-review": { "value": "respect prefers-reduced-motion", "reference": "WCAG 2.3.3" }
+      },
+      "resolution": {
+        "strategy": "platformSpecific",
+        "value": "CSS custom property with reduced-motion support",
+        "implementation": "--animation-duration: 250ms; @media (prefers-reduced-motion) { 0ms }"
+      }
+    },
+    {
+      "id": "color-contrast",
+      "description": "Minimum color contrast requirements",
+      "sources": {
+        "m3-review": { "value": "3:1 for large text", "reference": "M3 color system" },
+        "hig-review": { "value": "platform dynamic", "reference": "HIG color guidelines" },
+        "a11y-review": { "value": "4.5:1 normal, 3:1 large", "reference": "WCAG 1.4.3 AA" }
+      },
+      "resolution": {
+        "strategy": "strictestWins",
+        "value": "4.5:1 for normal text, 3:1 for large (18pt+)",
+        "implementation": "Use WCAG AA as baseline, test all theme variants"
+      }
+    },
+    {
+      "id": "button-padding",
+      "description": "Internal button padding differs across platforms",
+      "sources": {
+        "m3-review": { "value": "24dp horizontal", "reference": "M3 button specs" },
+        "hig-review": { "value": "20pt horizontal", "reference": "HIG button layout" },
+        "fluent-review": { "value": "16px horizontal", "reference": "Fluent button specs" }
+      },
+      "resolution": {
+        "strategy": "platformSpecific",
+        "value": "CSS custom property",
+        "implementation": "--button-padding-x: var(--space-6); /* 24px default, override per platform */"
+      }
+    },
+    {
+      "id": "typography-scale",
+      "description": "Base font sizes and scales differ",
+      "sources": {
+        "m3-review": { "value": "14sp body", "reference": "M3 type scale" },
+        "hig-review": { "value": "17pt body", "reference": "HIG typography" },
+        "fluent-review": { "value": "14px body", "reference": "Fluent type ramp" }
+      },
+      "resolution": {
+        "strategy": "platformSpecific",
+        "value": "CSS custom properties for type scale",
+        "implementation": "--font-size-body: 1rem; /* Platform sets root font size */"
+      }
+    },
+    {
+      "id": "icon-sizing",
+      "description": "Standard icon sizes differ across platforms",
+      "sources": {
+        "m3-review": { "value": "24dp standard", "reference": "M3 iconography" },
+        "hig-review": { "value": "22pt (SF Symbols)", "reference": "HIG symbols" },
+        "fluent-review": { "value": "20px standard", "reference": "Fluent icons" }
+      },
+      "resolution": {
+        "strategy": "platformSpecific",
+        "value": "Size variants in CVA",
+        "implementation": "icon: { sm: '16px', md: '20px', lg: '24px' } with platform defaults"
+      }
+    },
+    {
+      "id": "elevation-shadow",
+      "description": "Elevation/depth representation differs",
+      "sources": {
+        "m3-review": { "value": "tonal elevation + shadow", "reference": "M3 elevation" },
+        "hig-review": { "value": "vibrancy + shadow", "reference": "HIG materials" },
+        "fluent-review": { "value": "shadow only", "reference": "Fluent depth" }
+      },
+      "resolution": {
+        "strategy": "platformSpecific",
+        "value": "CSS custom properties for shadow tokens",
+        "implementation": "--elevation-1: var(--shadow-sm); /* Platform defines shadow values */"
+      }
+    },
+    {
+      "id": "loading-indicator",
+      "description": "Loading/progress indicator style differs",
+      "sources": {
+        "m3-review": { "value": "circular determinate/indeterminate", "reference": "M3 progress" },
+        "hig-review": { "value": "activity indicator (spinner)", "reference": "HIG activity" },
+        "fluent-review": { "value": "progress ring/bar", "reference": "Fluent progress" }
+      },
+      "resolution": {
+        "strategy": "documentTradeoff",
+        "value": "Provide multiple variants, document usage",
+        "implementation": "Spinner component with variant prop: 'circular' | 'linear' | 'dots'"
+      }
+    },
+    {
+      "id": "dismiss-gesture",
+      "description": "How dismissible elements are closed",
+      "sources": {
+        "m3-review": { "value": "swipe or tap scrim", "reference": "M3 dialogs" },
+        "hig-review": { "value": "swipe down", "reference": "HIG sheets" },
+        "fluent-review": { "value": "click outside or X", "reference": "Fluent dialogs" }
+      },
+      "resolution": {
+        "strategy": "platformSpecific",
+        "value": "Support multiple dismiss methods",
+        "implementation": "Support all: Escape key, click outside, swipe, explicit close button"
+      }
+    }
+  ],
+
+  "autoResolve": {
+    "enabled": true,
+    "rules": [
+      {
+        "condition": "conflict.category === 'accessibility'",
+        "action": "chooseAccessibleOption"
+      },
+      {
+        "condition": "conflict.sources.length > 2 && conflict.type === 'numeric'",
+        "action": "chooseStrictest"
+      },
+      {
+        "condition": "conflict.type === 'style' && !conflict.affectsA11y",
+        "action": "createPlatformVariants"
+      }
+    ]
+  },
+
+  "reporting": {
+    "includeInReport": true,
+    "groupBy": "strategy",
+    "showRationale": true,
+    "linkToSpecs": true
+  }
+}
