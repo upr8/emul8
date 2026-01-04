@@ -149,7 +149,7 @@ export const AllAlignments: Story = {
 export const InlineFlex: Story = {
   name: 'Inline Flex',
   render: () => (
-    <p>
+    <span className="block">
       This is text with an{' '}
       <Flex
         inline
@@ -161,7 +161,7 @@ export const InlineFlex: Story = {
         <span className="font-bold">flex</span>
       </Flex>{' '}
       container embedded in it.
-    </p>
+    </span>
   ),
 };
 
