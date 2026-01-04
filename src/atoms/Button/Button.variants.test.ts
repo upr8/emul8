@@ -35,7 +35,7 @@ describe('buttonVariants', () => {
 
     it('applies success variant styles', () => {
       const classes = buttonVariants({ variant: 'success' });
-      expect(classes).toContain('bg-green-500');
+      expect(classes).toContain('bg-green-700');
       expect(classes).toContain('text-white');
     });
 

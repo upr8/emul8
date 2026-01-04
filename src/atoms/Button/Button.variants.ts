@@ -22,7 +22,7 @@ export const buttonVariants = cva(
         ],
         secondary: ['bg-gray-500 text-white', 'hover:bg-gray-600', 'active:bg-gray-700'],
         danger: ['bg-red-600 text-white', 'hover:bg-red-700', 'active:bg-red-800'],
-        success: ['bg-green-500 text-white', 'hover:bg-green-600', 'active:bg-green-700'],
+        success: ['bg-green-700 text-white', 'hover:bg-green-800', 'active:bg-green-900'],
         ghost: [
           'bg-transparent',
           'hover:bg-gray-100 dark:hover:bg-gray-800',

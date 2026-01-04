@@ -108,6 +108,7 @@ export const Reel = forwardRef<HTMLDivElement, ReelProps>(
         {...props}
       >
         {Children.map(children, (child) => (
+          // oxlint-disable-next-line emul8/no-deep-nesting -- item wrapper for consistent sizing
           <div style={itemStyle}>{child}</div>
         ))}
       </div>

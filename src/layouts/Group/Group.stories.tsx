@@ -36,7 +36,7 @@ export const Default: Story = {
         <button type="button" className="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded">
           Cancel
         </button>
-        <button type="button" className="px-4 py-2 bg-blue-500 text-white rounded">
+        <button type="button" className="px-4 py-2 bg-blue-700 text-white rounded">
           Save
         </button>
       </>
@@ -107,9 +107,9 @@ export const AllGaps: Story = {
         <div key={gap}>
           <p className="text-sm text-gray-500 mb-2">gap=&quot;{gap}&quot;</p>
           <Group gap={gap}>
-            <span className="px-3 py-1 bg-blue-500 text-white rounded">A</span>
-            <span className="px-3 py-1 bg-blue-500 text-white rounded">B</span>
-            <span className="px-3 py-1 bg-blue-500 text-white rounded">C</span>
+            <span className="px-3 py-1 bg-blue-700 text-white rounded">A</span>
+            <span className="px-3 py-1 bg-blue-700 text-white rounded">B</span>
+            <span className="px-3 py-1 bg-blue-700 text-white rounded">C</span>
           </Group>
         </div>
       ))}
@@ -133,7 +133,7 @@ export const FormActions: Story = {
           <button type="button" className="px-4 py-2 bg-gray-500 text-white rounded">
             Save Draft
           </button>
-          <button type="button" className="px-4 py-2 bg-blue-500 text-white rounded">
+          <button type="button" className="px-4 py-2 bg-blue-700 text-white rounded">
             Submit
           </button>
         </Group>
@@ -149,7 +149,7 @@ export const WithBadge: Story = {
     children: (
       <>
         <span>Messages</span>
-        <span className="px-2 py-0.5 bg-red-500 text-white text-xs rounded-full">5</span>
+        <span className="px-2 py-0.5 bg-red-700 text-white text-xs rounded-full">5</span>
       </>
     ),
   },

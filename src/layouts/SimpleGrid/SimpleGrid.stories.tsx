@@ -191,7 +191,7 @@ export const AllGapSizes: Story = {
     <div className="space-y-8">
       {(['none', 'xs', 'sm', 'md', 'lg', 'xl'] as const).map((gap) => (
         <div key={gap}>
-          <p className="text-sm text-gray-500 mb-2">gap=&quot;{gap}&quot;</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">gap=&quot;{gap}&quot;</p>
           <SimpleGrid columns="4" gap={gap}>
             <Card>1</Card>
             <Card>2</Card>
@@ -232,9 +232,9 @@ export const DashboardGrid: Story = {
           key={metric}
           className="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
         >
-          <p className="text-sm text-gray-500 dark:text-gray-400">{metric}</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400">{metric}</p>
           <p className="text-2xl font-bold mt-1">$12,345</p>
-          <p className="text-xs text-green-600 mt-1">+12.5%</p>
+          <p className="text-xs text-green-700 dark:text-green-400 mt-1">+12.5%</p>
         </div>
       ))}
     </SimpleGrid>

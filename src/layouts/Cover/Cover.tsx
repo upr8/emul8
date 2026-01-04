@@ -23,9 +23,11 @@ export const Cover = forwardRef<HTMLDivElement, CoverProps>(
         style={coverStyle}
         {...props}
       >
+        {/* oxlint-disable emul8/no-deep-nesting -- structural wrapper divs for cover layout */}
         {top && <div>{top}</div>}
         <div className="my-auto">{children}</div>
         {bottom && <div>{bottom}</div>}
+        {/* oxlint-enable emul8/no-deep-nesting */}
       </div>
     );
   }

@@ -175,6 +175,7 @@ const ModalRoot = forwardRef<HTMLDivElement, ModalProps>(
     const portalTarget = document.body;
 
     const modal = (
+      // oxlint-disable-next-line emul8/no-div-onclick -- backdrop click handled via role="dialog" with onKeyDown
       <div
         ref={setRefs}
         role="dialog"
@@ -184,7 +185,7 @@ const ModalRoot = forwardRef<HTMLDivElement, ModalProps>(
         onKeyDown={handleKeyDown}
         {...props}
       >
-        {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+        {/* oxlint-disable-next-line emul8/no-div-onclick, emul8/no-deep-nesting, jsx-a11y/click-events-have-key-events -- event propagation stop for modal content */}
         <div onClick={(e) => e.stopPropagation()}>{children}</div>
       </div>
     );
@@ -268,6 +269,7 @@ Footer.displayName = 'Modal.Footer';
 const Backdrop = forwardRef<HTMLDivElement, ModalBackdropProps>(
   ({ className, animation, onClick, ...props }, ref) => {
     return (
+      // oxlint-disable-next-line emul8/no-div-onclick -- decorative backdrop, aria-hidden excludes from a11y tree
       <div
         ref={ref}
         className={cn(backdropVariants({ animation }), className)}

@@ -14,7 +14,19 @@ import { groupVariants } from './Group.variants';
  * You MUST provide either `aria-label` or `aria-labelledby` for screen readers.
  */
 export const Group = forwardRef<HTMLDivElement, GroupProps>(
-  ({ className, gap, align, grow, preventGrow, asChild = false, 'aria-label': ariaLabel, ...props }, ref) => {
+  (
+    {
+      className,
+      gap,
+      align,
+      grow,
+      preventGrow,
+      asChild = false,
+      'aria-label': ariaLabel,
+      ...props
+    },
+    ref
+  ) => {
     const Comp = asChild ? Slot : 'div';
 
     // Warn in development if aria-label is missing (required for role="group")

@@ -82,7 +82,7 @@ export const ButtonGroup: Story = {
         <button type="button" className="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded">
           Share
         </button>
-        <button type="button" className="px-4 py-2 bg-blue-500 text-white rounded">
+        <button type="button" className="px-4 py-2 bg-blue-700 text-white rounded">
           Save
         </button>
       </>
@@ -211,7 +211,7 @@ export const ResponsiveButtonGroup: Story = {
   name: 'Responsive Button Group',
   render: () => (
     <Wrap gap={{ base: 'xs', md: 'sm' }} className="max-w-sm">
-      <button type="button" className="px-4 py-2 bg-blue-500 text-white rounded">
+      <button type="button" className="px-4 py-2 bg-blue-700 text-white rounded">
         Save
       </button>
       <button type="button" className="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded">
@@ -220,7 +220,7 @@ export const ResponsiveButtonGroup: Story = {
       <button type="button" className="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded">
         Reset
       </button>
-      <button type="button" className="px-4 py-2 bg-red-500 text-white rounded">
+      <button type="button" className="px-4 py-2 bg-red-700 text-white rounded">
         Delete
       </button>
     </Wrap>
@@ -245,7 +245,7 @@ export const ResponsiveFilterChips: Story = {
             type="button"
             className={`px-3 py-1 text-sm rounded-full transition ${
               i === 0
-                ? 'bg-blue-500 text-white'
+                ? 'bg-blue-700 text-white'
                 : 'border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800'
             }`}
           >

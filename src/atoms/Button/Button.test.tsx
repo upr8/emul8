@@ -48,7 +48,7 @@ describe('Button', () => {
 
     it('applies success variant', () => {
       render(<Button variant="success">Button</Button>);
-      expect(screen.getByRole('button')).toHaveClass('bg-green-500');
+      expect(screen.getByRole('button')).toHaveClass('bg-green-700');
     });
 
     it('applies ghost variant', () => {

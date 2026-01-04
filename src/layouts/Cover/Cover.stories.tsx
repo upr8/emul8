@@ -67,7 +67,7 @@ export const WithHeaderAndFooter: Story = {
         <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
           Centered between header and footer
         </p>
-        <button type="button" className="px-6 py-3 bg-blue-500 text-white rounded-lg font-medium">
+        <button type="button" className="px-6 py-3 bg-blue-700 text-white rounded-lg font-medium">
           Get Started
         </button>
       </div>
@@ -121,7 +121,7 @@ export const LoginPage: Story = {
             </div>
             <button
               type="button"
-              className="w-full py-2 bg-blue-500 text-white rounded font-medium"
+              className="w-full py-2 bg-blue-700 text-white rounded font-medium"
             >
               Sign In
             </button>

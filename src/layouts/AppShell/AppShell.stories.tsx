@@ -19,8 +19,8 @@ export const Default: Story = {
         <span className="font-bold">My App</span>
       </AppShell.Header>
       <AppShell.Body>
-        <AppShell.Sidebar className="p-4">
-          <nav className="space-y-2">
+        <AppShell.Sidebar className="p-4" aria-label="Sidebar">
+          <nav aria-label="Main menu" className="space-y-2">
             <a href="#" className="block px-3 py-2 rounded bg-blue-100 dark:bg-blue-900">
               Dashboard
             </a>
@@ -55,8 +55,8 @@ export const WithFooter: Story = {
         <span className="font-bold">My App</span>
       </AppShell.Header>
       <AppShell.Body>
-        <AppShell.Sidebar className="p-4">
-          <nav className="space-y-2">
+        <AppShell.Sidebar className="p-4" aria-label="Sidebar">
+          <nav aria-label="Main menu" className="space-y-2">
             <a href="#" className="block px-3 py-2 rounded bg-blue-100 dark:bg-blue-900">
               Home
             </a>
@@ -94,9 +94,9 @@ export const RightSidebar: Story = {
             Sidebar is on the right side of the layout.
           </p>
         </AppShell.Main>
-        <AppShell.Sidebar position="right" className="p-4">
-          <h3 className="font-semibold mb-4">Details Panel</h3>
-          <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+        <AppShell.Sidebar position="right" className="p-4" aria-label="Details panel">
+          <p className="font-semibold mb-4">Details Panel</p>
+          <div className="space-y-2 text-sm text-gray-700 dark:text-gray-400">
             <p>Status: Active</p>
             <p>Last updated: Today</p>
           </div>
@@ -114,8 +114,8 @@ export const DoubleSidebar: Story = {
         <span className="font-bold">My App</span>
       </AppShell.Header>
       <AppShell.Body>
-        <AppShell.Sidebar width="sm" className="p-2">
-          <nav className="space-y-1">
+        <AppShell.Sidebar width="sm" className="p-2" aria-label="Main navigation">
+          <nav aria-label="Icon menu" className="space-y-1">
             {['🏠', '📁', '⚙️', '👤'].map((icon) => (
               <a
                 key={icon}
@@ -131,8 +131,8 @@ export const DoubleSidebar: Story = {
           <h1 className="text-2xl font-bold mb-4">Main Content</h1>
           <p className="text-gray-600 dark:text-gray-400">Content with double sidebars.</p>
         </AppShell.Main>
-        <AppShell.Sidebar position="right" width="sm" className="p-4">
-          <h3 className="font-semibold mb-2 text-sm">Quick Actions</h3>
+        <AppShell.Sidebar position="right" width="sm" className="p-4" aria-label="Quick actions">
+          <p className="font-semibold mb-2 text-sm">Quick Actions</p>
           <div className="space-y-2">
             <button
               type="button"
@@ -159,7 +159,7 @@ export const NoSidebar: Story = {
     <AppShell className="h-screen">
       <AppShell.Header className="flex items-center justify-between px-4">
         <span className="font-bold">My App</span>
-        <nav className="flex gap-4">
+        <nav aria-label="Main navigation" className="flex gap-4">
           <a href="#" className="text-gray-600 dark:text-gray-400 hover:text-gray-900">
             Home
           </a>
@@ -191,17 +191,18 @@ export const SidebarWidths: Story = {
           key={width}
           className="border border-gray-200 dark:border-gray-700 rounded overflow-hidden"
         >
-          <p className="p-2 text-sm text-gray-500 bg-gray-100 dark:bg-gray-800">
+          <p className="p-2 text-sm text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800">
             width=&quot;{width}&quot;
           </p>
           <AppShell className="h-48">
             <AppShell.Body>
-              <AppShell.Sidebar width={width} className="p-4">
+              {/* oxlint-disable-next-line jsx-a11y/aria-proptypes -- dynamic aria-label intentional for demo */}
+              <AppShell.Sidebar width={width} className="p-4" aria-label={`Sidebar ${width}`}>
                 <p className="text-sm">Sidebar</p>
               </AppShell.Sidebar>
-              <AppShell.Main>
-                <p className="text-sm text-gray-500">Main content</p>
-              </AppShell.Main>
+              <div className="flex-1 p-4 overflow-auto">
+                <p className="text-sm text-gray-600 dark:text-gray-400">Main content</p>
+              </div>
             </AppShell.Body>
           </AppShell>
         </div>

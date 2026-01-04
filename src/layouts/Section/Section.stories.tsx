@@ -48,7 +48,7 @@ export const AllSizes: Story = {
           className={index % 2 === 0 ? 'bg-gray-100 dark:bg-gray-800' : 'bg-white dark:bg-gray-900'}
         >
           <div className="max-w-4xl mx-auto">
-            <p className="text-sm text-gray-500 mb-2">size=&quot;{size}&quot;</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">size=&quot;{size}&quot;</p>
             <h2 className="text-xl font-bold">Section with {size} spacing</h2>
           </div>
         </Section>

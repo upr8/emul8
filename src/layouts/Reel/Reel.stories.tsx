@@ -128,8 +128,9 @@ export const AllGaps: Story = {
     <div className="space-y-8">
       {(['none', 'xs', 'sm', 'md', 'lg', 'xl'] as const).map((gap) => (
         <div key={gap}>
-          <p className="text-sm text-gray-500 mb-2">gap: {gap}</p>
-          <Reel gap={gap}>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">gap: {gap}</p>
+          {/* oxlint-disable-next-line jsx-a11y/aria-proptypes -- dynamic aria-label intentional for demo */}
+          <Reel gap={gap} aria-label={`Example reel with ${gap} gap`}>
             {[1, 2, 3, 4, 5].map((n) => (
               <div key={n} className="bg-blue-100 dark:bg-blue-900 px-6 py-4 rounded">
                 Item {n}

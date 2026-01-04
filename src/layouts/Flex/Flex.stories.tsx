@@ -38,7 +38,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const Box = ({ children }: { children: React.ReactNode }) => (
-  <div className="px-4 py-2 bg-blue-500 text-white rounded">{children}</div>
+  <div className="px-4 py-2 bg-blue-700 text-white rounded">{children}</div>
 );
 
 export const Default: Story = {
@@ -136,9 +136,9 @@ export const AllAlignments: Story = {
         <div key={align}>
           <p className="text-sm text-gray-500 mb-2">align=&quot;{align}&quot;</p>
           <Flex align={align} gap="md" className="h-20 p-4 bg-gray-100 dark:bg-gray-800 rounded">
-            <div className="px-4 py-1 bg-blue-500 text-white rounded text-sm">Small</div>
-            <div className="px-4 py-4 bg-blue-500 text-white rounded">Large</div>
-            <div className="px-4 py-2 bg-blue-500 text-white rounded">Medium</div>
+            <div className="px-4 py-1 bg-blue-700 text-white rounded text-sm">Small</div>
+            <div className="px-4 py-4 bg-blue-700 text-white rounded">Large</div>
+            <div className="px-4 py-2 bg-blue-700 text-white rounded">Medium</div>
           </Flex>
         </div>
       ))}
@@ -201,7 +201,7 @@ export const ResponsiveToolbar: Story = {
         <button type="button" className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded text-sm">
           Settings
         </button>
-        <button type="button" className="px-3 py-1 bg-blue-500 text-white rounded text-sm">
+        <button type="button" className="px-3 py-1 bg-blue-700 text-white rounded text-sm">
           New
         </button>
       </Flex>
@@ -228,7 +228,7 @@ export const ResponsiveCardLayout: Story = {
         </p>
       </Flex>
       <Flex gap={{ base: 'xs', md: 'sm' }}>
-        <button type="button" className="flex-1 px-4 py-2 bg-blue-500 text-white rounded">
+        <button type="button" className="flex-1 px-4 py-2 bg-blue-700 text-white rounded">
           Primary
         </button>
         <button type="button" className="flex-1 px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded">
