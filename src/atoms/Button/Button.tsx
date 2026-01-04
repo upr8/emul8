@@ -23,7 +23,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       >
         {loading ? (
           <>
-            <span className="animate-spin inline-block w-4 h-4 border-2 border-current border-t-transparent rounded-full" />
+            <span
+              className="animate-spin inline-block w-4 h-4 border-2 border-current border-t-transparent rounded-full"
+              role="status"
+              aria-label="Loading"
+            />
             <span>{children}</span>
           </>
         ) : (
