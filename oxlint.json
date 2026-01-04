@@ -1,6 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
   "plugins": ["react", "typescript", "import", "vitest", "jsx-a11y"],
+  "jsPlugins": ["./oxlint-plugins/emul8-lint-plugin/index.js"],
   "categories": {
     "correctness": "error",
     "suspicious": "warn",
@@ -29,6 +30,49 @@
     "react/jsx-key": "error",
     "react/no-array-index-key": "warn",
     "react/rules-of-hooks": "error",
-    "react/exhaustive-deps": "warn"
-  }
+    "react/exhaustive-deps": "warn",
+    "react/react-in-jsx-scope": "off",
+    "import/no-cycle": "error",
+    "import/no-self-import": "error",
+    "import/no-duplicates": "error",
+
+    "emul8/no-div-onclick": "warn",
+    "emul8/no-span-onclick": "warn",
+    "emul8/no-positive-tabindex": "warn",
+
+    "emul8/no-physical-margin": "warn",
+    "emul8/no-physical-padding": "warn",
+    "emul8/no-physical-position": "warn",
+    "emul8/no-physical-text-align": "warn",
+    "emul8/no-physical-border": "warn",
+    "emul8/no-physical-rounded": "warn",
+
+    "emul8/no-direct-window": "error",
+    "emul8/no-direct-document": "error",
+    "emul8/no-direct-storage": "error",
+    "emul8/no-layout-effect": "warn",
+    "emul8/no-render-random": "error",
+    "emul8/no-render-date": "warn",
+    "emul8/no-deep-nesting": "warn",
+    "emul8/no-full-lodash": "warn",
+
+    "emul8/atomic-hierarchy": "error",
+
+    "emul8/no-inline-style-object": "off",
+    "emul8/no-unnecessary-wrapper": "off"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.stories.tsx", "**/*.test.tsx"],
+      "rules": {
+        "jsx-a11y/anchor-is-valid": "off",
+        "jsx-a11y/label-has-associated-control": "off",
+        "jsx-a11y/click-events-have-key-events": "off",
+        "jsx-a11y/no-static-element-interactions": "off",
+        "jsx-a11y/heading-has-content": "off",
+        "jsx-a11y/no-autofocus": "off",
+        "import/no-unassigned-import": "off"
+      }
+    }
+  ]
 }

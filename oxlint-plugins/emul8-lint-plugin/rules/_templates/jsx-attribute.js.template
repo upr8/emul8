@@ -1,0 +1,97 @@
+/**
+ * @fileoverview {{DESCRIPTION}}
+ * @source {{SOURCE_AGENT}}
+ * @pattern {{PATTERN_ID}}
+ * @created {{CREATED_DATE}}
+ * @template jsx-attribute
+ */
+
+export default {
+  meta: {
+    type: "{{TYPE}}", // "problem" | "suggestion"
+    docs: {
+      description: "{{DESCRIPTION}}",
+      category: "{{CATEGORY}}",
+    },
+    messages: {
+      {{MESSAGE_ID}}: "{{MESSAGE}}",
+    },
+    // Uncomment if rule provides auto-fix:
+    // fixable: "code",
+  },
+  create(context) {
+    const filename = context.getFilename?.() || context.filename || "";
+    // Skip test and story files
+    if (filename.includes(".test.") || filename.includes(".stories.")) {
+      return {};
+    }
+
+    return {
+      JSXOpeningElement(node) {
+        // Check if element matches target: {{TARGET_ELEMENT}}
+        if (
+          node.name.type !== "JSXIdentifier" ||
+          node.name.name !== "{{TARGET_ELEMENT}}"
+        ) {
+          return;
+        }
+
+        // Check for attribute: {{TARGET_ATTRIBUTE}}
+        const hasAttribute = node.attributes.some(
+          (attr) =>
+            attr.type === "JSXAttribute" &&
+            attr.name?.type === "JSXIdentifier" &&
+            attr.name.name === "{{TARGET_ATTRIBUTE}}"
+        );
+
+        // Check for additional attribute if needed: {{ADDITIONAL_ATTRIBUTE}}
+        // const hasAdditionalAttr = node.attributes.some(
+        //   (attr) =>
+        //     attr.type === "JSXAttribute" &&
+        //     attr.name?.type === "JSXIdentifier" &&
+        //     attr.name.name === "{{ADDITIONAL_ATTRIBUTE}}"
+        // );
+
+        // Condition: {{CONDITION_DESCRIPTION}}
+        // Customize this condition based on rule requirements
+        if ({{CONDITION}}) {
+          context.report({
+            node,
+            messageId: "{{MESSAGE_ID}}",
+            // Uncomment to pass data to message template:
+            // data: {
+            //   {{DATA_KEY}}: {{DATA_VALUE}},
+            // },
+            // Uncomment to provide auto-fix:
+            // fix(fixer) {
+            //   return fixer.insertTextAfter(node.name, ' {{FIX_ATTRIBUTE}}="{{FIX_VALUE}}"');
+            // },
+          });
+        }
+      },
+    };
+  },
+};
+
+/*
+ * Template Variables:
+ * - {{DESCRIPTION}}: Rule description
+ * - {{SOURCE_AGENT}}: Source review agent (e.g., "a11y-review")
+ * - {{PATTERN_ID}}: Pattern ID (e.g., "a11y-review:interactive-elements:div-onclick")
+ * - {{CREATED_DATE}}: Creation date (YYYY-MM-DD)
+ * - {{TYPE}}: "problem" for errors, "suggestion" for warnings
+ * - {{CATEGORY}}: Rule category (a11y, i18n, perf, imports, patterns)
+ * - {{MESSAGE_ID}}: Unique message identifier
+ * - {{MESSAGE}}: Error message (can include {{placeholders}})
+ * - {{TARGET_ELEMENT}}: JSX element to check (e.g., "div", "button")
+ * - {{TARGET_ATTRIBUTE}}: Attribute to check for (e.g., "onClick", "aria-label")
+ * - {{CONDITION}}: Boolean condition for when to report
+ * - {{CONDITION_DESCRIPTION}}: Human-readable condition description
+ *
+ * Example Usage:
+ * To create a rule that warns when <button> lacks aria-label:
+ * - TARGET_ELEMENT: "button"
+ * - TARGET_ATTRIBUTE: "aria-label"
+ * - CONDITION: "!hasAttribute"
+ * - MESSAGE: "Button should have an aria-label for accessibility"
+ */

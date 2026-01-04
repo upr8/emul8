@@ -1,0 +1,164 @@
+/**
+ * @fileoverview {{DESCRIPTION}}
+ * @source {{SOURCE_AGENT}}
+ * @pattern {{PATTERN_ID}}
+ * @created {{CREATED_DATE}}
+ * @template call-expression
+ */
+
+export default {
+  meta: {
+    type: "{{TYPE}}", // "problem" | "suggestion"
+    docs: {
+      description: "{{DESCRIPTION}}",
+      category: "{{CATEGORY}}",
+    },
+    messages: {
+      {{MESSAGE_ID}}: "{{MESSAGE}}",
+    },
+  },
+  create(context) {
+    const filename = context.getFilename?.() || context.filename || "";
+
+    // Skip test and story files
+    if (filename.includes(".test.") || filename.includes(".stories.")) {
+      return {};
+    }
+
+    // Optional: Check if inside safe context (useEffect/useCallback)
+    function isInsideSafeContext(node) {
+      let current = node.parent;
+      while (current) {
+        if (
+          current.type === "ArrowFunctionExpression" ||
+          current.type === "FunctionExpression"
+        ) {
+          const callExpr = current.parent;
+          if (
+            callExpr?.type === "CallExpression" &&
+            callExpr.callee?.type === "Identifier" &&
+            ["useEffect", "useLayoutEffect", "useCallback", "useMemo"].includes(
+              callExpr.callee.name
+            )
+          ) {
+            return true;
+          }
+        }
+        current = current.parent;
+      }
+      return false;
+    }
+
+    return {
+      CallExpression(node) {
+        // Pattern 1: Direct function call (e.g., someFunction())
+        if (
+          node.callee?.type === "Identifier" &&
+          node.callee.name === "{{TARGET_FUNCTION}}"
+        ) {
+          // Optional: Allow if inside safe context
+          // if (isInsideSafeContext(node)) {
+          //   return;
+          // }
+
+          context.report({
+            node,
+            messageId: "{{MESSAGE_ID}}",
+          });
+          return;
+        }
+
+        // Pattern 2: Member expression (e.g., Object.method())
+        if (
+          node.callee?.type === "MemberExpression" &&
+          node.callee.object?.type === "Identifier" &&
+          node.callee.object.name === "{{TARGET_OBJECT}}" &&
+          node.callee.property?.type === "Identifier" &&
+          node.callee.property.name === "{{TARGET_METHOD}}"
+        ) {
+          // Optional: Allow if inside safe context
+          // if (isInsideSafeContext(node)) {
+          //   return;
+          // }
+
+          context.report({
+            node,
+            messageId: "{{MESSAGE_ID}}",
+          });
+          return;
+        }
+      },
+
+      // Optional: Also check NewExpression for constructors
+      // NewExpression(node) {
+      //   if (
+      //     node.callee?.type === "Identifier" &&
+      //     node.callee.name === "{{TARGET_CONSTRUCTOR}}"
+      //   ) {
+      //     context.report({
+      //       node,
+      //       messageId: "{{MESSAGE_ID}}",
+      //     });
+      //   }
+      // },
+    };
+  },
+};
+
+/*
+ * Template Variables:
+ * - {{DESCRIPTION}}: Rule description
+ * - {{SOURCE_AGENT}}: Source review agent (e.g., "performance-review")
+ * - {{PATTERN_ID}}: Pattern ID
+ * - {{CREATED_DATE}}: Creation date (YYYY-MM-DD)
+ * - {{TYPE}}: "problem" for errors, "suggestion" for warnings
+ * - {{CATEGORY}}: Rule category (typically "perf")
+ * - {{MESSAGE_ID}}: Unique message identifier
+ * - {{MESSAGE}}: Error message
+ * - {{TARGET_FUNCTION}}: Function name to detect (e.g., "useLayoutEffect")
+ * - {{TARGET_OBJECT}}: Object name for member expression (e.g., "Math", "Date")
+ * - {{TARGET_METHOD}}: Method name for member expression (e.g., "random", "now")
+ * - {{TARGET_CONSTRUCTOR}}: Constructor name for NewExpression (e.g., "Date")
+ *
+ * Common Use Cases:
+ *
+ * 1. Hook Detection:
+ *    - TARGET_FUNCTION: "useLayoutEffect"
+ *    - Warn about SSR-unsafe hooks
+ *
+ * 2. API Method Detection:
+ *    - TARGET_OBJECT: "Math", TARGET_METHOD: "random"
+ *    - Prevent hydration mismatches
+ *
+ * 3. Browser API Detection:
+ *    - TARGET_OBJECT: "window", TARGET_METHOD: "scrollTo"
+ *    - Ensure SSR safety
+ *
+ * 4. Constructor Detection:
+ *    - TARGET_CONSTRUCTOR: "Date"
+ *    - Warn about non-deterministic values
+ *
+ * 5. Deprecated API Detection:
+ *    - TARGET_FUNCTION: "componentWillMount"
+ *    - Flag deprecated lifecycle methods
+ *
+ * Advanced Patterns:
+ *
+ * Check arguments:
+ * ```javascript
+ * if (node.arguments.length > 0 && node.arguments[0].value === "someValue") {
+ *   context.report({ node, messageId: "specificUsage" });
+ * }
+ * ```
+ *
+ * Check call chain:
+ * ```javascript
+ * // Detect something.foo().bar()
+ * if (
+ *   node.callee?.type === "MemberExpression" &&
+ *   node.callee.object?.type === "CallExpression"
+ * ) {
+ *   // Analyze the chain
+ * }
+ * ```
+ */

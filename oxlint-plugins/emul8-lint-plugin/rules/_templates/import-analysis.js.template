@@ -1,0 +1,158 @@
+/**
+ * @fileoverview {{DESCRIPTION}}
+ * @source {{SOURCE_AGENT}}
+ * @pattern {{PATTERN_ID}}
+ * @created {{CREATED_DATE}}
+ * @template import-analysis
+ */
+
+// Define allowed imports or constraints
+// Example: Layer hierarchy for atomic design
+// const ALLOWED_IMPORTS = {
+//   utils: [],
+//   layouts: ["utils"],
+//   atoms: ["utils", "layouts"],
+//   molecules: ["utils", "layouts", "atoms"],
+// };
+
+/**
+ * Extract layer/module from file path
+ * @param {string} filePath - The file path to analyze
+ * @returns {string|null} The layer/module name or null
+ */
+function getModuleFromFilePath(filePath) {
+  // Customize this based on your project structure
+  // Example: Extract layer from /src/{layer}/ComponentName/...
+  const match = filePath.match(/[/\\]src[/\\]([^/\\]+)[/\\]/);
+  return match ? match[1] : null;
+}
+
+/**
+ * Extract layer/module from import path
+ * @param {string} importPath - The import source path
+ * @param {string} currentFilePath - Current file's path for relative resolution
+ * @returns {string|null} The layer/module name or null
+ */
+function getModuleFromImportPath(importPath, currentFilePath) {
+  // Handle absolute imports (e.g., @/utils/...)
+  const absoluteMatch = importPath.match(/^@\/([^/]+)/);
+  if (absoluteMatch) {
+    return absoluteMatch[1];
+  }
+
+  // Handle relative imports
+  if (importPath.startsWith(".")) {
+    // Extract module from relative path if crossing boundaries
+    // Customize based on your needs
+  }
+
+  return null; // External package or unrecognized
+}
+
+export default {
+  meta: {
+    type: "problem",
+    docs: {
+      description: "{{DESCRIPTION}}",
+      category: "{{CATEGORY}}",
+    },
+    messages: {
+      {{MESSAGE_ID}}: "{{MESSAGE}}",
+      // Add additional message IDs as needed:
+      // secondaryMessage: "Secondary error message",
+    },
+  },
+  create(context) {
+    const filename = context.getFilename?.() || context.filename || "";
+
+    // Skip test and story files
+    if (filename.includes(".test.") || filename.includes(".stories.")) {
+      return {};
+    }
+
+    const currentModule = getModuleFromFilePath(filename);
+
+    // Skip files not in a known module
+    if (!currentModule) {
+      return {};
+    }
+
+    return {
+      ImportDeclaration(node) {
+        const importPath = node.source?.value;
+        if (!importPath) return;
+
+        const importedModule = getModuleFromImportPath(importPath, filename);
+
+        // Skip external packages
+        if (!importedModule) {
+          return;
+        }
+
+        // Validate import based on rules
+        // Example: Check if import is allowed
+        // const allowedModules = ALLOWED_IMPORTS[currentModule] || [];
+        // if (!allowedModules.includes(importedModule)) {
+        //   context.report({
+        //     node,
+        //     messageId: "{{MESSAGE_ID}}",
+        //     data: {
+        //       currentModule,
+        //       importedModule,
+        //       allowed: allowedModules.join(", ") || "none",
+        //     },
+        //   });
+        // }
+
+        // Customize validation logic here:
+        {{VALIDATION_LOGIC}}
+      },
+    };
+  },
+};
+
+/*
+ * Template Variables:
+ * - {{DESCRIPTION}}: Rule description
+ * - {{SOURCE_AGENT}}: Source review agent (e.g., "architecture-review")
+ * - {{PATTERN_ID}}: Pattern ID
+ * - {{CREATED_DATE}}: Creation date (YYYY-MM-DD)
+ * - {{CATEGORY}}: Rule category (typically "imports")
+ * - {{MESSAGE_ID}}: Unique message identifier
+ * - {{MESSAGE}}: Error message with {{placeholders}}
+ * - {{VALIDATION_LOGIC}}: Custom validation code
+ *
+ * Common Use Cases:
+ *
+ * 1. Layer Hierarchy (Atomic Design):
+ *    - atoms can't import from molecules
+ *    - molecules can't import from organisms
+ *
+ * 2. Module Boundaries:
+ *    - Feature A can't import from Feature B directly
+ *    - Must go through shared/common modules
+ *
+ * 3. Restricted Imports:
+ *    - Don't import from internal paths
+ *    - Don't import deprecated modules
+ *
+ * 4. Package Restrictions:
+ *    - Don't import full lodash
+ *    - Don't import specific deprecated packages
+ *
+ * Example Validation Logic:
+ * ```javascript
+ * // Disallow importing from same layer (sibling components)
+ * if (importedModule === currentModule) {
+ *   const currentComponent = getComponentName(filename);
+ *   const importedComponent = getComponentName(importPath);
+ *   if (currentComponent !== importedComponent) {
+ *     context.report({
+ *       node,
+ *       messageId: "sameLayerImport",
+ *       data: { currentComponent, importedComponent },
+ *     });
+ *   }
+ * }
+ * ```
+ */

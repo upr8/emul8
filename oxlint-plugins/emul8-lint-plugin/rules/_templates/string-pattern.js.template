@@ -1,0 +1,101 @@
+/**
+ * @fileoverview {{DESCRIPTION}}
+ * @source {{SOURCE_AGENT}}
+ * @pattern {{PATTERN_ID}}
+ * @created {{CREATED_DATE}}
+ * @template string-pattern
+ */
+
+export default {
+  meta: {
+    type: "suggestion",
+    docs: {
+      description: "{{DESCRIPTION}}",
+      category: "{{CATEGORY}}",
+    },
+    fixable: "code",
+    messages: {
+      {{MESSAGE_ID}}: "{{MESSAGE}}",
+    },
+  },
+  create(context) {
+    const filename = context.getFilename?.() || context.filename || "";
+    // Skip test and story files
+    if (filename.includes(".test.") || filename.includes(".stories.")) {
+      return {};
+    }
+
+    function checkString(node, value, rawNode) {
+      // Pattern to detect: {{PATTERN_DESCRIPTION}}
+      const matches = value.matchAll(/{{DETECT_PATTERN}}/g);
+
+      for (const match of matches) {
+        // Extract captured groups if needed
+        const captured = match[1];
+
+        context.report({
+          node,
+          messageId: "{{MESSAGE_ID}}",
+          data: {
+            {{DATA_KEY}}: captured,
+          },
+          fix(fixer) {
+            const newValue = value.replace(
+              new RegExp(`{{DETECT_PATTERN_ESCAPED}}`),
+              "{{REPLACEMENT_PATTERN}}"
+            );
+            if (rawNode.type === "Literal" || rawNode.type === "StringLiteral") {
+              return fixer.replaceText(rawNode, `"${newValue}"`);
+            }
+            return null;
+          },
+        });
+      }
+    }
+
+    return {
+      Literal(node) {
+        if (typeof node.value === "string") {
+          checkString(node, node.value, node);
+        }
+      },
+      TemplateElement(node) {
+        if (node.value?.raw) {
+          checkString(node, node.value.raw, node);
+        }
+      },
+    };
+  },
+};
+
+/*
+ * Template Variables:
+ * - {{DESCRIPTION}}: Rule description
+ * - {{SOURCE_AGENT}}: Source review agent (e.g., "i18n-review")
+ * - {{PATTERN_ID}}: Pattern ID (e.g., "i18n-review:rtl-support:logical-properties")
+ * - {{CREATED_DATE}}: Creation date (YYYY-MM-DD)
+ * - {{CATEGORY}}: Rule category (typically "i18n" or "patterns")
+ * - {{MESSAGE_ID}}: Unique message identifier
+ * - {{MESSAGE}}: Error message with {{placeholders}} for captured values
+ * - {{DETECT_PATTERN}}: Regex pattern to detect (with capture groups)
+ * - {{DETECT_PATTERN_ESCAPED}}: Same pattern with escaped backslashes for RegExp constructor
+ * - {{REPLACEMENT_PATTERN}}: Replacement string (can use $1, $2 for captured groups)
+ * - {{PATTERN_DESCRIPTION}}: Human-readable pattern description
+ * - {{DATA_KEY}}: Key for data passed to message template
+ *
+ * Example Usage:
+ * To create a rule that converts ml-* to ms-*:
+ * - DETECT_PATTERN: \bml-(\d+)\b
+ * - DETECT_PATTERN_ESCAPED: \\bml-(\\d+)\\b
+ * - REPLACEMENT_PATTERN: ms-$1
+ * - MESSAGE: "Use 'ms-{{size}}' instead of 'ml-{{size}}' for RTL support"
+ * - DATA_KEY: size
+ *
+ * Common Tailwind Patterns:
+ * - Margin: ml-*, mr-* -> ms-*, me-*
+ * - Padding: pl-*, pr-* -> ps-*, pe-*
+ * - Position: left-*, right-* -> start-*, end-*
+ * - Text align: text-left, text-right -> text-start, text-end
+ * - Border: border-l-*, border-r-* -> border-s-*, border-e-*
+ * - Rounded: rounded-l-*, rounded-r-* -> rounded-s-*, rounded-e-*
+ */

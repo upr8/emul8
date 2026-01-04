@@ -1,0 +1,351 @@
+{
+  "$schema": "./schema.json",
+  "version": "1.0.0",
+  "rules": {
+    "no-div-onclick": {
+      "name": "no-div-onclick",
+      "category": "a11y",
+      "description": "Warn when onClick is used on div elements - should use button for accessibility",
+      "source": {
+        "type": "agent-generated",
+        "agent": "a11y-review",
+        "author": "claude-opus"
+      },
+      "status": "active",
+      "severity": "warn",
+      "fixable": false,
+      "created": "2025-01-04",
+      "linkedPatterns": ["a11y-review:interactive-elements:div-with-onclick"],
+      "examples": {
+        "valid": ["<button onClick={handleClick}>Click</button>"],
+        "invalid": ["<div onClick={handleClick}>Click</div>"]
+      }
+    },
+    "no-span-onclick": {
+      "name": "no-span-onclick",
+      "category": "a11y",
+      "description": "Warn when onClick is used on span elements without proper ARIA attributes",
+      "source": {
+        "type": "agent-generated",
+        "agent": "a11y-review",
+        "author": "claude-opus"
+      },
+      "status": "active",
+      "severity": "warn",
+      "fixable": false,
+      "created": "2025-01-04",
+      "linkedPatterns": ["a11y-review:interactive-elements:span-with-onclick"],
+      "examples": {
+        "valid": ["<span role=\"button\" tabIndex={0} onClick={handleClick}>Click</span>"],
+        "invalid": ["<span onClick={handleClick}>Click</span>"]
+      }
+    },
+    "no-positive-tabindex": {
+      "name": "no-positive-tabindex",
+      "category": "a11y",
+      "description": "Warn against positive tabIndex values which disrupt natural tab order",
+      "source": {
+        "type": "agent-generated",
+        "agent": "a11y-review",
+        "author": "claude-opus"
+      },
+      "status": "active",
+      "severity": "warn",
+      "fixable": false,
+      "created": "2025-01-04",
+      "linkedPatterns": ["a11y-review:keyboard-nav:positive-tabindex"],
+      "examples": {
+        "valid": ["<button tabIndex={0}>Button</button>", "<button tabIndex={-1}>Button</button>"],
+        "invalid": ["<button tabIndex={5}>Button</button>"]
+      }
+    },
+    "no-physical-margin": {
+      "name": "no-physical-margin",
+      "category": "i18n",
+      "description": "Use logical margin properties (ms-*, me-*) instead of physical (ml-*, mr-*) for RTL support",
+      "source": {
+        "type": "agent-generated",
+        "agent": "i18n-review",
+        "author": "claude-opus"
+      },
+      "status": "active",
+      "severity": "warn",
+      "fixable": true,
+      "created": "2025-01-04",
+      "linkedPatterns": ["i18n-review:rtl-support:logical-properties"],
+      "examples": {
+        "valid": ["<div className=\"ms-4\">Content</div>"],
+        "invalid": ["<div className=\"ml-4\">Content</div>"]
+      }
+    },
+    "no-physical-padding": {
+      "name": "no-physical-padding",
+      "category": "i18n",
+      "description": "Use logical padding properties (ps-*, pe-*) instead of physical (pl-*, pr-*) for RTL support",
+      "source": {
+        "type": "agent-generated",
+        "agent": "i18n-review",
+        "author": "claude-opus"
+      },
+      "status": "active",
+      "severity": "warn",
+      "fixable": true,
+      "created": "2025-01-04",
+      "linkedPatterns": ["i18n-review:rtl-support:logical-properties"],
+      "examples": {
+        "valid": ["<div className=\"ps-4\">Content</div>"],
+        "invalid": ["<div className=\"pl-4\">Content</div>"]
+      }
+    },
+    "no-physical-position": {
+      "name": "no-physical-position",
+      "category": "i18n",
+      "description": "Use logical position properties (start-*, end-*) instead of physical (left-*, right-*) for RTL support",
+      "source": {
+        "type": "agent-generated",
+        "agent": "i18n-review",
+        "author": "claude-opus"
+      },
+      "status": "active",
+      "severity": "warn",
+      "fixable": true,
+      "created": "2025-01-04",
+      "linkedPatterns": ["i18n-review:rtl-support:logical-properties"],
+      "examples": {
+        "valid": ["<div className=\"start-0\">Content</div>"],
+        "invalid": ["<div className=\"left-0\">Content</div>"]
+      }
+    },
+    "no-physical-text-align": {
+      "name": "no-physical-text-align",
+      "category": "i18n",
+      "description": "Use logical text alignment (text-start, text-end) instead of physical (text-left, text-right) for RTL support",
+      "source": {
+        "type": "agent-generated",
+        "agent": "i18n-review",
+        "author": "claude-opus"
+      },
+      "status": "active",
+      "severity": "warn",
+      "fixable": true,
+      "created": "2025-01-04",
+      "linkedPatterns": ["i18n-review:rtl-support:logical-properties"],
+      "examples": {
+        "valid": ["<div className=\"text-start\">Content</div>"],
+        "invalid": ["<div className=\"text-left\">Content</div>"]
+      }
+    },
+    "no-physical-border": {
+      "name": "no-physical-border",
+      "category": "i18n",
+      "description": "Use logical border properties (border-s-*, border-e-*) instead of physical (border-l-*, border-r-*) for RTL support",
+      "source": {
+        "type": "agent-generated",
+        "agent": "i18n-review",
+        "author": "claude-opus"
+      },
+      "status": "active",
+      "severity": "warn",
+      "fixable": true,
+      "created": "2025-01-04",
+      "linkedPatterns": ["i18n-review:rtl-support:logical-properties"],
+      "examples": {
+        "valid": ["<div className=\"border-s-2\">Content</div>"],
+        "invalid": ["<div className=\"border-l-2\">Content</div>"]
+      }
+    },
+    "no-physical-rounded": {
+      "name": "no-physical-rounded",
+      "category": "i18n",
+      "description": "Use logical rounded properties (rounded-s-*, rounded-e-*) instead of physical (rounded-l-*, rounded-r-*) for RTL support",
+      "source": {
+        "type": "agent-generated",
+        "agent": "i18n-review",
+        "author": "claude-opus"
+      },
+      "status": "active",
+      "severity": "warn",
+      "fixable": true,
+      "created": "2025-01-04",
+      "linkedPatterns": ["i18n-review:rtl-support:logical-properties"],
+      "examples": {
+        "valid": ["<div className=\"rounded-s-lg\">Content</div>"],
+        "invalid": ["<div className=\"rounded-l-lg\">Content</div>"]
+      }
+    },
+    "no-direct-window": {
+      "name": "no-direct-window",
+      "category": "perf",
+      "description": "Disallow direct window access outside of useEffect/useCallback - not SSR-safe",
+      "source": {
+        "type": "agent-generated",
+        "agent": "performance-review",
+        "author": "claude-opus"
+      },
+      "status": "active",
+      "severity": "error",
+      "fixable": false,
+      "created": "2025-01-04",
+      "linkedPatterns": ["performance-review:ssr-safety:window-access"],
+      "examples": {
+        "valid": ["useEffect(() => { window.scrollTo(0, 0); }, [])"],
+        "invalid": ["const width = window.innerWidth;"]
+      }
+    },
+    "no-direct-document": {
+      "name": "no-direct-document",
+      "category": "perf",
+      "description": "Disallow direct document access outside of useEffect/useCallback - not SSR-safe",
+      "source": {
+        "type": "agent-generated",
+        "agent": "performance-review",
+        "author": "claude-opus"
+      },
+      "status": "active",
+      "severity": "error",
+      "fixable": false,
+      "created": "2025-01-04",
+      "linkedPatterns": ["performance-review:ssr-safety:document-access"],
+      "examples": {
+        "valid": ["useEffect(() => { document.title = 'Title'; }, [])"],
+        "invalid": ["const el = document.getElementById('id');"]
+      }
+    },
+    "no-direct-storage": {
+      "name": "no-direct-storage",
+      "category": "perf",
+      "description": "Disallow direct localStorage/sessionStorage access - not SSR-safe",
+      "source": {
+        "type": "agent-generated",
+        "agent": "performance-review",
+        "author": "claude-opus"
+      },
+      "status": "active",
+      "severity": "error",
+      "fixable": false,
+      "created": "2025-01-04",
+      "linkedPatterns": ["performance-review:ssr-safety:storage-access"],
+      "examples": {
+        "valid": ["useEffect(() => { localStorage.setItem('key', 'value'); }, [])"],
+        "invalid": ["const val = localStorage.getItem('key');"]
+      }
+    },
+    "no-layout-effect": {
+      "name": "no-layout-effect",
+      "category": "perf",
+      "description": "Warn about useLayoutEffect usage - prefer useEffect for SSR compatibility",
+      "source": {
+        "type": "agent-generated",
+        "agent": "performance-review",
+        "author": "claude-opus"
+      },
+      "status": "active",
+      "severity": "warn",
+      "fixable": false,
+      "created": "2025-01-04",
+      "linkedPatterns": ["performance-review:ssr-safety:layout-effect"],
+      "examples": {
+        "valid": ["useEffect(() => { /* ... */ }, [])"],
+        "invalid": ["useLayoutEffect(() => { /* ... */ }, [])"]
+      }
+    },
+    "no-render-random": {
+      "name": "no-render-random",
+      "category": "perf",
+      "description": "Disallow Math.random() in render - causes hydration mismatch",
+      "source": {
+        "type": "agent-generated",
+        "agent": "performance-review",
+        "author": "claude-opus"
+      },
+      "status": "active",
+      "severity": "error",
+      "fixable": false,
+      "created": "2025-01-04",
+      "linkedPatterns": ["performance-review:hydration:random-in-render"],
+      "examples": {
+        "valid": ["const [id] = useState(() => Math.random())"],
+        "invalid": ["const id = Math.random();"]
+      }
+    },
+    "no-render-date": {
+      "name": "no-render-date",
+      "category": "perf",
+      "description": "Warn about Date.now() or new Date() in render - may cause hydration mismatch",
+      "source": {
+        "type": "agent-generated",
+        "agent": "performance-review",
+        "author": "claude-opus"
+      },
+      "status": "active",
+      "severity": "warn",
+      "fixable": false,
+      "created": "2025-01-04",
+      "linkedPatterns": ["performance-review:hydration:date-in-render"],
+      "examples": {
+        "valid": ["const [now] = useState(() => Date.now())"],
+        "invalid": ["const now = Date.now();"]
+      }
+    },
+    "no-deep-nesting": {
+      "name": "no-deep-nesting",
+      "category": "perf",
+      "description": "Warn about deeply nested divs (3+ levels) - consider flattening DOM structure",
+      "source": {
+        "type": "agent-generated",
+        "agent": "performance-review",
+        "author": "claude-opus"
+      },
+      "status": "active",
+      "severity": "warn",
+      "fixable": false,
+      "created": "2025-01-04",
+      "linkedPatterns": ["performance-review:dom-structure:deep-nesting"],
+      "examples": {
+        "valid": ["<div><div>Content</div></div>"],
+        "invalid": ["<div><div><div><div>Content</div></div></div></div>"]
+      }
+    },
+    "no-full-lodash": {
+      "name": "no-full-lodash",
+      "category": "perf",
+      "description": "Warn against importing entire lodash library - use specific imports",
+      "source": {
+        "type": "agent-generated",
+        "agent": "performance-review",
+        "author": "claude-opus"
+      },
+      "status": "active",
+      "severity": "warn",
+      "fixable": false,
+      "created": "2025-01-04",
+      "linkedPatterns": ["performance-review:bundle-size:full-lodash"],
+      "examples": {
+        "valid": ["import debounce from 'lodash/debounce'"],
+        "invalid": ["import _ from 'lodash'"]
+      }
+    },
+    "atomic-hierarchy": {
+      "name": "atomic-hierarchy",
+      "category": "imports",
+      "description": "Enforce atomic design import hierarchy - layers can only import from lower layers",
+      "source": {
+        "type": "agent-generated",
+        "agent": "architecture-review",
+        "author": "claude-opus"
+      },
+      "status": "active",
+      "severity": "error",
+      "fixable": false,
+      "created": "2025-01-04",
+      "linkedPatterns": [
+        "architecture-review:import-hierarchy:layer-violations",
+        "architecture-review:import-hierarchy:same-layer-imports"
+      ],
+      "examples": {
+        "valid": ["// In atoms: import { cn } from '@/utils'"],
+        "invalid": ["// In atoms: import { Card } from '@/molecules'"]
+      }
+    }
+  }
+}

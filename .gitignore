@@ -41,6 +41,8 @@ vgcore.*
 *.sln
 *.sw?
 .idea
+.notes/
+
 
 # Node / pnpm
 node_modules/

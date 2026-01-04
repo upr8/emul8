@@ -1,0 +1,165 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Emul8 Lint Rule Registry",
+  "description": "Metadata registry for emul8 oxlint plugin rules",
+  "type": "object",
+  "required": ["$schema", "version", "rules"],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Schema reference"
+    },
+    "version": {
+      "type": "string",
+      "description": "Registry version"
+    },
+    "rules": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/RuleMetadata"
+      }
+    }
+  },
+  "definitions": {
+    "RuleMetadata": {
+      "type": "object",
+      "required": ["name", "category", "source", "status", "severity", "created"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+          "description": "Rule name in kebab-case (e.g., 'no-div-onclick')"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["a11y", "i18n", "perf", "imports", "patterns"],
+          "description": "Rule category"
+        },
+        "description": {
+          "type": "string",
+          "description": "Human-readable description of what the rule enforces"
+        },
+        "source": {
+          "type": "object",
+          "required": ["type"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["agent-generated", "manual", "upstream", "community"],
+              "description": "How the rule was created"
+            },
+            "agent": {
+              "type": "string",
+              "description": "Source agent if agent-generated (e.g., 'a11y-review')"
+            },
+            "issue": {
+              "type": "string",
+              "description": "GitHub issue reference if applicable"
+            },
+            "author": {
+              "type": "string",
+              "description": "Author name or identifier"
+            }
+          }
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "experimental", "deprecated", "removed"],
+          "description": "Current rule status"
+        },
+        "severity": {
+          "type": "string",
+          "enum": ["error", "warn", "off"],
+          "description": "Recommended severity level"
+        },
+        "fixable": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether the rule provides auto-fix"
+        },
+        "created": {
+          "type": "string",
+          "format": "date",
+          "description": "Date rule was created (YYYY-MM-DD)"
+        },
+        "deprecated": {
+          "type": "object",
+          "properties": {
+            "date": {
+              "type": "string",
+              "format": "date",
+              "description": "Date rule was deprecated"
+            },
+            "reason": {
+              "type": "string",
+              "description": "Why the rule is being deprecated"
+            },
+            "replacement": {
+              "type": "string",
+              "description": "Replacement rule name if applicable"
+            },
+            "removeDate": {
+              "type": "string",
+              "format": "date",
+              "description": "Planned removal date"
+            }
+          }
+        },
+        "effectiveness": {
+          "type": "object",
+          "description": "Effectiveness metrics (updated periodically)",
+          "properties": {
+            "violations30d": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Violation count in last 30 days"
+            },
+            "fixRate": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "description": "Percentage of violations auto-fixed (0-1)"
+            },
+            "falsePositiveRate": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "description": "Percentage of violations suppressed as false positives (0-1)"
+            },
+            "lastMeasured": {
+              "type": "string",
+              "format": "date",
+              "description": "Date metrics were last collected"
+            }
+          }
+        },
+        "linkedPatterns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Pattern IDs from review agents this rule enforces (e.g., 'a11y-review:interactive-elements:div-onclick')"
+        },
+        "documentation": {
+          "type": "string",
+          "description": "Link to rule documentation"
+        },
+        "examples": {
+          "type": "object",
+          "properties": {
+            "valid": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Code examples that pass the rule"
+            },
+            "invalid": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Code examples that fail the rule"
+            }
+          }
+        }
+      }
+    }
+  }
+}

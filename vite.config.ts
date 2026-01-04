@@ -57,6 +57,7 @@ export default defineConfig({
         'src/**/*.types.ts',
         'src/**/*.mdx',
         'src/test/**',
+        'src/utils/slot.ts', // Re-export from external package
       ],
       thresholds: {
         statements: 100,
